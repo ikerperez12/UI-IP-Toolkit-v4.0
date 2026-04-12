@@ -1,5 +1,7 @@
 const audioState = {
   context: null,
+  featuredTrack: null,
+  activeTrackCard: null,
 };
 
 function getAudioContext() {
@@ -13,6 +15,14 @@ function getAudioContext() {
   }
 
   return audioState.context;
+}
+
+function getFeaturedTrack() {
+  if (!audioState.featuredTrack) {
+    audioState.featuredTrack = document.getElementById("featured-track");
+  }
+
+  return audioState.featuredTrack;
 }
 
 async function copySnippet(btn) {
@@ -56,12 +66,30 @@ async function copySnippet(btn) {
   }
 
   const original = btn.innerHTML;
-  btn.innerHTML = "✓ Copied!";
+  btn.innerHTML = "Copied";
   btn.classList.add("ok");
   window.setTimeout(() => {
     btn.innerHTML = original;
     btn.classList.remove("ok");
   }, 1600);
+}
+
+function syncTrackCards(track) {
+  const isPlaying = Boolean(track && !track.paused && !track.ended);
+
+  document.querySelectorAll(".au-c[data-track]").forEach((card) => {
+    card.classList.toggle("playing", isPlaying && card === audioState.activeTrackCard);
+  });
+
+  const badge = document.querySelector("[data-audio-badge]");
+  if (badge) {
+    badge.textContent = isPlaying ? "Playing now" : "Local track";
+  }
+
+  const status = document.querySelector("[data-audio-status]");
+  if (status) {
+    status.textContent = isPlaying ? "Streaming from repo assets" : "Ready to preview";
+  }
 }
 
 async function playTone(card, sound) {
@@ -95,10 +123,10 @@ async function playTone(card, sound) {
   oscillator.start(now);
   oscillator.stop(now + config.release + 0.02);
 
-  card.style.transform = "scale(0.97)";
+  card.classList.add("playing");
   window.setTimeout(() => {
-    card.style.transform = "";
-  }, 140);
+    card.classList.remove("playing");
+  }, 220);
 }
 
 function initCursor() {
@@ -171,80 +199,188 @@ function initScrollEffects() {
   });
 }
 
-function initPagination() {
-  document.querySelectorAll(".paginated").forEach((grid) => {
-    const items = Array.from(grid.children).filter(
-      (child) => child.tagName === "DIV" && !child.classList.contains("pagination-controls"),
-    );
-    items.forEach((child) => child.classList.add("page-item"));
+function getPaginationItems(grid) {
+  return Array.from(grid.children).filter(
+    (child) => child.nodeType === 1 && !child.classList.contains("pagination-controls"),
+  );
+}
 
-    if (items.length <= 8) return;
+function measurePageSize(items) {
+  if (!items.length) return 1;
 
-    let controls = grid.parentElement.querySelector(".pagination-controls");
-    if (!controls) {
-      controls = document.createElement("div");
-      controls.className = "pagination-controls";
-      controls.style.marginTop = "30px";
-      controls.style.display = "flex";
-      controls.style.gap = "15px";
-      controls.style.justifyContent = "center";
-      controls.style.width = "100%";
-      controls.style.clear = "both";
-      controls.innerHTML =
-        '<button class="btn-outline prev-btn" style="padding:12px 24px;background:rgba(255,255,255,0.05);color:#fff;border:1px solid rgba(255,255,255,0.1);border-radius:8px;cursor:pointer;font-weight:bold;transition:0.3s">← Previous</button><button class="btn-outline next-btn" style="padding:12px 24px;background:rgba(194,164,255,0.15);color:#c2a4ff;border:1px solid #c2a4ff;border-radius:8px;cursor:pointer;font-weight:bold;transition:0.3s">Next →</button>';
-      grid.parentElement.appendChild(controls);
+  items.forEach((item) => {
+    item.hidden = false;
+  });
+
+  const firstTop = Math.round(items[0].getBoundingClientRect().top);
+  let columns = 0;
+
+  for (const item of items) {
+    const top = Math.round(item.getBoundingClientRect().top);
+    if (Math.abs(top - firstTop) <= 4) {
+      columns += 1;
+      continue;
     }
 
-    const pageSize = 6;
-    let currentPage = 1;
-    const maxPage = Math.ceil(items.length / pageSize);
+    break;
+  }
+
+  columns = Math.max(columns, 1);
+  const rows = window.innerWidth < 640 ? 4 : columns >= 4 ? 2 : columns === 3 ? 2 : columns === 2 ? 3 : 4;
+  return Math.max(1, columns * rows);
+}
+
+function createPaginationControls(grid) {
+  let controls = grid.parentElement.querySelector(".pagination-controls");
+  if (controls) {
+    return controls;
+  }
+
+  controls = document.createElement("div");
+  controls.className = "pagination-controls";
+  controls.innerHTML = `
+    <button type="button" class="btn-outline prev-btn">Previous</button>
+    <span class="pagination-status" aria-live="polite"></span>
+    <button type="button" class="btn-outline next-btn">Next</button>
+  `;
+  grid.parentElement.appendChild(controls);
+  return controls;
+}
+
+function updatePaginationInstance(instance) {
+  const { grid, items, controls, prevButton, nextButton, status } = instance;
+
+  const previousPage = instance.currentPage || 1;
+  instance.pageSize = measurePageSize(items);
+  instance.maxPage = Math.max(1, Math.ceil(items.length / instance.pageSize));
+  instance.currentPage = Math.min(previousPage, instance.maxPage);
+
+  if (items.length <= instance.pageSize) {
+    items.forEach((item) => {
+      item.hidden = false;
+      item.style.opacity = "1";
+      item.style.transform = "";
+    });
+    controls.hidden = true;
+    return;
+  }
+
+  controls.hidden = false;
+
+  items.forEach((item, index) => {
+    const visible =
+      index >= (instance.currentPage - 1) * instance.pageSize &&
+      index < instance.currentPage * instance.pageSize;
+
+    item.hidden = !visible;
+    item.style.opacity = visible ? "1" : "0";
+    item.style.transform = visible ? "translateY(0)" : "translateY(8px)";
+  });
+
+  status.textContent = `${instance.currentPage} / ${instance.maxPage}`;
+  prevButton.disabled = instance.currentPage === 1;
+  nextButton.disabled = instance.currentPage === instance.maxPage;
+}
+
+function initPagination() {
+  const instances = [];
+
+  document.querySelectorAll(".paginated").forEach((grid) => {
+    const items = getPaginationItems(grid);
+    items.forEach((item) => item.classList.add("page-item"));
+
+    if (items.length <= 1) return;
+
+    const controls = createPaginationControls(grid);
+    const prevButton = controls.querySelector(".prev-btn");
     const nextButton = controls.querySelector(".next-btn");
-    const previousButton = controls.querySelector(".prev-btn");
+    const status = controls.querySelector(".pagination-status");
 
-    const renderPage = () => {
-      items.forEach((item, index) => {
-        const isVisible = index >= (currentPage - 1) * pageSize && index < currentPage * pageSize;
-        item.style.display = isVisible ? "" : "none";
-        item.style.opacity = isVisible ? "1" : "0";
-        if (isVisible) {
-          window.setTimeout(() => {
-            item.style.transform = "translateY(0)";
-          }, 50);
-        }
-      });
-
-      previousButton.style.opacity = currentPage === 1 ? "0.3" : "1";
-      previousButton.style.pointerEvents = currentPage === 1 ? "none" : "auto";
-      nextButton.style.opacity = currentPage === maxPage ? "0.3" : "1";
-      nextButton.style.pointerEvents = currentPage === maxPage ? "none" : "auto";
+    const instance = {
+      grid,
+      items,
+      controls,
+      prevButton,
+      nextButton,
+      status,
+      currentPage: 1,
+      maxPage: 1,
+      pageSize: items.length,
     };
 
+    prevButton.addEventListener("click", () => {
+      if (instance.currentPage === 1) return;
+      instance.currentPage -= 1;
+      updatePaginationInstance(instance);
+      grid.closest("section")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+
     nextButton.addEventListener("click", () => {
-      if (currentPage >= maxPage) return;
-      currentPage += 1;
-      renderPage();
-      grid.closest("section")?.scrollIntoView({ behavior: "smooth" });
+      if (instance.currentPage === instance.maxPage) return;
+      instance.currentPage += 1;
+      updatePaginationInstance(instance);
+      grid.closest("section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    previousButton.addEventListener("click", () => {
-      if (currentPage <= 1) return;
-      currentPage -= 1;
-      renderPage();
-      grid.closest("section")?.scrollIntoView({ behavior: "smooth" });
-    });
+    updatePaginationInstance(instance);
+    instances.push(instance);
+  });
 
-    renderPage();
+  let resizeTimer = 0;
+  window.addEventListener("resize", () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => {
+      instances.forEach((instance) => updatePaginationInstance(instance));
+    }, 150);
   });
 }
 
 function initAudioCards() {
-  const activate = (card) => {
+  const featuredTrack = getFeaturedTrack();
+  if (featuredTrack) {
+    const sync = () => syncTrackCards(featuredTrack);
+    featuredTrack.addEventListener("play", sync);
+    featuredTrack.addEventListener("pause", sync);
+    featuredTrack.addEventListener("ended", () => {
+      audioState.activeTrackCard = null;
+      syncTrackCards(featuredTrack);
+    });
+    syncTrackCards(featuredTrack);
+  }
+
+  const activate = async (card) => {
     const sound = card.dataset.sound;
-    if (!sound) return;
-    playTone(card, sound);
+    if (sound) {
+      playTone(card, sound);
+      return;
+    }
+
+    const trackId = card.dataset.track;
+    if (!trackId || !featuredTrack) return;
+
+    const cue = Number(card.dataset.seek || 0);
+    const isCurrentCard = audioState.activeTrackCard === card && !featuredTrack.paused;
+
+    if (isCurrentCard) {
+      featuredTrack.pause();
+      audioState.activeTrackCard = null;
+      syncTrackCards(featuredTrack);
+      return;
+    }
+
+    audioState.activeTrackCard = card;
+    featuredTrack.currentTime = Number.isFinite(cue) ? cue : 0;
+
+    try {
+      await featuredTrack.play();
+    } catch {
+      audioState.activeTrackCard = null;
+    }
+
+    syncTrackCards(featuredTrack);
   };
 
-  document.querySelectorAll(".au-c[data-sound]").forEach((card) => {
+  document.querySelectorAll(".au-c[data-sound], .au-c[data-track]").forEach((card) => {
     card.addEventListener("click", () => activate(card));
     card.addEventListener("keydown", (event) => {
       if (event.key !== "Enter" && event.key !== " ") return;
