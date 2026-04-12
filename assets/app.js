@@ -1,6 +1,8 @@
 const backgroundAudioState = {
   audio: null,
   toggle: null,
+  hasUserPaused: false,
+  unlockAttached: false,
 };
 
 async function copySnippet(btn) {
@@ -76,6 +78,7 @@ async function playBackgroundAudio() {
   if (!audio) return false;
 
   try {
+    audio.muted = false;
     await audio.play();
     setBackgroundAudioState("playing");
     return true;
@@ -83,6 +86,43 @@ async function playBackgroundAudio() {
     setBackgroundAudioState("blocked");
     return false;
   }
+}
+
+function attachBackgroundAudioUnlock() {
+  if (backgroundAudioState.unlockAttached) return;
+
+  backgroundAudioState.unlockAttached = true;
+  const events = ["pointerdown", "keydown", "touchstart", "wheel"];
+  const unlock = async () => {
+    if (backgroundAudioState.hasUserPaused) return;
+
+    const started = await playBackgroundAudio();
+    if (started) {
+      events.forEach((eventName) => {
+        window.removeEventListener(eventName, unlock);
+      });
+    }
+  };
+
+  events.forEach((eventName) => {
+    window.addEventListener(eventName, unlock, { passive: true });
+  });
+}
+
+function scheduleBackgroundAudioAutoplay() {
+  const tryAutoplay = () => {
+    if (!backgroundAudioState.hasUserPaused) {
+      playBackgroundAudio();
+    }
+  };
+
+  tryAutoplay();
+  window.addEventListener("load", tryAutoplay, { once: true });
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      tryAutoplay();
+    }
+  });
 }
 
 function initCursor() {
@@ -298,6 +338,9 @@ function initBackgroundAudio() {
   const { audio, toggle } = backgroundAudioState;
   if (!audio || !toggle) return;
 
+  audio.autoplay = true;
+  audio.loop = true;
+  audio.muted = false;
   audio.volume = 0.32;
   setBackgroundAudioState("paused");
 
@@ -306,15 +349,18 @@ function initBackgroundAudio() {
 
   toggle.addEventListener("click", async () => {
     if (audio.paused) {
+      backgroundAudioState.hasUserPaused = false;
       await playBackgroundAudio();
       return;
     }
 
+    backgroundAudioState.hasUserPaused = true;
     audio.pause();
     setBackgroundAudioState("paused");
   });
 
-  playBackgroundAudio();
+  attachBackgroundAudioUnlock();
+  scheduleBackgroundAudioAutoplay();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
