@@ -3,6 +3,14 @@
   "private": true,
   "version": "4.0.0",
   "description": "Standalone frontend design system and component library with zero dependencies.",
+  "homepage": "https://ui-ip-toolkit.vercel.app/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ikerperez12/UI-IP-Toolkit-v4.0.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ikerperez12/UI-IP-Toolkit-v4.0/issues"
+  },
   "scripts": {
     "start": "npx http-server . -p 3333"
   },
