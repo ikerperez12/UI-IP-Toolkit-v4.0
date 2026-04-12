@@ -1,0 +1,65 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' 'unsafe-hashes' 'sha256-OwfpoS246bnknGgEYYuxuHOEwmhl+uj8GZgmVdgV4jw=' 'sha256-zbgahVXFIPFctLcJ3eFUiv5vMz3LEmV3XunqvECVf/s=' 'sha256-Zt050JcRkt4qDnD/DJPbbo9d6rjBpzMCbzFQUAkwNmY=' 'sha256-k3OwpFXmPm6JaIO85gmCf6XjBmHz4DunUCwJ/uu3r7E=' 'sha256-latnRxnsK3qoITTZZvkoszjXjBVBXgNqt96BVe5HHzY=' 'sha256-1u/HNenE0qxoHyh3hP2+b7LWiaHDk8y1P79VtwjkhsU=' 'sha256-Dqxw1itae7c/uCHGlHYABwCpdmRx8axgQd04aqGyoQA=' 'sha256-m1NTIlKMfjXb7alMxZy6vnlNEmJfYhhpzRELMRO8ihk=' 'sha256-6NTphzo6iLW+UbdOHR22vvLzgfmcIz8v1O13j14yF3Y=' 'sha256-rK/oryDZt3FqJDdZqQ/gHCLZgSwtdfShfDBm1LP3BE0=' 'sha256-rHVI8R+ZZyJWBw2n8ufCrsgcSHlFxrqnb0uf7y5wAag=' 'sha256-fC1/CU+ZXO/s53Wsa7aL9MsgHAx6rYKrZGqeRqYDxq0=' 'sha256-NLsrbKQaw1rxdP11hW7T6nWwJZxF6Z1499bnZ1IEIJk=' 'sha256-3LAcBVqB9pzkRuLNpTn9ZyY/mDdDKoPCS6VCVYPDlTU=' 'sha256-5x6T80h6ZiAjIEqwKRXIJBEVn5Zm23AUfFV/XL5j3xA=' 'sha256-Ur5Fv54tbclkAfvbemSVE9IzxeI7n4cSNBKhToNoh1k=' 'sha256-Bgj8UfDMH1Sr0WHHwJMxPgiETzZVjMRuYv86Xm04aqw=' 'sha256-QZMeVGdG/tRCaYxuAOIX+4mWVXML9svxIOvOrTfMjC8=' 'sha256-FWYubfxYz1gkleAn27AZG+li9creIId52ImJOp1sNvA=' 'sha256-3XzyvcZlgQNYNhNvk/mCwcsHpHy9UBi9hg6mHJXGmjM=' 'sha256-hSUidW5akJwgZegH3SvlTwdB1fUlv89umBOsn5CZ6mQ=' 'sha256-FQY3mn9gziOE2b22/xn2+dsjuySp2t2Oq2UztE0QRvE=' 'sha256-T/hmmQS3OmUw2RI+KEfUFvAP4uz5ZuFm/OlAiIhLLDA=' 'sha256-riRSdfaqSypizsrC6w2rOEnfk7olpirl+aPPWzrEf6A=' 'sha256-os8nhRnZPc+VQ/nl1b+XJBPTkaGLBmIru1uwTmpJVEQ=' 'sha256-3fMC/VSBfa8DMZDwNVq9BzUx/b+9TlG0poiS0Nm2ZWw=' 'sha256-Kebvd05Jnor6Ax4QSKZw4j1G61XbOH6rilrH6v0zYak=' 'sha256-XCBsWz7Qo2uBO8CEJd5EX/+9QJvjEwTQJ3Ebwva3aS0=' 'sha256-eifcsDXQJSqW0gqO4tPcPq1NK59WXn7ciCn1E7Y89tc=' 'sha256-b07LVFfMNshP6mf2NA0Pvzxwl3igjOqrolWDjVFZ/TI=' 'sha256-rIwQ+iAn/zRmKPKqb8N0ICASk8b+Au1SVHtuoZLpTr8=' 'sha256-KWt75mAJBrHWho8Eittb1VxHGzXbmx+02n2Uq9cbd5o=' 'sha256-xDsu2/vH1Nu3bJylHwNsoKhGhwGz/q2X32bOSnllT7g=' 'sha256-Ideyw2Pe/a7qDVc/0e/nAUe4VUAEnSS06tZuCHNqUEw=' 'sha256-PT6dkxDCvrTgZYpalu8DLWmGUZ5HqUQpduMVlpckJJY=' 'sha256-5ttAu3NbyWL5Xd0Yf/ebLzvOV2e093CxiI/hDJ3CpSk=' 'sha256-iZI2+OQM1TbybkIWkui2e5xYiV+99u8xXjWfL4UMQOw=' 'sha256-PZ3Gm4Tdo14CML2l59eWk5yPJXQNQL49LEkCoxAhAuo=' 'sha256-CsDBMRW1wxIipfS8zmUBgrTtSqXGmHs9pQ8omYxaYTE=' 'sha256-aN0os31eMSK6aojGhsjIP+yoRU8D6KoV3d1fmaYLwMI=' 'sha256-J18OlzC9IFjILky1tjb8pVyTKgLc8AcmY5e5QcHHbM4=' 'sha256-MopE5rjOUwrFW+Rif7oKrVXn934XIzOY6tOsK2miSrA=' 'sha256-BL4N4YjTbG7sKloaWuuqSCQaCDtHjGKv8dbmkOD4tkk=' 'sha256-SLVD7AzGvsrNuKg+7KrZZ6FGU6/aYvqRzu8rP3PfoQ4=' 'sha256-jhfn1ATmr+H40Y+lIcHLwEhDRlJQ3b+4jF03HkJxWOc=' 'sha256-E5/wMiBqawdLEV1MWojEsskPkmy76+Rt9bGQA8DiCqs=' 'sha256-zjrDMflUi6x3G/7Okx6kU3vRcUqFhNOI+1tkv7+8zzM=' 'sha256-pXXmjyXXOvcICsqfls81vUhC/fNhnUzbYwD19uRw6wI=' 'sha256-KiSbwgEIGDcqPG/BDPNLpt3z1WV7aaPtJl06DmPiHxg=' 'sha256-wFlJb87LfoaShqvbh6Z5vxnnjXlzxYo29OxOdf0gP3k=' 'sha256-AWUf/5l1JIVfJ5I7UK1jTDen9pSY2Hd42IvEBXN59do=' 'sha256-SU+Lb66caNGDQsGNg+3ETq6nGWeAuYVchAvxGlKfexA=' 'sha256-GB3+yjX7QxcDUhoSlLgkM8ZBkZjE7d2duGCPI0Ukhkk='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; media-src 'self' blob: data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "no-referrer"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=(), document-domain=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), hid=(), microphone=(), midi=(), payment=(), usb=(), xr-spatial-tracking=()"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Cross-Origin-Opener-Policy",
+          "value": "same-origin"
+        },
+        {
+          "key": "Cross-Origin-Resource-Policy",
+          "value": "same-origin"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/index.html",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    }
+  ]
+}

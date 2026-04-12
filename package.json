@@ -1,0 +1,17 @@
+{
+  "name": "ui-ip-toolkit",
+  "private": true,
+  "version": "4.0.0",
+  "description": "Standalone frontend design system and component library with zero dependencies.",
+  "scripts": {
+    "start": "npx http-server . -p 3333"
+  },
+  "keywords": [
+    "ui-kit",
+    "frontend",
+    "components",
+    "css",
+    "standalone"
+  ],
+  "license": "MIT"
+}
