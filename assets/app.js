@@ -1,29 +1,7 @@
-const audioState = {
-  context: null,
-  featuredTrack: null,
-  activeTrackCard: null,
+const backgroundAudioState = {
+  audio: null,
+  toggle: null,
 };
-
-function getAudioContext() {
-  if (!audioState.context) {
-    const Context = window.AudioContext || window.webkitAudioContext;
-    if (!Context) {
-      return null;
-    }
-
-    audioState.context = new Context();
-  }
-
-  return audioState.context;
-}
-
-function getFeaturedTrack() {
-  if (!audioState.featuredTrack) {
-    audioState.featuredTrack = document.getElementById("featured-track");
-  }
-
-  return audioState.featuredTrack;
-}
 
 async function copySnippet(btn) {
   const card = btn.closest("[data-snippet]") || btn.closest(".has-copy");
@@ -74,59 +52,37 @@ async function copySnippet(btn) {
   }, 1600);
 }
 
-function syncTrackCards(track) {
-  const isPlaying = Boolean(track && !track.paused && !track.ended);
+function setBackgroundAudioState(state) {
+  const { toggle } = backgroundAudioState;
+  if (!toggle) return;
 
-  document.querySelectorAll(".au-c[data-track]").forEach((card) => {
-    card.classList.toggle("playing", isPlaying && card === audioState.activeTrackCard);
-  });
+  const label = toggle.querySelector(".sound-label");
+  const isPlaying = state === "playing";
+  const isBlocked = state === "blocked";
+  const text = isPlaying ? "Sound on" : isBlocked ? "Tap for sound" : "Sound off";
 
-  const badge = document.querySelector("[data-audio-badge]");
-  if (badge) {
-    badge.textContent = isPlaying ? "Playing now" : "Local track";
-  }
+  toggle.dataset.state = state;
+  toggle.setAttribute("aria-pressed", String(isPlaying));
+  toggle.setAttribute("aria-label", isPlaying ? "Turn background music off" : "Turn background music on");
+  toggle.title = text;
 
-  const status = document.querySelector("[data-audio-status]");
-  if (status) {
-    status.textContent = isPlaying ? "Streaming from repo assets" : "Ready to preview";
+  if (label) {
+    label.textContent = text;
   }
 }
 
-async function playTone(card, sound) {
-  const context = getAudioContext();
-  if (!context) return;
+async function playBackgroundAudio() {
+  const { audio } = backgroundAudioState;
+  if (!audio) return false;
 
-  if (context.state === "suspended") {
-    await context.resume();
+  try {
+    await audio.play();
+    setBackgroundAudioState("playing");
+    return true;
+  } catch {
+    setBackgroundAudioState("blocked");
+    return false;
   }
-
-  const oscillator = context.createOscillator();
-  const gain = context.createGain();
-  const now = context.currentTime;
-
-  const config =
-    sound === "release"
-      ? { type: "triangle", start: 720, end: 420, attack: 0.01, release: 0.18, volume: 0.045 }
-      : { type: "square", start: 420, end: 240, attack: 0.008, release: 0.16, volume: 0.06 };
-
-  oscillator.type = config.type;
-  oscillator.frequency.setValueAtTime(config.start, now);
-  oscillator.frequency.exponentialRampToValueAtTime(config.end, now + config.release);
-
-  gain.gain.setValueAtTime(0.0001, now);
-  gain.gain.exponentialRampToValueAtTime(config.volume, now + config.attack);
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + config.release);
-
-  oscillator.connect(gain);
-  gain.connect(context.destination);
-
-  oscillator.start(now);
-  oscillator.stop(now + config.release + 0.02);
-
-  card.classList.add("playing");
-  window.setTimeout(() => {
-    card.classList.remove("playing");
-  }, 220);
 }
 
 function initCursor() {
@@ -335,59 +291,30 @@ function initPagination() {
   });
 }
 
-function initAudioCards() {
-  const featuredTrack = getFeaturedTrack();
-  if (featuredTrack) {
-    const sync = () => syncTrackCards(featuredTrack);
-    featuredTrack.addEventListener("play", sync);
-    featuredTrack.addEventListener("pause", sync);
-    featuredTrack.addEventListener("ended", () => {
-      audioState.activeTrackCard = null;
-      syncTrackCards(featuredTrack);
-    });
-    syncTrackCards(featuredTrack);
-  }
+function initBackgroundAudio() {
+  backgroundAudioState.audio = document.getElementById("background-audio");
+  backgroundAudioState.toggle = document.getElementById("background-audio-toggle");
 
-  const activate = async (card) => {
-    const sound = card.dataset.sound;
-    if (sound) {
-      playTone(card, sound);
+  const { audio, toggle } = backgroundAudioState;
+  if (!audio || !toggle) return;
+
+  audio.volume = 0.32;
+  setBackgroundAudioState("paused");
+
+  audio.addEventListener("play", () => setBackgroundAudioState("playing"));
+  audio.addEventListener("pause", () => setBackgroundAudioState("paused"));
+
+  toggle.addEventListener("click", async () => {
+    if (audio.paused) {
+      await playBackgroundAudio();
       return;
     }
 
-    const trackId = card.dataset.track;
-    if (!trackId || !featuredTrack) return;
-
-    const cue = Number(card.dataset.seek || 0);
-    const isCurrentCard = audioState.activeTrackCard === card && !featuredTrack.paused;
-
-    if (isCurrentCard) {
-      featuredTrack.pause();
-      audioState.activeTrackCard = null;
-      syncTrackCards(featuredTrack);
-      return;
-    }
-
-    audioState.activeTrackCard = card;
-    featuredTrack.currentTime = Number.isFinite(cue) ? cue : 0;
-
-    try {
-      await featuredTrack.play();
-    } catch {
-      audioState.activeTrackCard = null;
-    }
-
-    syncTrackCards(featuredTrack);
-  };
-
-  document.querySelectorAll(".au-c[data-sound], .au-c[data-track]").forEach((card) => {
-    card.addEventListener("click", () => activate(card));
-    card.addEventListener("keydown", (event) => {
-      if (event.key !== "Enter" && event.key !== " ") return;
-      event.preventDefault();
-      activate(card);
-    });
+    audio.pause();
+    setBackgroundAudioState("paused");
   });
+
+  playBackgroundAudio();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -395,5 +322,5 @@ document.addEventListener("DOMContentLoaded", () => {
   initCopyButtons();
   initScrollEffects();
   initPagination();
-  initAudioCards();
+  initBackgroundAudio();
 });
