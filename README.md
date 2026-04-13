@@ -1,12 +1,6 @@
 # UI IP Toolkit
 
 <p align="center">
-  <a href="https://ui-ip-toolkit.vercel.app/">
-    <img src=".github/assets/ui-ip-toolkit-hero.png" alt="UI IP Toolkit hero banner" width="100%">
-  </a>
-</p>
-
-<p align="center">
   <a href="https://ui-ip-toolkit.vercel.app/"><strong>Live Demo</strong></a>
   |
   <a href="#quick-start"><strong>Run Locally</strong></a>
