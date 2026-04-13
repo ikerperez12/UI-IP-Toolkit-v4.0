@@ -460,6 +460,16 @@ function createPaginationControls(grid) {
   return controls;
 }
 
+function setPaginationItemVisibility(item, visible) {
+  item.hidden = !visible;
+  item.classList.toggle("hidden", !visible);
+  item.style.opacity = visible ? "1" : "0";
+  item.style.transform = visible ? "translateY(0)" : "translateY(8px)";
+  item.style.pointerEvents = visible ? "" : "none";
+  item.setAttribute("aria-hidden", String(!visible));
+  item.inert = !visible;
+}
+
 function updatePaginationInstance(instance) {
   const { grid, items, controls, prevButton, nextButton, status } = instance;
 
@@ -474,9 +484,7 @@ function updatePaginationInstance(instance) {
   if (items.length <= instance.pageSize) {
     grid.style.removeProperty("min-height");
     items.forEach((item) => {
-      item.hidden = false;
-      item.classList.remove("hidden");
-      item.style.opacity = "1";
+      setPaginationItemVisibility(item, true);
       item.style.transform = "";
     });
     controls.hidden = true;
@@ -492,10 +500,7 @@ function updatePaginationInstance(instance) {
       index >= (instance.currentPage - 1) * instance.pageSize &&
       index < instance.currentPage * instance.pageSize;
 
-    item.hidden = !visible;
-    item.classList.toggle("hidden", !visible);
-    item.style.opacity = visible ? "1" : "0";
-    item.style.transform = visible ? "translateY(0)" : "translateY(8px)";
+    setPaginationItemVisibility(item, visible);
   });
 
   const firstVisible = (instance.currentPage - 1) * instance.pageSize + 1;
@@ -517,12 +522,21 @@ function copyButtonMarkup() {
   return `<button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>`;
 }
 
+function createCardSource(item) {
+  return item.source ? `<div class="kit-source">${item.source}</div>` : "";
+}
+
 function createToolkitCard(item, className = "ut-c") {
+  const previewClass = ["mini-preview", item.previewMode || "", item.previewClass || ""].filter(Boolean).join(" ");
+
   return `
     <div class="${className} has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}">
-      <div class="mini-preview ${item.previewMode || ""}">${item.preview}</div>
-      <div class="ut-n">${item.title}</div>
-      <div class="kit-meta">${item.description}</div>
+      <div class="${previewClass}">${item.preview}</div>
+      <div class="kit-copy-meta">
+        ${createCardSource(item)}
+        <div class="ut-n">${item.title}</div>
+        <div class="kit-meta">${item.description}</div>
+      </div>
       ${copyButtonMarkup()}
     </div>
   `;
@@ -537,13 +551,38 @@ function addToolkitCards(selector, items, className = "ut-c") {
   grid.dataset.minPageSize = grid.dataset.minPageSize || "8";
 }
 
+function createComponentCard(item) {
+  const previewClass = ["cp-p", item.previewMode || "", item.previewClass || ""].filter(Boolean).join(" ");
+
+  return `
+    <div class="cp-c has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}">
+      <div class="${previewClass}">${item.preview}</div>
+      <div class="cp-i">
+        ${createCardSource(item)}
+        <h4>${item.title}</h4>
+        <p>${item.description}</p>
+      </div>
+      ${copyButtonMarkup()}
+    </div>
+  `;
+}
+
+function addComponentCards(selector, items) {
+  const grid = document.querySelector(selector);
+  if (!grid) return;
+
+  grid.insertAdjacentHTML("beforeend", items.map((item) => createComponentCard(item)).join(""));
+  grid.classList.add("paginated");
+  grid.dataset.minPageSize = grid.dataset.minPageSize || "8";
+}
+
 function removeCardsByTitle(selector, matcher) {
   const grid = document.querySelector(selector);
   if (!grid) return;
 
   Array.from(grid.children).forEach((card) => {
     const title =
-      card.querySelector(".ut-n, .ln, .tx-label, .sn, .hf-i h4, .gl-p, .an, .gl, .cn")?.textContent?.trim() || "";
+      card.querySelector(".ut-n, .ln, .tx-label, .sn, .hf-i h4, .cp-i h4, h4, .gl-p h4, .gl-p, .an, .gl, .cn")?.textContent?.trim() || "";
 
     if (title && matcher(title)) {
       card.remove();
@@ -776,7 +815,7 @@ function enhanceCatalog() {
 
   const note = document.createElement("p");
   note.className = "catalog-source-note";
-  note.textContent = "Expanded with original patterns inspired by current copy-paste UI ecosystems: shadcn/ui blocks, Magic UI, Aceternity UI, ReactBits, Flowbite, DaisyUI, CodePen, and GitHub component galleries.";
+  note.textContent = "Expanded with original patterns inspired by current copy-paste UI ecosystems: Sera UI, shadcn/ui blocks, Magic UI, Aceternity UI, ReactBits, Flowbite, DaisyUI, CodePen, and GitHub component galleries.";
   document.querySelector("footer.final-cta")?.before(note);
 }
 
@@ -883,6 +922,164 @@ function pruneCatalogNoise() {
   removeCardsByTitle("#buttons .btn-g", (title) => /^(Brutal|Gradient Btn) \d+$/i.test(title));
   removeCardsByTitle("#loading .load-g", (title) => /^(Spinner|Ping Ring) \d+$/i.test(title));
   removeCardsByTitle("#shadows .sh-g", (title) => /^Shadow \d+$/i.test(title));
+}
+
+function addSeraCatalog() {
+  addToolkitCards("#buttons .btn-g", [
+    {
+      source: "Sera UI",
+      title: "Ripple Button",
+      description: "Rounded action with inline ripple, icon slots and loading state.",
+      preview: `<button style="position:relative;overflow:hidden;padding:12px 18px;border-radius:12px;background:#f8fafc;color:#020617;border:0;font-weight:800;box-shadow:0 10px 24px rgba(15,23,42,.18)">Click me<span style="position:absolute;inset:auto auto -18px -10px;width:44px;height:44px;border-radius:50%;background:rgba(15,23,42,.1)"></span></button>`,
+      html: `import Button from "@/components/sera-ui/02-buttons/button/button";\n\n<Button variant="default" iconRight={<ArrowRight />}>Click me</Button>`,
+    },
+    {
+      source: "Sera UI",
+      title: "Shimmer Button",
+      description: "Primary CTA with sweeping sheen for upgrade and checkout moments.",
+      preview: `<button style="position:relative;overflow:hidden;padding:12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:#0f172a;color:#fff;font-weight:700">Upgrade<span style="position:absolute;inset:-18px auto -18px -40px;width:28px;background:rgba(255,255,255,.32);transform:rotate(14deg)"></span></button>`,
+      html: `import ShimmerButton from "@/components/sera-ui/02-buttons/shimmer/shimmer";\n\n<ShimmerButton shimmerColor="#ffffff">Upgrade</ShimmerButton>`,
+    },
+    {
+      source: "Sera UI",
+      title: "Dropdown Menu",
+      description: "Animated trigger plus compact menu for inline actions.",
+      previewMode: "stack",
+      preview: `<button style="display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#111827;color:#fff;font-weight:700">Actions <span style="opacity:.6">v</span></button><div style="display:grid;gap:6px;width:100%;max-width:168px;padding:10px;border-radius:14px;background:#0f172a;border:1px solid rgba(255,255,255,.08)"><span class="kit-pill" style="justify-content:flex-start">Edit</span><span class="kit-pill" style="justify-content:flex-start">Duplicate</span><span class="kit-pill" style="justify-content:flex-start">Delete</span></div>`,
+      html: `import Dropdown from "@/components/sera-ui/02-buttons/dropdown/dropdown";\n\n<Dropdown trigger="Actions" items={[{ label: "Edit" }, { label: "Delete", danger: true }]} />`,
+    },
+  ]);
+
+  addToolkitCards("#textfx .tx-g", [
+    {
+      source: "Sera UI",
+      title: "Flip Words",
+      description: "Hero copy that flips through stack, framework or role words.",
+      previewMode: "stack",
+      preview: `<strong style="font-size:28px;color:#fff;line-height:1.1">Build with <span style="display:inline-block;min-width:80px;color:#38bdf8">React</span></strong><div class="kit-row"><span class="kit-pill">Next.js</span><span class="kit-pill">TypeScript</span><span class="kit-pill">Tailwind</span></div>`,
+      html: `import FlipWords from "@/components/sera-ui/05-text/flipwords/flipwords";\n\n<FlipWords words={["React", "Next.js", "TypeScript", "Tailwind"]} />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Decrypting Text",
+      description: "Hacker-style reveal for labels, easter eggs and interactive prompts.",
+      previewMode: "stack",
+      preview: `<span style="font-family:monospace;font-size:22px;color:#4ade80;letter-spacing:.08em">HELLO_W0RLD</span><span style="font-size:11px;color:#94a3b8">Hover trigger friendly</span>`,
+      html: `import DecryptingText from "@/components/sera-ui/05-text/decrypting/decrypting";\n\n<DecryptingText text="HELLO WORLD" onHover />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Number Ticker",
+      description: "Animated metric counter with prefix, suffix and in-view trigger.",
+      previewMode: "stack",
+      preview: `<strong style="font-size:32px;color:#fff">$71,897</strong><span style="color:#4ade80;font-size:11px">+12.4% this month</span>`,
+      html: `import NumberTicker from "@/components/sera-ui/05-text/ticker/ticker";\n\n<NumberTicker value={71897} prefix="$" suffix=" MRR" />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Aurora Text",
+      description: "Animated multi-color headline for launch pages and feature banners.",
+      preview: `<strong style="font-size:30px;background:linear-gradient(135deg,#ff0080,#7928ca,#0070f3,#00dfd8);background-size:200% 200%;-webkit-background-clip:text;color:transparent">Aurora</strong>`,
+      html: `import AuroraText from "@/components/sera-ui/05-text/aurora/aurora";\n\n<AuroraText>Launch faster</AuroraText>`,
+    },
+  ]);
+
+  addToolkitCards("#loading .load-g", [
+    {
+      source: "Sera UI",
+      title: "Spinner Classic",
+      description: "Default SVG spinner for submit, fetch and sync states.",
+      preview: `<div style="width:38px;height:38px;border:4px solid rgba(255,255,255,.12);border-top-color:#38bdf8;border-radius:50%"></div>`,
+      html: `import { SpinnerClassic } from "@/components/sera-ui/13-tools/loaders/loaders";\n\n<SpinnerClassic size="md" />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Spinner Dots",
+      description: "Three-dot typing style loader for chat and async panels.",
+      preview: `<div style="display:flex;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#fff"></span><span style="width:10px;height:10px;border-radius:50%;background:#c2a4ff"></span><span style="width:10px;height:10px;border-radius:50%;background:#fb8dff"></span></div>`,
+      html: `import { SpinnerDots } from "@/components/sera-ui/13-tools/loaders/loaders";\n\n<SpinnerDots size="lg" />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Spinner Ring",
+      description: "Minimal ring loader for dashboards, modals and utility rails.",
+      preview: `<div style="width:42px;height:42px;border-radius:50%;border:4px solid rgba(255,255,255,.12);border-top-color:#4ade80"></div>`,
+      html: `import { SpinnerRing } from "@/components/sera-ui/13-tools/loaders/loaders";\n\n<SpinnerRing size="md" />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Spinner Pulse",
+      description: "Single pulse indicator for lightweight background activity.",
+      preview: `<div style="width:38px;height:38px;border-radius:50%;background:#c2a4ff;box-shadow:0 0 0 12px rgba(194,164,255,.1)"></div>`,
+      html: `import { SpinnerPulse } from "@/components/sera-ui/13-tools/loaders/loaders";\n\n<SpinnerPulse size="md" />`,
+    },
+  ]);
+
+  addComponentCards("#components .cp-g", [
+    {
+      source: "Sera UI",
+      title: "Status Badge",
+      description: "Compact semantic badge with success, warning and destructive variants.",
+      previewMode: "stack",
+      preview: `<div class="kit-row"><span class="kit-pill">Default</span><span class="kit-pill" style="background:rgba(74,222,128,.14);color:#4ade80">Active</span><span class="kit-pill" style="background:rgba(244,63,94,.14);color:#fb7185">Error</span></div>`,
+      html: `import { Badge } from "@/components/sera-ui/03-badges/badge/badge";\n\n<Badge variant="success">Active</Badge>`,
+    },
+    {
+      source: "Sera UI",
+      title: "Toast Notification",
+      description: "Dismissible top-right alert stack for feedback and async actions.",
+      previewMode: "stack",
+      preview: `<div style="display:grid;gap:8px;width:100%"><div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:14px;background:#0f172a;border:1px solid rgba(74,222,128,.18);color:#fff"><span style="width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 6px rgba(74,222,128,.12)"></span><div><strong style="display:block;font-size:13px">Saved</strong><span style="font-size:11px;color:#94a3b8">Changes synced</span></div></div><div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:14px;background:#111827;border:1px solid rgba(56,189,248,.18);color:#fff"><span style="width:10px;height:10px;border-radius:50%;background:#38bdf8"></span><div><strong style="display:block;font-size:13px">Deploying</strong><span style="font-size:11px;color:#94a3b8">Preview in progress</span></div></div></div>`,
+      html: `import { Toaster, toast } from "@/components/sera-ui/03-badges/toast/toast";\n\ntoast.success("Saved", "Changes synced");`,
+    },
+    {
+      source: "Sera UI",
+      title: "Tabs",
+      description: "Animated tab indicator for profile, settings and docs surfaces.",
+      previewMode: "stack",
+      preview: `<div style="display:flex;gap:6px;width:100%;padding-bottom:10px;border-bottom:1px solid rgba(255,255,255,.08)"><span class="kit-pill" style="background:#fff;color:#020617">Profile</span><span class="kit-pill">Billing</span><span class="kit-pill">Usage</span></div><div style="width:100%;height:54px;border-radius:14px;background:rgba(255,255,255,.04)"></div>`,
+      html: `import Tabs from "@/components/sera-ui/06-navigation/tabs/tabs";\n\n<Tabs tabs={[{ id: "profile", label: "Profile", content: <Profile /> }]} />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Accordion",
+      description: "Accessible disclosure rows for FAQs, changelogs and settings.",
+      previewMode: "stack",
+      preview: `<div style="display:grid;gap:8px;width:100%"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0f172a;border:1px solid rgba(255,255,255,.08);color:#fff"><span>What is Sera UI?</span><span>+</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#111827;color:#94a3b8"><span>Is it open source?</span><span>+</span></div></div>`,
+      html: `import Accordion from "@/components/sera-ui/07-accordions/accordion/accordion";\n\n<Accordion items={[{ id: "q1", title: "What is Sera UI?", content: "A component library." }]} />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Basic Card",
+      description: "Reusable card shell with header, content and footer slots.",
+      previewMode: "stack",
+      preview: `<div style="width:100%;padding:16px;border-radius:18px;background:#111827;border:1px solid rgba(255,255,255,.08);color:#fff"><span style="font-size:11px;color:#94a3b8">Analytics</span><strong style="display:block;margin-top:6px;font-size:20px">$12.4k</strong><div style="margin-top:12px;height:8px;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:62%;height:100%;border-radius:999px;background:#c2a4ff"></div></div></div>`,
+      html: `import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/sera-ui/08-cards/card/card";\n\n<Card><CardHeader><CardTitle>Analytics</CardTitle></CardHeader></Card>`,
+    },
+    {
+      source: "Sera UI",
+      title: "Magic Card",
+      description: "Spotlight card with cursor-reactive radial glow treatment.",
+      preview: `<div style="width:100%;padding:18px;border-radius:18px;background:radial-gradient(circle at 24% 20%,rgba(56,189,248,.22),transparent 32%),radial-gradient(circle at 76% 78%,rgba(194,164,255,.18),transparent 28%),#0f172a;border:1px solid rgba(255,255,255,.08);color:#fff"><strong style="display:block;font-size:18px">Magic surface</strong><span style="font-size:11px;color:#94a3b8">Hover spotlight ready</span></div>`,
+      html: `import MagicCard from "@/components/sera-ui/08-cards/magic/magic";\n\n<MagicCard className="p-6">Magic surface</MagicCard>`,
+    },
+    {
+      source: "Sera UI",
+      title: "Login Form",
+      description: "Animated auth card with email, password and visibility toggle affordance.",
+      previewMode: "stack",
+      preview: `<div style="display:grid;gap:10px;width:100%;padding:14px;border-radius:18px;background:#0f172a;border:1px solid rgba(255,255,255,.08)"><div style="height:38px;border-radius:12px;background:#111827"></div><div style="height:38px;border-radius:12px;background:#111827"></div><button style="padding:11px 14px;border-radius:12px;border:0;background:#fff;color:#020617;font-weight:800">Sign in</button></div>`,
+      html: `import LoginForm from "@/components/sera-ui/08-cards/login/login";\n\n<LoginForm onSubmit={handleLogin} />`,
+    },
+    {
+      source: "Sera UI",
+      title: "Hero Section",
+      description: "Full landing hero with badge, headline, subcopy and dual CTAs.",
+      previewMode: "stack",
+      preview: `<div style="width:100%;padding:18px;border-radius:22px;background:radial-gradient(circle at top,#7c3aed22,transparent 44%),#0b1120;border:1px solid rgba(255,255,255,.08);color:#fff"><span class="kit-pill">Animated components</span><strong style="display:block;margin-top:12px;font-size:22px;line-height:1.05">Build interfaces faster</strong><span style="display:block;margin-top:8px;font-size:11px;color:#94a3b8">React + Next.js + Tailwind</span><div class="kit-row" style="margin-top:14px"><span class="kit-pill" style="background:#fff;color:#020617">Get started</span><span class="kit-pill">GitHub</span></div></div>`,
+      html: `import HeroSection from "@/components/sera-ui/12-sections/hero/hero";\n\n<HeroSection />`,
+    },
+  ]);
 }
 
 function configureCatalogPagination() {
@@ -1140,6 +1337,12 @@ function initPagination() {
     resizeTimer = window.setTimeout(scheduleRefresh, 120);
   });
 
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden) {
+      scheduleRefresh();
+    }
+  });
+
   if ("ResizeObserver" in window) {
     catalogPaginationState.resizeObserver?.disconnect();
     const observer = new ResizeObserver(() => scheduleRefresh());
@@ -1193,6 +1396,7 @@ document.addEventListener("DOMContentLoaded", () => {
   pruneCatalogNoise();
   rebuildTypographyLibrary();
   deepenCatalog();
+  addSeraCatalog();
   configureCatalogPagination();
   initPagination();
   initBackgroundAudio();
