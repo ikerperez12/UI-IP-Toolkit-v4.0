@@ -1,4 +1,4 @@
-﻿const backgroundAudioState = {
+const backgroundAudioState = {
   audio: null,
   toggle: null,
   hasUserPaused: false,

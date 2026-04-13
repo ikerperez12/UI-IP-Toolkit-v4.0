@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -69,7 +69,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .sg.v>*{opacity:1;transform:translateY(0)}
 .sg.v>*:nth-child(1){transition-delay:.02s}.sg.v>*:nth-child(2){transition-delay:.04s}.sg.v>*:nth-child(3){transition-delay:.06s}.sg.v>*:nth-child(4){transition-delay:.08s}.sg.v>*:nth-child(5){transition-delay:.1s}.sg.v>*:nth-child(6){transition-delay:.12s}.sg.v>*:nth-child(7){transition-delay:.14s}.sg.v>*:nth-child(8){transition-delay:.16s}.sg.v>*:nth-child(9){transition-delay:.18s}.sg.v>*:nth-child(10){transition-delay:.2s}.sg.v>*:nth-child(11){transition-delay:.22s}.sg.v>*:nth-child(12){transition-delay:.24s}
 
-/* â•â•â• COPY BUTTON â•â•â• */
+/* === COPY BUTTON === */
 .cpb{position:absolute;top:8px;right:8px;z-index:5;padding:4px 10px;border-radius:6px;font-size:9px;font-weight:600;letter-spacing:.5px;background:rgba(194,164,255,.08);border:1px solid rgba(194,164,255,.12);color:rgba(194,164,255,.7);cursor:pointer;font-family:'Geist',monospace;transition:all .25s;display:flex;align-items:center;gap:4px;backdrop-filter:blur(8px)}
 .cpb:hover{background:rgba(194,164,255,.18);border-color:rgba(194,164,255,.3);color:#c2a4ff;transform:translateY(-1px)}
 .cpb.ok{background:rgba(74,222,128,.12)!important;border-color:rgba(74,222,128,.3)!important;color:#4ade80!important}
@@ -103,19 +103,19 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .crd{background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.04);border-radius:16px;transition:border-color .3s,transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s}
 .crd:hover{border-color:rgba(194,164,255,.18);transform:translateY(-3px);box-shadow:0 18px 36px -14px rgba(0,0,0,.35)}
 
-/* â•â•â• COLORS â•â•â• */
+/* === COLORS === */
 .pal-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px}
 .cc{border-radius:12px;overflow:hidden;background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);transition:transform .4s cubic-bezier(.16,1,.3,1),border-color .3s;position:relative}
 .cc:hover{transform:translateY(-4px) scale(1.02);border-color:rgba(194,164,255,.18)}
 .csw{height:75px}.ci{padding:10px 12px;font-size:10px}.ci .cn{font-weight:600;font-size:11px;margin-bottom:1px}.ci .ch{color:rgba(234,229,236,.3);font-family:'Geist',monospace;font-size:9px}
 
-/* â•â•â• GRADIENTS â•â•â• */
+/* === GRADIENTS === */
 .gr-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px}
 .gc{height:155px;border-radius:16px;position:relative;overflow:hidden;display:flex;align-items:flex-end;padding:16px;border:1px solid rgba(255,255,255,.035);transition:transform .5s cubic-bezier(.16,1,.3,1),box-shadow .4s;will-change:transform}
 .gc:hover{transform:scale(1.03) translateY(-2px);box-shadow:0 24px 48px -16px rgba(0,0,0,.35)}
 .gc .gl{font-size:11px;font-family:'Geist',monospace;color:rgba(255,255,255,.7);background:rgba(0,0,0,.5);padding:4px 10px;border-radius:6px;backdrop-filter:blur(8px)}
 
-/* â•â•â• ANIMATIONS â•â•â• */
+/* === ANIMATIONS === */
 .an-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:14px}
 .ac{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:12px;padding:22px;text-align:center;transition:border-color .3s,transform .35s cubic-bezier(.16,1,.3,1);position:relative}
 .ac:hover{border-color:rgba(194,164,255,.18);transform:translateY(-2px)}
@@ -134,7 +134,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .d-swing{animation:swing 2s ease-in-out infinite;transform-origin:top center}@keyframes swing{0%,100%{transform:rotate(0)}25%{transform:rotate(8deg)}75%{transform:rotate(-8deg)}}
 .d-slide{animation:slideIO 3s ease infinite}@keyframes slideIO{0%,100%{transform:translateX(-100%)}30%,70%{transform:translateX(0)}}
 
-/* â•â•â• FONTS â•â•â• */
+/* === FONTS === */
 .fn-r{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px}
 .fc{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:16px;padding:36px;transition:border-color .3s,transform .3s;position:relative}
 .fc:hover{border-color:rgba(194,164,255,.12);transform:translateY(-2px)}
@@ -144,7 +144,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .fc .wt{padding:2px 7px;border-radius:4px;font-size:8px;background:rgba(194,164,255,.05);color:rgba(194,164,255,.4);letter-spacing:.5px}
 .fc-cl .fn-s{font-family:'ClashDisplay',sans-serif}.fc-ge .fn-s{font-family:'Geist',sans-serif}.fc-mo .fn-s{font-family:'NeueMontreal',sans-serif}
 
-/* â•â•â• BUTTONS KIT â•â•â• */
+/* === BUTTONS KIT === */
 .btn-g{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
 .btn-primary{padding:13px 30px;border-radius:10px;font-size:13px;font-weight:600;background:linear-gradient(135deg,#c2a4ff,#9b6fff);color:#060507;border:none;cursor:pointer;font-family:inherit;transition:transform .25s,box-shadow .25s}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 20px -6px rgba(194,164,255,.4)}
@@ -160,11 +160,11 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .btn-glow::before{content:'';position:absolute;width:140px;height:140px;border-radius:50%;background:rgba(194,164,255,.25);filter:blur(25px);top:var(--my,50%);left:var(--mx,50%);transform:translate(-50%,-50%);opacity:0;transition:opacity .35s}
 .btn-glow:hover{border-color:rgba(194,164,255,.35)}.btn-glow:hover::before{opacity:1}
 
-/* â•â•â• BTN WRAPPER â•â•â• */
+/* === BTN WRAPPER === */
 .bw{display:inline-flex;position:relative;flex-direction:column;align-items:center;gap:6px}
 .bw .cpb{position:relative;top:0;right:0}
 
-/* â•â•â• CARD KIT â•â•â• */
+/* === CARD KIT === */
 .ck-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
 .ck-card{border-radius:18px;overflow:hidden;background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.04);transition:all .35s cubic-bezier(.16,1,.3,1);position:relative}
 .ck-card:hover{border-color:rgba(194,164,255,.18);transform:translateY(-3px)}
@@ -175,7 +175,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .ck-tags{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
 .ck-tag{font-size:9px;padding:3px 8px;border-radius:4px;background:rgba(194,164,255,.06);color:rgba(194,164,255,.5)}
 
-/* â•â•â• INPUTS KIT â•â•â• */
+/* === INPUTS KIT === */
 .inp-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;max-width:none;align-items:stretch}
 .inp{width:100%;padding:14px 18px;border-radius:12px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:#eae5ec;font-family:inherit;font-size:14px;outline:none;transition:border-color .3s,box-shadow .3s}
 .inp:focus{border-color:rgba(194,164,255,.35);box-shadow:0 0 0 3px rgba(194,164,255,.08)}
@@ -191,7 +191,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .inp-chip{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(194,164,255,.08);border:1px solid rgba(194,164,255,.16);font-size:11px;color:#c2a4ff}
 .inp-card-actions{display:flex;gap:10px;flex-wrap:wrap}
 
-/* â•â•â• LOADING STATES â•â•â• */
+/* === LOADING STATES === */
 .load-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:18px}
 .load-card{background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.04);border-radius:14px;padding:30px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;transition:border-color .3s;position:relative}
 .load-card:hover{border-color:rgba(194,164,255,.15)}
@@ -209,7 +209,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .pulse-ring::before{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(194,164,255,.3);animation:ringPulse 1.5s ease-out infinite}
 @keyframes ringPulse{0%{transform:scale(.8);opacity:1}100%{transform:scale(1.6);opacity:0}}
 
-/* â•â•â• TEXT EFFECTS â•â•â• */
+/* === TEXT EFFECTS === */
 .tx-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
 .tx-card{background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.04);border-radius:16px;padding:32px;transition:border-color .3s;position:relative}
 .tx-card:hover{border-color:rgba(194,164,255,.15)}
@@ -221,14 +221,14 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .tx-clip{font-family:'ClashDisplay',sans-serif;font-size:32px;font-weight:600;background:linear-gradient(to right,#eae5ec 50%,rgba(234,229,236,.15) 50%);background-size:200% 100%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:txReveal 3s ease infinite}
 @keyframes txReveal{0%,100%{background-position:200% 0}50%{background-position:0% 0}}
 
-/* â•â•â• SHADOWS KIT â•â•â• */
+/* === SHADOWS KIT === */
 .sh-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px}
 .sh-card{background:rgba(255,255,255,.02);border-radius:14px;padding:26px;text-align:center;transition:transform .3s;position:relative}
 .sh-card:hover{transform:translateY(-2px)}
 .sh-box{width:70px;height:70px;border-radius:12px;background:rgba(255,255,255,.04);margin:0 auto 14px}
 .sh-card .sn{font-size:11px;font-weight:600;margin-bottom:2px}.sh-card .sv{font-size:9px;color:rgba(234,229,236,.3);font-family:'Geist',monospace}
 
-/* â•â•â• HOVER FX â•â•â• */
+/* === HOVER FX === */
 .hf-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
 .hf-c{background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.04);border-radius:16px;overflow:hidden;position:relative}
 .hf-d{height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
@@ -243,7 +243,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .hf-under::after{content:'';position:absolute;bottom:0;left:50%;width:0;height:2px;background:#c2a4ff;transition:all .4s cubic-bezier(.16,1,.3,1)}
 .hf-c:hover .hf-under::after{left:0;width:100%}
 
-/* â•â•â• GLASS â•â•â• */
+/* === GLASS === */
 .gl-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
 .gl-c{border-radius:18px;overflow:hidden;position:relative}
 .gl-bg{height:200px;display:flex;align-items:center;justify-content:center;position:relative}
@@ -252,13 +252,13 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .gl-p h4{font-size:13px;font-weight:600;margin-bottom:4px}.gl-p p{font-size:10px;color:rgba(234,229,236,.45);line-height:1.5}
 .gl-o{position:absolute;border-radius:50%;filter:blur(35px);pointer-events:none}
 
-/* â•â•â• CSS UTILS â•â•â• */
+/* === CSS UTILS === */
 .ut-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
 .ut-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:12px;padding:18px;transition:border-color .3s;position:relative}
 .ut-c:hover{border-color:rgba(194,164,255,.15)}
 .ut-c .ut-n{font-size:11px;font-weight:600;margin-bottom:5px}.ut-c code{display:block;font-size:9px;color:rgba(194,164,255,.55);font-family:'Geist',monospace;background:rgba(194,164,255,.04);padding:8px 10px;border-radius:6px;line-height:1.7;white-space:pre;overflow-x:auto}
 
-/* â•â•â• COMPONENTS â•â•â• */
+/* === COMPONENTS === */
 .cp-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px}
 .cp-c{background:rgba(255,255,255,.018);border:1px solid rgba(255,255,255,.04);border-radius:16px;overflow:hidden;transition:border-color .3s,transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;position:relative}
 .cp-c:hover{border-color:rgba(194,164,255,.15);transform:translateY(-3px);box-shadow:0 18px 36px -12px rgba(0,0,0,.3)}
@@ -287,7 +287,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .p-avatar div{width:36px;height:36px;border-radius:50%;border:2px solid #060507;display:flex;align-items:center;justify-content:center;font-size:14px}
 .p-avatar div:not(:first-child){margin-left:-10px}
 
-/* â•â•â• LAYOUTS â•â•â• */
+/* === LAYOUTS === */
 .ly-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
 .ly-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:16px;padding:24px;transition:border-color .3s;position:relative}
 .ly-c:hover{border-color:rgba(194,164,255,.12)}
@@ -299,7 +299,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .lbn{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:5px;height:70px}.lbn>div{background:rgba(194,164,255,.05);border-radius:5px;border:1px solid rgba(194,164,255,.06)}.lbn>div:first-child{grid-row:span 2}
 .lsk{display:flex;flex-direction:column;gap:4px;height:70px}.lsk>div{flex:1;background:rgba(194,164,255,.05);border-radius:5px;border:1px solid rgba(194,164,255,.06)}
 
-/* â•â•â• BACKGROUND AUDIO â•â•â• */
+/* === BACKGROUND AUDIO === */
 .bg-audio-toggle{position:fixed;right:20px;bottom:20px;z-index:120;display:inline-flex;align-items:center;gap:10px;padding:11px 14px;border-radius:999px;background:rgba(6,5,7,.74);border:1px solid rgba(194,164,255,.18);color:#eae5ec;backdrop-filter:blur(18px);box-shadow:0 18px 38px -22px rgba(194,164,255,.65);cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .25s,background .25s,opacity .25s}
 .bg-audio-toggle:hover{transform:translateY(-2px);border-color:rgba(194,164,255,.42);background:rgba(18,13,24,.86)}
 .bg-audio-toggle .sound-dot{width:8px;height:8px;border-radius:50%;background:rgba(234,229,236,.42);box-shadow:0 0 0 0 rgba(194,164,255,0)}
@@ -309,13 +309,13 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .bg-audio-toggle[data-state="paused"]{opacity:.72}
 @keyframes bgAudioPulse{0%{box-shadow:0 0 0 0 rgba(194,164,255,.34)}70%{box-shadow:0 0 0 10px rgba(194,164,255,0)}100%{box-shadow:0 0 0 0 rgba(194,164,255,0)}}
 
-/* â•â•â• SCREENSHOTS â•â•â• */
+/* === SCREENSHOTS === */
 .ss-s{display:flex;gap:18px;overflow-x:auto;padding:16px 0 24px;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:rgba(194,164,255,.12) transparent}
 .ss-s::-webkit-scrollbar{height:3px}.ss-s::-webkit-scrollbar-thumb{background:rgba(194,164,255,.12);border-radius:3px}
 .ss-c{flex:0 0 auto;width:420px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.04);transition:transform .35s cubic-bezier(.16,1,.3,1);scroll-snap-align:start}.ss-c:hover{transform:scale(1.02)}
 .ss-c img{width:100%;height:auto}.ss-m{padding:10px 14px;background:rgba(255,255,255,.015);font-size:10px;color:rgba(234,229,236,.3)}
 
-/* â•â•â• EXTRA SECTIONS (tokens, easing, styles, palettes, spacing, radius) â•â•â• */
+/* === EXTRA SECTIONS (tokens, easing, styles, palettes, spacing, radius) === */
 .ez-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
 .ez-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:14px;padding:20px;transition:border-color .3s;position:relative}
 .ez-c:hover{border-color:rgba(194,164,255,.15)}
@@ -368,7 +368,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .asset-card .a-info{padding:12px 16px;border-top:1px solid rgba(255,255,255,.04);font-size:12px;font-weight:500;display:flex;justify-content:space-between;align-items:center}
 .asset-card .a-tag{font-size:9px;padding:3px 8px;border-radius:5px;background:rgba(194,164,255,.08);color:rgba(194,164,255,.6);letter-spacing:.5px}
 
-/* â•â•â• NEUMORPHISM â•â•â• */
+/* === NEUMORPHISM === */
 .neu-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
 .neu-c{background:#e0e5ec;border-radius:20px;padding:30px;text-align:center;box-shadow:9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);transition:all .3s;color:#444;position:relative}
 .neu-c:hover{box-shadow:inset 9px 9px 16px rgb(163,177,198,0.6), inset -9px -9px 16px rgba(255,255,255, 0.5)}
@@ -376,27 +376,27 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .neu-btn{border:none;background:#e0e5ec;padding:12px 24px;border-radius:10px;box-shadow:4px 4px 8px rgb(163,177,198,0.6), -4px -4px 8px rgba(255,255,255, 0.5);cursor:pointer;color:#444;font-weight:600;transition:all .2s}
 .neu-btn:active{box-shadow:inset 4px 4px 8px rgb(163,177,198,0.6), inset -4px -4px 8px rgba(255,255,255, 0.5)}
 
-/* â•â•â• ANIMATED BORDERS â•â•â• */
+/* === ANIMATED BORDERS === */
 .abd-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
 .abd-c{position:relative;background:#060507;padding:30px;border-radius:12px;overflow:hidden;z-index:1}
 .abd-c::before{content:'';position:absolute;inset:-200%;background:conic-gradient(from 0deg, transparent, #c2a4ff, transparent 25%);animation:rotB 4s linear infinite;z-index:-1}
 .abd-c::after{content:'';position:absolute;inset:2px;background:#060507;border-radius:10px;z-index:-1}
 @keyframes rotB{to{transform:rotate(360deg)}}
 
-/* â•â•â• TEXT REVEAL â•â•â• */
+/* === TEXT REVEAL === */
 .trv-c{overflow:hidden;background:rgba(255,255,255,.02);padding:40px;border-radius:16px;text-align:center}
 .trv-t{font-size:42px;font-weight:900;text-transform:uppercase;letter-spacing:-2px;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.1);position:relative}
 .trv-t::after{content:attr(data-text);position:absolute;left:0;top:0;width:0;color:#c2a4ff;-webkit-text-stroke:0px;border-right:4px solid #c2a4ff;overflow:hidden;animation:revealT 4s steps(20) infinite}
 @keyframes revealT{0%,10%{width:0}70%,90%{width:100%}100%{width:0}}
 
-/* â•â•â• CSS UTILS VISUAL â•â•â• */
+/* === CSS UTILS VISUAL === */
 .demo-box{width:100%;height:100px;background:rgba(194,164,255,.05);border-radius:10px;margin-bottom:12px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .demo-dot{width:20px;height:20px;background:#c2a4ff;border-radius:50%;position:absolute;left:20px}
 .demo-box:hover .demo-dot{animation:demoMove 1.5s infinite alternate}
 @keyframes demoMove{to{left:calc(100% - 40px)}}
 
 
-/* â•â•â• MATERIAL UI (RIPPLE) â•â•â• */
+/* === MATERIAL UI (RIPPLE) === */
 .mui-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px}
 .mui-btn{position:relative;overflow:hidden;padding:14px 28px;border-radius:8px;font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:1px;background:#c2a4ff;color:#060507;border:none;cursor:pointer;box-shadow:0 3px 5px -1px rgba(0,0,0,0.2), 0 6px 10px 0 rgba(0,0,0,0.14), 0 1px 18px 0 rgba(0,0,0,0.12);transition:background-color 250ms, box-shadow 250ms;font-family:Roboto, sans-serif}
 .mui-btn:hover{background:#a985f5;box-shadow:0 5px 5px -3px rgba(0,0,0,0.2), 0 8px 10px 1px rgba(0,0,0,0.14), 0 3px 14px 2px rgba(0,0,0,0.12)}
@@ -408,7 +408,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .mui-inp input:focus, .mui-inp input:not(:placeholder-shown){border-color:#c2a4ff}
 .mui-inp input:focus + label, .mui-inp input:not(:placeholder-shown) + label{top:-9px;left:10px;font-size:12px;color:#c2a4ff;background:#060507;padding:0 4px}
 
-/* â•â•â• CHAKRA UI (TOASTS/BADGES) â•â•â• */
+/* === CHAKRA UI (TOASTS/BADGES) === */
 .cha-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
 .cha-toast{display:flex;align-items:flex-start;gap:12px;padding:16px;border-radius:6px;background:#2d3748;color:#fff;box-shadow:0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);border-left:4px solid #48bb78}
 .cha-t-icon{color:#48bb78;font-size:20px;line-height:1}
@@ -416,7 +416,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .cha-t-content p{font-size:14px;color:#e2e8f0;line-height:1.4}
 .cha-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;background:rgba(194,164,255,0.16);color:#d6bcfa}
 
-/* â•â•â• TAILWIND UI (LISTS/CARDS) â•â•â• */
+/* === TAILWIND UI (LISTS/CARDS) === */
 .tw-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
 .tw-card{background:#111827;border:1px solid #1f2937;border-radius:12px;overflow:hidden}
 .tw-header{padding:20px;border-bottom:1px solid #1f2937}
@@ -430,7 +430,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .tw-li-n{font-size:14px;font-weight:500;color:#f9fafb}
 .tw-li-e{font-size:14px;color:#9ca3af}
 
-/* â•â•â• 3D HOVER CARDS â•â•â• */
+/* === 3D HOVER CARDS === */
 .card-3d-wrap{perspective:1000px;width:100%;height:250px}
 .card-3d{width:100%;height:100%;position:relative;transition:transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);transform-style:preserve-3d}
 .card-3d-wrap:hover .card-3d{transform:rotateY(18deg) rotateX(10deg)}
@@ -438,7 +438,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .card-3d-content{position:absolute;inset:0;padding:30px;transform:translateZ(60px);display:flex;flex-direction:column;justify-content:center}
 
 
-/* â•â•â• PAGINATION â•â•â• */
+/* === PAGINATION === */
 .page-item.hidden { display: none !important; }
 .pagination-controls{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;width:100%}
 .pagination-controls button{min-width:112px;justify-content:center}
@@ -452,10 +452,10 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 .catalog-source-note{position:relative;z-index:2;margin:24px auto 0;max-width:880px;text-align:center;color:rgba(234,229,236,.45);font-size:12px;letter-spacing:.04em}
 .svg-g { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
 
-/* â•â•â• SECTIONS V4 â•â•â• */
+/* === SECTIONS V4 === */
 .s-v4{border-left:0}
 
-/* â•â•â• FINAL CTA â•â•â• */
+/* === FINAL CTA === */
 footer.final-cta{position:relative;z-index:2;margin:100px 60px 36px;padding:96px 32px 88px;border:1px solid rgba(255,255,255,.12);border-radius:42px;overflow:hidden;text-align:center;background:radial-gradient(circle at 18% 15%,rgba(255,255,255,.16),transparent 28%),radial-gradient(circle at 82% 20%,rgba(194,164,255,.25),transparent 32%),linear-gradient(135deg,rgba(255,255,255,.08),rgba(255,255,255,.02) 48%,rgba(194,164,255,.09));box-shadow:0 30px 120px rgba(0,0,0,.45),inset 0 1px 0 rgba(255,255,255,.18)}
 footer.final-cta::before{content:'';position:absolute;inset:18px;border:1px solid rgba(255,255,255,.08);border-radius:30px;pointer-events:none}
 footer.final-cta::after{content:'';position:absolute;left:50%;bottom:-180px;width:min(760px,90vw);height:360px;transform:translateX(-50%);background:radial-gradient(circle,rgba(194,164,255,.28),transparent 68%);filter:blur(8px);pointer-events:none}
@@ -475,7 +475,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 <div class="noi"></div>
 
 <!-- HERO -->
-<section class="hero"><div class="rv"><div class="h-badge"><div class="dot"></div>design system v4 â€” advanced toolkit</div></div>
+<section class="hero"><div class="rv"><div class="h-badge"><div class="dot"></div>design system v4 - advanced toolkit</div></div>
 <h1 class="rv d1">UI IP<br>Toolkit<em>Pro Frontend Assets</em></h1>
 <div class="scroll-h"><span>Explorar</span><div class="scroll-l"></div></div></section>
 
@@ -486,23 +486,23 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 04 NEUMORPHISM -->
 <div class="dv"></div>
-<section id="neu" class="s-v4"><div class="ctr"><div class="sl rv">01 â€” Neumorphism</div><div class="st rv d1">Soft <span>UI Kit</span></div><div class="sdesc rv d2">Modern Neumorphic elements with deep and surface shadows.</div>
+<section id="neu" class="s-v4"><div class="ctr"><div class="sl rv">01 - Neumorphism</div><div class="st rv d1">Soft <span>UI Kit</span></div><div class="sdesc rv d2">Modern Neumorphic elements with deep and surface shadows.</div>
 <div class="neu-g sg rv d3">
-<div class="neu-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#e0e5ec;border-radius:20px;padding:30px;box-shadow:9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);color:#444"&gt;Neumorphic Card&lt;/div&gt;'><div class="neu-i">âœ¦</div><div class="cn">Soft Card</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="neu-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#e0e5ec;border-radius:20px;padding:30px;box-shadow:9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);color:#444"&gt;Neumorphic Card&lt;/div&gt;'><div class="neu-i">*</div><div class="cn">Soft Card</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="neu-c has-copy" data-snippet="btn" data-html='&lt;button style="border:none;background:#e0e5ec;padding:12px 24px;border-radius:10px;box-shadow:4px 4px 8px rgb(163,177,198,0.6), -4px -4px 8px rgba(255,255,255, 0.5);cursor:pointer;color:#444;font-weight:600"&gt;Soft Button&lt;/button&gt;'><button class="neu-btn">Soft Button</button><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="neu-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#e0e5ec;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;box-shadow:inset 6px 6px 12px rgb(163,177,198,0.6), inset -6px -6px 12px rgba(255,255,255, 0.5)"&gt;å‡¹&lt;/div&gt;'><div class="neu-i" style="box-shadow:inset 6px 6px 12px rgb(163,177,198,0.6), inset -6px -6px 12px rgba(255,255,255, 0.5)">å‡¹</div><div class="cn">Concave</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="neu-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#e0e5ec;border-radius:50%;width:60px;height:60px;display:flex;align-items:center;justify-content:center;box-shadow:inset 6px 6px 12px rgb(163,177,198,0.6), inset -6px -6px 12px rgba(255,255,255, 0.5)"&gt;inset&lt;/div&gt;'><div class="neu-i" style="box-shadow:inset 6px 6px 12px rgb(163,177,198,0.6), inset -6px -6px 12px rgba(255,255,255, 0.5)">inset</div><div class="cn">Concave</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 </div></div></section>
 
 <!-- 05 ANIMATED BORDERS -->
 <div class="dv"></div>
-<section id="borders" class="s-v4"><div class="ctr"><div class="sl rv">02 â€” Animated Borders</div><div class="st rv d1">Rotating <span>Edges</span></div><div class="sdesc rv d2">Inspired by ReactBits â€” CSS-only conic gradient border animations.</div>
+<section id="borders" class="s-v4"><div class="ctr"><div class="sl rv">02 - Animated Borders</div><div class="st rv d1">Rotating <span>Edges</span></div><div class="sdesc rv d2">Inspired by ReactBits - CSS-only conic gradient border animations.</div>
 <div class="abd-g sg rv d3">
 <div class="abd-c has-copy" data-snippet="btn" data-html='&lt;style&gt;@keyframes rotB{to{transform:rotate(360deg)}}&lt;/style&gt;&lt;div style="position:relative;background:#000;padding:20px;border-radius:12px;overflow:hidden;z-index:1"&gt;&lt;div style="position:absolute;inset:-200%;background:conic-gradient(from 0deg, transparent, #c2a4ff, transparent 25%);animation:rotB 4s linear infinite;z-index:-1"&gt;&lt;/div&gt;&lt;div style="position:absolute;inset:2px;background:#000;border-radius:10px;z-index:-1"&gt;&lt;/div&gt;&lt;div style="color:white"&gt;Animated Border&lt;/div&gt;&lt;/div&gt;'><h4>Conic Rotate</h4><p style="font-size:10px;color:rgba(255,255,255,.3)">Self-contained animation</p><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 </div></div></section>
 
 <!-- 06 TEXT REVEAL -->
 <div class="dv"></div>
-<section id="textreveal" class="s-v4"><div class="ctr"><div class="sl rv">03 â€” Text Reveal</div><div class="st rv d1">Kinetic <span>Typography</span></div>
+<section id="textreveal" class="s-v4"><div class="ctr"><div class="sl rv">03 - Text Reveal</div><div class="st rv d1">Kinetic <span>Typography</span></div>
 <div class="trv-c sg rv d2 has-copy" data-snippet="btn" data-html='&lt;style&gt;@keyframes revealT{0%,10%{width:0}70%,90%{width:100%}100%{width:0}}&lt;/style&gt;&lt;div style="font-size:42px;font-weight:900;text-transform:uppercase;color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.1);position:relative"&gt;REVEAL&lt;div style="content:&quot;REVEAL&quot;;position:absolute;left:0;top:0;width:0;color:#c2a4ff;-webkit-text-stroke:0px;border-right:4px solid #c2a4ff;overflow:hidden;animation:revealT 4s steps(20) infinite"&gt;REVEAL&lt;/div&gt;&lt;/div&gt;'>
 <div class="trv-t" data-text="REVEAL">REVEAL</div>
 <button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -510,8 +510,8 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 01 COLORS -->
 <div class="dv"></div>
-<section id="colors"><div class="ctr"><div class="sl rv">04 â€” Colors</div><div class="st rv d1">Color <span>System</span></div>
-<div class="sdesc rv d2">Curated palette â€” click any swatch to copy standalone HTML.</div>
+<section id="colors"><div class="ctr"><div class="sl rv">04 - Colors</div><div class="st rv d1">Color <span>System</span></div>
+<div class="sdesc rv d2">Curated palette - click any swatch to copy standalone HTML.</div>
 <div class="pal-g sg rv d3 paginated">
 <div class="cc has-copy" data-snippet="color" data-color="#060507" data-name="Void"><div class="csw" style="background:#060507"></div><div class="ci"><div class="cn">Void</div><div class="ch">#060507</div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="cc has-copy" data-snippet="color" data-color="#c2a4ff" data-name="Violet"><div class="csw" style="background:#c2a4ff"></div><div class="ci"><div class="cn">Violet</div><div class="ch">#c2a4ff</div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -528,12 +528,12 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 02 GRADIENTS -->
 <div class="dv"></div>
-<section id="gradients"><div class="ctr"><div class="sl rv">05 â€” Gradients</div><div class="st rv d1">Gradient <span>Library</span></div>
+<section id="gradients"><div class="ctr"><div class="sl rv">05 - Gradients</div><div class="st rv d1">Gradient <span>Library</span></div>
 <div class="gr-g sg rv d2">
-<div class="gc has-copy" style="background:linear-gradient(135deg,#7f40ff,#fb8dff)" data-snippet="gradient" data-css="linear-gradient(135deg,#7f40ff,#fb8dff)"><span class="gl">Purple â†’ Pink</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="gc has-copy" style="background:linear-gradient(135deg,#c2a4ff,#eae5ec)" data-snippet="gradient" data-css="linear-gradient(135deg,#c2a4ff,#eae5ec)"><span class="gl">Violet â†’ White</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="gc has-copy" style="background:linear-gradient(135deg,#7f40ff,#fb8dff)" data-snippet="gradient" data-css="linear-gradient(135deg,#7f40ff,#fb8dff)"><span class="gl">Purple -> Pink</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="gc has-copy" style="background:linear-gradient(135deg,#c2a4ff,#eae5ec)" data-snippet="gradient" data-css="linear-gradient(135deg,#c2a4ff,#eae5ec)"><span class="gl">Violet -> White</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="gc has-copy" style="background:radial-gradient(circle at 30% 50%,#f96,transparent 80%)" data-snippet="gradient" data-css="radial-gradient(circle at 30% 50%,#ff9966,transparent 80%)"><span class="gl">Brand Radial</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="gc has-copy" style="background:linear-gradient(135deg,#4ade80,#c2a4ff)" data-snippet="gradient" data-css="linear-gradient(135deg,#4ade80,#c2a4ff)"><span class="gl">Mint â†’ Violet</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="gc has-copy" style="background:linear-gradient(135deg,#4ade80,#c2a4ff)" data-snippet="gradient" data-css="linear-gradient(135deg,#4ade80,#c2a4ff)"><span class="gl">Mint -> Violet</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="gc has-copy" style="background:linear-gradient(135deg,#0080FF,#FF1493,#00FFFF)" data-snippet="gradient" data-css="linear-gradient(135deg,#0080FF,#FF1493,#00FFFF)"><span class="gl">Aurora</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="gc has-copy" style="background:linear-gradient(135deg,#FF71CE,#01CDFE,#05FFA1)" data-snippet="gradient" data-css="linear-gradient(135deg,#FF71CE,#01CDFE,#05FFA1)"><span class="gl">Vaporwave</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="gc has-copy" style="background:linear-gradient(135deg,#00FF41,#0D0D0D)" data-snippet="gradient" data-css="linear-gradient(135deg,#00FF41,#0D0D0D)"><span class="gl">Matrix</span><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -624,7 +624,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 03 ANIMATIONS -->
 <div class="dv"></div>
-<section id="animations"><div class="ctr"><div class="sl rv">06 â€” Animations</div><div class="st rv d1">Keyframe <span>Animations</span></div>
+<section id="animations"><div class="ctr"><div class="sl rv">06 - Animations</div><div class="st rv d1">Keyframe <span>Animations</span></div>
 <div class="an-g sg rv d2 paginated">
 <div class="ac has-copy" data-snippet="anim" data-anim="blink" data-keyframe="@keyframes blink{0%{opacity:0}25%{opacity:1}75%{opacity:1}100%{opacity:0}}" data-usage="animation:blink 1s linear infinite"><div class="db d-blink"></div><div class="an">Blink</div><div class="ad">Cursor pulse</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="ac has-copy" data-snippet="anim" data-anim="bounce" data-keyframe="@keyframes bounce{0%,100%{transform:translateY(-25%);animation-timing-function:cubic-bezier(.8,0,1,1)}50%{transform:none;animation-timing-function:cubic-bezier(0,0,.2,1)}}" data-usage="animation:bounce 1s ease infinite"><div class="db d-bounce"></div><div class="an">Bounce</div><div class="ad">Elastic jump</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -638,13 +638,13 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 04 TYPOGRAPHY -->
 <div class="dv"></div>
-<section id="typography"><div class="ctr"><div class="sl rv">07 â€” Typography</div><div class="st rv d1">Font <span>Collection</span></div>
+<section id="typography"><div class="ctr"><div class="sl rv">07 - Typography</div><div class="st rv d1">Font <span>Collection</span></div>
 <div class="fn-r rv d2"><div class="fc fc-cl has-copy" data-snippet="font" data-font="'ClashDisplay', sans-serif"><div class="fn-n">ClashDisplay</div><div class="fn-s">Creative<br>Developer</div><div class="fn-w"><span class="wt">300</span><span class="wt">400</span><span class="wt">500</span><span class="wt">600</span><span class="wt">700</span></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div><div class="fc fc-ge has-copy" data-snippet="font" data-font="'Geist', sans-serif"><div class="fn-n">Geist Sans</div><div class="fn-s">Clean &amp;<br>Modern</div><div class="fn-w"><span class="wt">200</span><span class="wt">400</span><span class="wt">600</span></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div></div>
 </div></section>
 
 <!-- 05 BUTTONS KIT -->
 <div class="dv"></div>
-<section id="buttons"><div class="ctr"><div class="sl rv">08 â€” Buttons Kit</div><div class="st rv d1">Button <span>Variants</span></div>
+<section id="buttons"><div class="ctr"><div class="sl rv">08 - Buttons Kit</div><div class="st rv d1">Button <span>Variants</span></div>
 <div class="btn-g rv d2 paginated" style="flex-wrap:wrap;gap:20px">
 
 <div class="bw"><button class="cpb" data-snippet="btn" data-html='&lt;button style="padding:12px 24px;background:#fff;color:#000;border:2px solid #000;box-shadow:4px 4px 0 #000;font-weight:bold;text-transform:uppercase;cursor:pointer;transition:transform 0.1s,box-shadow 0.1s" onmousedown="this.style.transform=&apos;translate(4px,4px)&apos;;this.style.boxShadow=&apos;0 0 0 #000&apos;" onmouseup="this.style.transform=&apos;none&apos;;this.style.boxShadow=&apos;4px 4px 0 #000&apos;"&gt;Brutalism&lt;/button&gt;'><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button><button style="padding:12px 24px;background:#c2a4ff;color:#000;border:2px solid #000;box-shadow:4px 4px 0 #000;font-weight:bold;text-transform:uppercase;cursor:pointer" onmousedown="this.style.transform='translate(4px,4px)';this.style.boxShadow='0 0 0 #000'" onmouseup="this.style.transform='none';this.style.boxShadow='4px 4px 0 #000'">Neobrutalism</button></div>
@@ -655,7 +655,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <div class="bw"><button class="btn-primary">Primary</button><button class="cpb" data-snippet="btn" data-html='&lt;button style="padding:13px 30px;border-radius:10px;font-size:13px;font-weight:600;background:linear-gradient(135deg,#c2a4ff,#9b6fff);color:#060507;border:none;cursor:pointer;font-family:system-ui;transition:transform .25s,box-shadow .25s"&gt;Primary&lt;/button&gt;'><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="bw"><button class="btn-outline">Outline</button><button class="cpb" data-snippet="btn" data-html='&lt;button style="padding:13px 30px;border-radius:10px;font-size:13px;font-weight:500;background:transparent;border:1px solid rgba(194,164,255,.25);color:#c2a4ff;cursor:pointer;font-family:system-ui;transition:all .25s"&gt;Outline&lt;/button&gt;'><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="bw"><button class="btn-ghost">Ghost Link â†’</button><button class="cpb" data-snippet="btn" data-html='&lt;button style="padding:13px 30px;border-radius:10px;font-size:13px;font-weight:500;background:transparent;border:none;color:rgba(234,229,236,.6);cursor:pointer;font-family:system-ui"&gt;Ghost Link â†’&lt;/button&gt;'><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="bw"><button class="btn-ghost">Ghost Link -></button><button class="cpb" data-snippet="btn" data-html='&lt;button style="padding:13px 30px;border-radius:10px;font-size:13px;font-weight:500;background:transparent;border:none;color:rgba(234,229,236,.6);cursor:pointer;font-family:system-ui"&gt;Ghost Link ->&lt;/button&gt;'><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="bw"><button class="btn-pill">Pill Badge</button><button class="cpb" data-snippet="btn" data-html='&lt;button style="padding:9px 20px;border-radius:100px;font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(194,164,255,.08);border:1px solid rgba(194,164,255,.15);color:#c2a4ff;cursor:pointer;font-family:system-ui"&gt;Pill Badge&lt;/button&gt;'><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="bw"><button class="btn-icon">+</button><button class="cpb" data-snippet="btn" data-html='&lt;button style="width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);color:#eae5ec;cursor:pointer;font-size:18px"&gt;+&lt;/button&gt;'><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 
@@ -689,9 +689,9 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
     <svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy
   </button>
 </div>
-<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;button style=&apos;padding:10px 20px;background:#fff;color:#000;border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:bold&apos; onmouseover=&apos;this.querySelector(&quot;span&quot;).style.transform=&quot;translateX(5px)&quot;&apos; onmouseout=&apos;this.querySelector(&quot;span&quot;).style.transform=&quot;none&quot;&apos;&gt;NEXT &lt;span style=&apos;transition:transform 0.3s&apos;&gt;â†’&lt;/span&gt;&lt;/button&gt;">
+<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;button style=&apos;padding:10px 20px;background:#fff;color:#000;border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:bold&apos; onmouseover=&apos;this.querySelector(&quot;span&quot;).style.transform=&quot;translateX(5px)&quot;&apos; onmouseout=&apos;this.querySelector(&quot;span&quot;).style.transform=&quot;none&quot;&apos;&gt;NEXT &lt;span style=&apos;transition:transform 0.3s&apos;&gt;->&lt;/span&gt;&lt;/button&gt;">
   <div style="width:100%;height:80px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border-radius:8px;padding:10px;margin-bottom:10px">
-    <button style='padding:10px 20px;background:#fff;color:#000;border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:bold' onmouseover='this.querySelector("span").style.transform="translateX(5px)"' onmouseout='this.querySelector("span").style.transform="none"'>NEXT <span style='transition:transform 0.3s'>â†’</span></button>
+    <button style='padding:10px 20px;background:#fff;color:#000;border:none;border-radius:20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-weight:bold' onmouseover='this.querySelector("span").style.transform="translateX(5px)"' onmouseout='this.querySelector("span").style.transform="none"'>NEXT <span style='transition:transform 0.3s'>-></span></button>
   </div>
   <div class="ut-n">Arrow Slide</div>
   <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:10px">Icon slides on hover</div>
@@ -1106,7 +1106,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 07 LOADING STATES -->
 <div class="dv"></div>
-<section id="loading"><div class="ctr"><div class="sl rv">10 â€” Loading States</div><div class="st rv d1">Loading <span>Patterns</span></div>
+<section id="loading"><div class="ctr"><div class="sl rv">10 - Loading States</div><div class="st rv d1">Loading <span>Patterns</span></div>
 <div class="load-g sg rv d2 paginated">
 
 <div class="load-card has-copy" data-snippet="btn" data-html='&lt;style&gt;@keyframes bouncer{100%{transform:translateY(-15px)}}&lt;/style&gt;&lt;div style="display:flex;gap:5px"&gt;&lt;div style="width:10px;height:10px;background:#c2a4ff;border-radius:50%;animation:bouncer 0.5s alternate infinite ease-in"&gt;&lt;/div&gt;&lt;div style="width:10px;height:10px;background:#c2a4ff;border-radius:50%;animation:bouncer 0.5s alternate infinite ease-in 0.1s"&gt;&lt;/div&gt;&lt;div style="width:10px;height:10px;background:#c2a4ff;border-radius:50%;animation:bouncer 0.5s alternate infinite ease-in 0.2s"&gt;&lt;/div&gt;&lt;/div&gt;'><div style="display:flex;gap:5px;height:36px;align-items:flex-end"><style>@keyframes bouncer{100%{transform:translateY(-15px)}}</style><div style="width:10px;height:10px;background:#c2a4ff;border-radius:50%;animation:bouncer 0.5s alternate infinite ease-in"></div><div style="width:10px;height:10px;background:#c2a4ff;border-radius:50%;animation:bouncer 0.5s alternate infinite ease-in 0.1s"></div><div style="width:10px;height:10px;background:#c2a4ff;border-radius:50%;animation:bouncer 0.5s alternate infinite ease-in 0.2s"></div></div><div class="ln">Bouncing Dots</div><div class="ld">Alternative dots</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1369,7 +1369,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 09 SHADOWS -->
 <div class="dv"></div>
-<section id="shadows"><div class="ctr"><div class="sl rv">12 â€” Shadows</div><div class="st rv d1">Shadow <span>Collection</span></div>
+<section id="shadows"><div class="ctr"><div class="sl rv">12 - Shadows</div><div class="st rv d1">Shadow <span>Collection</span></div>
 <div class="sh-g sg rv d2 paginated">
 <div class="sh-card has-copy" data-snippet="btn" data-html='&lt;div style="width:70px;height:70px;border-radius:12px;background:#1a1a2e;box-shadow:0 1px 2px rgba(0,0,0,.3)"&gt;&lt;/div&gt;'><div class="sh-box" style="box-shadow:0 1px 2px rgba(0,0,0,.3)"></div><div class="sn">Subtle</div><div class="sv">0 1px 2px</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="sh-card has-copy" data-snippet="btn" data-html='&lt;div style="width:70px;height:70px;border-radius:12px;background:#1a1a2e;box-shadow:0 4px 12px rgba(0,0,0,.3)"&gt;&lt;/div&gt;'><div class="sh-box" style="box-shadow:0 4px 12px rgba(0,0,0,.3)"></div><div class="sn">Default</div><div class="sv">0 4px 12px</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1461,10 +1461,10 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 10 HOVER FX -->
 <div class="dv"></div>
-<section id="hover"><div class="ctr"><div class="sl rv">13 â€” Hover FX</div><div class="st rv d1">Hover <span>Effects</span></div>
+<section id="hover"><div class="ctr"><div class="sl rv">13 - Hover FX</div><div class="st rv d1">Hover <span>Effects</span></div>
 <div class="hf-g sg rv d2">
-<div class="hf-c has-copy" data-snippet="btn" data-html='&lt;style&gt;.shine-btn{background:rgba(194,164,255,.07);color:#c2a4ff;font-size:13px;font-weight:600;padding:12px 28px;border-radius:8px;position:relative;overflow:hidden;border:1px solid rgba(194,164,255,.12);cursor:pointer}.shine-btn::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);transition:left .6s}.shine-btn:hover::after{left:120%}&lt;/style&gt;&lt;button class="shine-btn"&gt;Shine Sweep â†’&lt;/button&gt;'><div class="hf-d"><div class="hf-shine">Shine Sweep â†’</div></div><div class="hf-i"><h4>Shine Sweep</h4><p>Light sweep across on hover</p></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="hf-c has-copy" data-snippet="btn" data-html='&lt;div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#c2a4ff,#fb8dff);display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;cursor:pointer" onmouseover="this.style.transform=&apos;scale(1.2)&apos;;this.style.boxShadow=&apos;0 0 35px rgba(194,164,255,.25)&apos;" onmouseout="this.style.transform=&apos;scale(1)&apos;;this.style.boxShadow=&apos;none&apos;"&gt;âœ¦&lt;/div&gt;'><div class="hf-d"><div class="hf-scale">âœ¦</div></div><div class="hf-i"><h4>Scale Glow</h4><p>Grow with neon shadow</p></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="hf-c has-copy" data-snippet="btn" data-html='&lt;style&gt;.shine-btn{background:rgba(194,164,255,.07);color:#c2a4ff;font-size:13px;font-weight:600;padding:12px 28px;border-radius:8px;position:relative;overflow:hidden;border:1px solid rgba(194,164,255,.12);cursor:pointer}.shine-btn::after{content:"";position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);transition:left .6s}.shine-btn:hover::after{left:120%}&lt;/style&gt;&lt;button class="shine-btn"&gt;Shine Sweep ->&lt;/button&gt;'><div class="hf-d"><div class="hf-shine">Shine Sweep -></div></div><div class="hf-i"><h4>Shine Sweep</h4><p>Light sweep across on hover</p></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="hf-c has-copy" data-snippet="btn" data-html='&lt;div style="width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,#c2a4ff,#fb8dff);display:flex;align-items:center;justify-content:center;font-size:20px;transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s;cursor:pointer" onmouseover="this.style.transform=&apos;scale(1.2)&apos;;this.style.boxShadow=&apos;0 0 35px rgba(194,164,255,.25)&apos;" onmouseout="this.style.transform=&apos;scale(1)&apos;;this.style.boxShadow=&apos;none&apos;"&gt;*&lt;/div&gt;'><div class="hf-d"><div class="hf-scale">*</div></div><div class="hf-i"><h4>Scale Glow</h4><p>Grow with neon shadow</p></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 </div></div></section>
 
 <!-- 11 GLASS -->
@@ -1509,7 +1509,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 13 COMPONENTS -->
 <div class="dv"></div>
-<section id="components"><div class="ctr"><div class="sl rv">17 â€” Components</div><div class="st rv d1">UI <span>Components</span></div>
+<section id="components"><div class="ctr"><div class="sl rv">17 - Components</div><div class="st rv d1">UI <span>Components</span></div>
 <div class="cp-g sg rv d2 paginated">
 <div class="cp-c has-copy" data-snippet="btn" data-html='&lt;div style="width:12px;height:12px;border-radius:50%;background:#aa42ff;box-shadow:0 0 4px 2px rgb(210,155,255),0 0 16px 6px rgb(208,151,255),0 0 70px 18px rgb(242,192,255)"&gt;&lt;/div&gt;'><div class="cp-p"><div class="p-dot"></div></div><div class="cp-i"><h4>Timeline Dot</h4><p>Neon pulse for timelines</p></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="cp-c has-copy" data-snippet="btn" data-html='&lt;div style="padding:2px;border-radius:12px;background:linear-gradient(135deg,#c2a4ff,#fb8dff,#7f40ff)"&gt;&lt;div style="background:#060507;border-radius:10px;padding:16px 24px;font-size:12px;color:#eae5ec"&gt;Gradient Border&lt;/div&gt;&lt;/div&gt;'><div class="cp-p"><div class="p-gb"><div class="p-gb-in">Gradient Border</div></div></div><div class="cp-i"><h4>Gradient Border</h4><p>Animated gradient wrapper</p></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1573,7 +1573,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 16 DESIGN TOKENS -->
 <div class="dv"></div>
-<section id="tokens"><div class="ctr"><div class="sl rv">20 â€” Design Tokens</div><div class="st rv d1">Token <span>System</span></div>
+<section id="tokens"><div class="ctr"><div class="sl rv">20 - Design Tokens</div><div class="st rv d1">Token <span>System</span></div>
 <div class="sdesc rv d2">Atomic design values as CSS custom properties. Click copy on any token block.</div>
 
 <div class="ut-g sg rv d3 paginated">
@@ -1634,7 +1634,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 17 EASING CURVES -->
 <div class="dv"></div>
-<section id="easing"><div class="ctr"><div class="sl rv">21 â€” Easing Curves</div><div class="st rv d1">Motion <span>Easings</span></div>
+<section id="easing"><div class="ctr"><div class="sl rv">21 - Easing Curves</div><div class="st rv d1">Motion <span>Easings</span></div>
 <div class="ez-g sg rv d2">
 <div class="ez-c has-copy" data-snippet="code"><div class="ez-n">Ease Out Expo</div><div class="ez-v">cubic-bezier(0.16, 1, 0.3, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="ez-c has-copy" data-snippet="code"><div class="ez-n">Ease Out Back</div><div class="ez-v">cubic-bezier(0.34, 1.56, 0.64, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1644,7 +1644,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 18 STYLE CATALOG -->
 <div class="dv"></div>
-<section id="styles"><div class="ctr"><div class="sl rv">22 â€” Style Catalog</div><div class="st rv d1">UI Style <span>Archetypes</span></div>
+<section id="styles"><div class="ctr"><div class="sl rv">22 - Style Catalog</div><div class="st rv d1">UI Style <span>Archetypes</span></div>
 <div class="sdesc rv d2">58 visual archetypes. Copy any palette as CSS variables.</div>
 <div class="sty-g sg rv d2">
 <div class="sty-c has-copy" data-snippet="btn" data-html='&lt;style&gt;:root{--primary:#000;--secondary:#fff;--accent:#808080;--bg:#F5F1E8}&lt;/style&gt;'><div class="sty-h"><div class="sty-n">Minimalism</div><span class="sty-t">GENERAL</span></div><div class="sty-p"><div class="sty-s" style="background:#000"></div><div class="sty-s" style="background:#fff"></div><div class="sty-s" style="background:#808080"></div><div class="sty-s" style="background:#F5F1E8"></div></div><div class="sty-d">Clean, spacious, grid-based, sans-serif.</div><div class="sty-k"><span>Enterprise</span><span>SaaS</span><span>Dashboards</span></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1657,7 +1657,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- 19 INDUSTRY PALETTES -->
 <div class="dv"></div>
-<section id="palettes"><div class="ctr"><div class="sl rv">23 â€” Industry Palettes</div><div class="st rv d1">Product <span>Color Kits</span></div>
+<section id="palettes"><div class="ctr"><div class="sl rv">23 - Industry Palettes</div><div class="st rv d1">Product <span>Color Kits</span></div>
 <div class="ip-g sg rv d2">
 <div class="ip-c has-copy" data-snippet="btn" data-html='&lt;style&gt;:root{--primary:#2563EB;--secondary:#3B82F6;--cta:#F97316;--bg:#F8FAFC;--text:#1E293B}&lt;/style&gt;'><div class="ip-n">SaaS</div><div class="ip-s"><div style="background:#2563EB" title="#2563EB"></div><div style="background:#3B82F6" title="#3B82F6"></div><div style="background:#F97316" title="CTA"></div><div style="background:#F8FAFC" title="BG"></div><div style="background:#1E293B" title="Text"></div></div><div class="ip-l"><span>Trust blue</span><span>Accent contrast</span></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="ip-c has-copy" data-snippet="btn" data-html='&lt;style&gt;:root{--primary:#7C3AED;--secondary:#A78BFA;--cta:#F43F5E;--bg:#0F0F23}&lt;/style&gt;'><div class="ip-n">Gaming</div><div class="ip-s"><div style="background:#7C3AED" title="#7C3AED"></div><div style="background:#A78BFA" title="#A78BFA"></div><div style="background:#F43F5E" title="CTA"></div><div style="background:#0F0F23" title="Dark"></div></div><div class="ip-l"><span>Vibrant</span><span>Neon</span><span>Immersive</span></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1669,27 +1669,27 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 <div class="dv"></div>
 <section id="spacing"><div class="ctr"><div class="sl rv">24 - Spacing Scale</div><div class="st rv d1">Spacing <span>Visualization</span></div>
 <div class="sp-g rv d2 paginated">
-<div class="sp-r"><span class="sp-l">1</span><div class="sp-scale"><div class="sp-b" style="width:4px"></div></div><span class="sp-v">4px · 0.25rem</span></div>
-<div class="sp-r"><span class="sp-l">2</span><div class="sp-scale"><div class="sp-b" style="width:8px"></div></div><span class="sp-v">8px · 0.5rem</span></div>
-<div class="sp-r"><span class="sp-l">4</span><div class="sp-scale"><div class="sp-b" style="width:16px"></div></div><span class="sp-v">16px · 1rem</span></div>
-<div class="sp-r"><span class="sp-l">6</span><div class="sp-scale"><div class="sp-b" style="width:24px"></div></div><span class="sp-v">24px · 1.5rem</span></div>
-<div class="sp-r"><span class="sp-l">8</span><div class="sp-scale"><div class="sp-b" style="width:32px"></div></div><span class="sp-v">32px · 2rem</span></div>
-<div class="sp-r"><span class="sp-l">10</span><div class="sp-scale"><div class="sp-b" style="width:40px"></div></div><span class="sp-v">40px · 2.5rem</span></div>
-<div class="sp-r"><span class="sp-l">12</span><div class="sp-scale"><div class="sp-b" style="width:48px"></div></div><span class="sp-v">48px · 3rem</span></div>
-<div class="sp-r"><span class="sp-l">14</span><div class="sp-scale"><div class="sp-b" style="width:56px"></div></div><span class="sp-v">56px · 3.5rem</span></div>
-<div class="sp-r"><span class="sp-l">16</span><div class="sp-scale"><div class="sp-b" style="width:64px"></div></div><span class="sp-v">64px · 4rem</span></div>
-<div class="sp-r"><span class="sp-l">20</span><div class="sp-scale"><div class="sp-b" style="width:80px"></div></div><span class="sp-v">80px · 5rem</span></div>
-<div class="sp-r"><span class="sp-l">24</span><div class="sp-scale"><div class="sp-b" style="width:96px"></div></div><span class="sp-v">96px · 6rem</span></div>
-<div class="sp-r"><span class="sp-l">28</span><div class="sp-scale"><div class="sp-b" style="width:112px"></div></div><span class="sp-v">112px · 7rem</span></div>
-<div class="sp-r"><span class="sp-l">32</span><div class="sp-scale"><div class="sp-b" style="width:128px"></div></div><span class="sp-v">128px · 8rem</span></div>
-<div class="sp-r"><span class="sp-l">40</span><div class="sp-scale"><div class="sp-b" style="width:160px"></div></div><span class="sp-v">160px · 10rem</span></div>
-<div class="sp-r"><span class="sp-l">48</span><div class="sp-scale"><div class="sp-b" style="width:192px"></div></div><span class="sp-v">192px · 12rem</span></div>
-<div class="sp-r"><span class="sp-l">64</span><div class="sp-scale"><div class="sp-b" style="width:256px"></div></div><span class="sp-v">256px · 16rem</span></div>
+<div class="sp-r"><span class="sp-l">1</span><div class="sp-scale"><div class="sp-b" style="width:4px"></div></div><span class="sp-v">4px - 0.25rem</span></div>
+<div class="sp-r"><span class="sp-l">2</span><div class="sp-scale"><div class="sp-b" style="width:8px"></div></div><span class="sp-v">8px - 0.5rem</span></div>
+<div class="sp-r"><span class="sp-l">4</span><div class="sp-scale"><div class="sp-b" style="width:16px"></div></div><span class="sp-v">16px - 1rem</span></div>
+<div class="sp-r"><span class="sp-l">6</span><div class="sp-scale"><div class="sp-b" style="width:24px"></div></div><span class="sp-v">24px - 1.5rem</span></div>
+<div class="sp-r"><span class="sp-l">8</span><div class="sp-scale"><div class="sp-b" style="width:32px"></div></div><span class="sp-v">32px - 2rem</span></div>
+<div class="sp-r"><span class="sp-l">10</span><div class="sp-scale"><div class="sp-b" style="width:40px"></div></div><span class="sp-v">40px - 2.5rem</span></div>
+<div class="sp-r"><span class="sp-l">12</span><div class="sp-scale"><div class="sp-b" style="width:48px"></div></div><span class="sp-v">48px - 3rem</span></div>
+<div class="sp-r"><span class="sp-l">14</span><div class="sp-scale"><div class="sp-b" style="width:56px"></div></div><span class="sp-v">56px - 3.5rem</span></div>
+<div class="sp-r"><span class="sp-l">16</span><div class="sp-scale"><div class="sp-b" style="width:64px"></div></div><span class="sp-v">64px - 4rem</span></div>
+<div class="sp-r"><span class="sp-l">20</span><div class="sp-scale"><div class="sp-b" style="width:80px"></div></div><span class="sp-v">80px - 5rem</span></div>
+<div class="sp-r"><span class="sp-l">24</span><div class="sp-scale"><div class="sp-b" style="width:96px"></div></div><span class="sp-v">96px - 6rem</span></div>
+<div class="sp-r"><span class="sp-l">28</span><div class="sp-scale"><div class="sp-b" style="width:112px"></div></div><span class="sp-v">112px - 7rem</span></div>
+<div class="sp-r"><span class="sp-l">32</span><div class="sp-scale"><div class="sp-b" style="width:128px"></div></div><span class="sp-v">128px - 8rem</span></div>
+<div class="sp-r"><span class="sp-l">40</span><div class="sp-scale"><div class="sp-b" style="width:160px"></div></div><span class="sp-v">160px - 10rem</span></div>
+<div class="sp-r"><span class="sp-l">48</span><div class="sp-scale"><div class="sp-b" style="width:192px"></div></div><span class="sp-v">192px - 12rem</span></div>
+<div class="sp-r"><span class="sp-l">64</span><div class="sp-scale"><div class="sp-b" style="width:256px"></div></div><span class="sp-v">256px - 16rem</span></div>
 </div></div></section>
 
 <!-- 21 BORDER RADIUS -->
 <div class="dv"></div>
-<section id="radius"><div class="ctr"><div class="sl rv">25 â€” Border Radius</div><div class="st rv d1">Radius <span>System</span></div>
+<section id="radius"><div class="ctr"><div class="sl rv">25 - Border Radius</div><div class="st rv d1">Radius <span>System</span></div>
 <div class="rd-g rv d2">
 <div class="rd-c"><div class="rd-b" style="border-radius:0"></div><div class="rd-n">None</div><div class="rd-v">0px</div></div>
 <div class="rd-c"><div class="rd-b" style="border-radius:2px"></div><div class="rd-n">sm</div><div class="rd-v">2px</div></div>
@@ -1704,7 +1704,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- MUI -->
 <div class="dv"></div>
-<section class="s-v4"><div class="ctr"><div class="sl rv">26 â€” Material UI</div><div class="st rv d1">Google <span>Material</span></div><div class="sdesc rv d2">Material Design patterns like ripple buttons and floating labels.</div>
+<section class="s-v4"><div class="ctr"><div class="sl rv">26 - Material UI</div><div class="st rv d1">Google <span>Material</span></div><div class="sdesc rv d2">Material Design patterns like ripple buttons and floating labels.</div>
 <div class="mui-g sg rv d3 paginated">
 
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#fff;border-radius:4px;box-shadow:0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);overflow:hidden;color:#000;max-width:345px"&gt;&lt;div style="width:100%;height:140px;background:linear-gradient(135deg,#81c784,#4fc3f7);display:flex;align-items:flex-end;justify-content:flex-start;padding:16px;box-sizing:border-box;color:#fff;font-family:Roboto,sans-serif;font-size:13px;letter-spacing:0.08em;text-transform:uppercase"&gt;Featured&lt;/div&gt;&lt;div style="padding:16px"&gt;&lt;h2 style="margin:0 0 8px;font-size:24px;font-family:Roboto,sans-serif"&gt;Lizard&lt;/h2&gt;&lt;p style="margin:0;font-size:14px;color:rgba(0,0,0,0.6);font-family:Roboto,sans-serif"&gt;Lizards are a widespread group of squamate reptiles, with over 6,000 species.&lt;/p&gt;&lt;/div&gt;&lt;div style="padding:8px;display:flex"&gt;&lt;button style="background:transparent;border:none;color:#1976d2;text-transform:uppercase;font-weight:500;padding:8px;cursor:pointer;font-family:Roboto,sans-serif"&gt;Share&lt;/button&gt;&lt;button style="background:transparent;border:none;color:#1976d2;text-transform:uppercase;font-weight:500;padding:8px;cursor:pointer;font-family:Roboto,sans-serif"&gt;Learn More&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;'><div style="background:#fff;border-radius:4px;box-shadow:0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);overflow:hidden;color:#000;max-width:100%;font-family:sans-serif"><div style="height:60px;background:#ddd"></div><div style="padding:10px"><h2 style="margin:0 0 4px;font-size:14px">Card Title</h2><p style="margin:0;font-size:10px;color:#666">Secondary text goes here.</p></div></div><p style="font-size:10px;margin-top:10px;color:#888;text-align:center">MUI Card</p><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1781,19 +1781,19 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- CHAKRA UI -->
 <div class="dv"></div>
-<section class="s-v4"><div class="ctr"><div class="sl rv">27 â€” Chakra UI</div><div class="st rv d1">Accessible <span>Components</span></div>
+<section class="s-v4"><div class="ctr"><div class="sl rv">27 - Chakra UI</div><div class="st rv d1">Accessible <span>Components</span></div>
 <div class="cha-g sg rv d2 paginated">
 
-<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#EBF8FF;color:#2B6CB0;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:16px"&gt;&lt;span style="margin-right:12px;font-size:20px"&gt;â„¹ï¸&lt;/span&gt;Chakra UI Alert Component&lt;/div&gt;'><div style="background:#EBF8FF;color:#2B6CB0;padding:10px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:12px"><span style="margin-right:8px">â„¹ï¸</span>Chakra Info Alert</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#EBF8FF;color:#2B6CB0;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:16px"&gt;&lt;span style="margin-right:12px;font-size:20px"&gt;i&lt;/span&gt;Chakra UI Alert Component&lt;/div&gt;'><div style="background:#EBF8FF;color:#2B6CB0;padding:10px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:12px"><span style="margin-right:8px">i</span>Chakra Info Alert</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 
-<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;flex-direction:column;font-family:system-ui"&gt;&lt;div style="font-size:14px;color:#718096"&gt;Stat Label&lt;/div&gt;&lt;div style="font-size:30px;font-weight:600;color:#1A202C"&gt;345,670&lt;/div&gt;&lt;div style="font-size:14px;color:#38A169"&gt;â†‘ 23.36%&lt;/div&gt;&lt;/div&gt;'><div style="display:flex;flex-direction:column;font-family:system-ui;background:#fff;padding:15px;border-radius:8px"><div style="font-size:12px;color:#718096">Total Users</div><div style="font-size:24px;font-weight:600;color:#1A202C">71,887</div><div style="font-size:12px;color:#38A169">â†‘ 5.36%</div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;flex-direction:column;font-family:system-ui"&gt;&lt;div style="font-size:14px;color:#718096"&gt;Stat Label&lt;/div&gt;&lt;div style="font-size:30px;font-weight:600;color:#1A202C"&gt;345,670&lt;/div&gt;&lt;div style="font-size:14px;color:#38A169"&gt;up 23.36%&lt;/div&gt;&lt;/div&gt;'><div style="display:flex;flex-direction:column;font-family:system-ui;background:#fff;padding:15px;border-radius:8px"><div style="font-size:12px;color:#718096">Total Users</div><div style="font-size:24px;font-weight:600;color:#1A202C">71,887</div><div style="font-size:12px;color:#38A169">up 5.36%</div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 
-<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;align-items:flex-start;gap:12px;padding:16px;border-radius:6px;background:#2d3748;color:#fff;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);border-left:4px solid #48bb78"&gt;&lt;div style="color:#48bb78;font-size:20px;line-height:1"&gt;âœ“&lt;/div&gt;&lt;div&gt;&lt;h4 style="font-size:14px;font-weight:700;margin:0 0 4px"&gt;Success&lt;/h4&gt;&lt;p style="font-size:14px;color:#e2e8f0;margin:0"&gt;Account created successfully.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;'><div class="cha-toast"><div class="cha-t-icon">âœ“</div><div class="cha-t-content"><h4>Success</h4><p>Account created successfully.</p></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;align-items:flex-start;gap:12px;padding:16px;border-radius:6px;background:#2d3748;color:#fff;box-shadow:0 10px 15px -3px rgba(0,0,0,.1);border-left:4px solid #48bb78"&gt;&lt;div style="color:#48bb78;font-size:20px;line-height:1"&gt;OK&lt;/div&gt;&lt;div&gt;&lt;h4 style="font-size:14px;font-weight:700;margin:0 0 4px"&gt;Success&lt;/h4&gt;&lt;p style="font-size:14px;color:#e2e8f0;margin:0"&gt;Account created successfully.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;'><div class="cha-toast"><div class="cha-t-icon">OK</div><div class="cha-t-content"><h4>Success</h4><p>Account created successfully.</p></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;span style="display:inline-block;padding:2px 8px;border-radius:4px;font-size:12px;font-weight:700;text-transform:uppercase;background:rgba(194,164,255,0.16);color:#d6bcfa"&gt;New Feature&lt;/span&gt;'><div style="text-align:center;padding:20px"><span class="cha-badge">New Feature</span></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 
-<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;div style=&apos;background:#FEFCBF;color:#2C5282;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%&apos;&gt;&lt;span style=&apos;margin-right:12px;color:#DD6B20&apos;&gt;âš ï¸&lt;/span&gt;Update required&lt;/div&gt;">
+<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;div style=&apos;background:#FEFCBF;color:#2C5282;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%&apos;&gt;&lt;span style=&apos;margin-right:12px;color:#DD6B20&apos;&gt;!&lt;/span&gt;Update required&lt;/div&gt;">
   <div style="width:100%;height:80px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border-radius:8px;padding:10px;margin-bottom:10px">
-    <div style='background:#FEFCBF;color:#2C5282;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%'><span style='margin-right:12px;color:#DD6B20'>âš ï¸</span>Update required</div>
+    <div style='background:#FEFCBF;color:#2C5282;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%'><span style='margin-right:12px;color:#DD6B20'>!</span>Update required</div>
   </div>
   <div class="ut-n">Warning Alert</div>
   <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:10px">Chakra Warning</div>
@@ -1801,9 +1801,9 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
     <svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy
   </button>
 </div>
-<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;span style=&apos;background:#3182CE;color:#fff;padding:4px 12px;border-radius:4px;font-family:system-ui;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px&apos;&gt;Sample Tag &lt;button style=&apos;background:none;border:none;color:#fff;cursor:pointer;font-size:12px&apos;&gt;Ã—&lt;/button&gt;&lt;/span&gt;">
+<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;span style=&apos;background:#3182CE;color:#fff;padding:4px 12px;border-radius:4px;font-family:system-ui;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px&apos;&gt;Sample Tag &lt;button style=&apos;background:none;border:none;color:#fff;cursor:pointer;font-size:12px&apos;&gt;x&lt;/button&gt;&lt;/span&gt;">
   <div style="width:100%;height:80px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border-radius:8px;padding:10px;margin-bottom:10px">
-    <span style='background:#3182CE;color:#fff;padding:4px 12px;border-radius:4px;font-family:system-ui;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px'>Sample Tag <button style='background:none;border:none;color:#fff;cursor:pointer;font-size:12px'>Ã—</button></span>
+    <span style='background:#3182CE;color:#fff;padding:4px 12px;border-radius:4px;font-family:system-ui;font-size:14px;font-weight:500;display:inline-flex;align-items:center;gap:6px'>Sample Tag <button style='background:none;border:none;color:#fff;cursor:pointer;font-size:12px'>x</button></span>
   </div>
   <div class="ut-n">Solid Tag</div>
   <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:10px">Chakra Tag</div>
@@ -1822,9 +1822,9 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
   </button>
 </div>
 
-<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;div style=&apos;background:#FED7D7;color:#9B2C2C;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%&apos;&gt;&lt;span style=&apos;margin-right:12px;color:#E53E3E&apos;&gt;â›”&lt;/span&gt;Operation Failed&lt;/div&gt;">
+<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;div style=&apos;background:#FED7D7;color:#9B2C2C;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%&apos;&gt;&lt;span style=&apos;margin-right:12px;color:#E53E3E&apos;&gt;X&lt;/span&gt;Operation Failed&lt;/div&gt;">
   <div style="width:100%;height:80px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border-radius:8px;padding:10px;margin-bottom:10px">
-    <div style='background:#FED7D7;color:#9B2C2C;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%'><span style='margin-right:12px;color:#E53E3E'>â›”</span>Operation Failed</div>
+    <div style='background:#FED7D7;color:#9B2C2C;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:14px;width:100%'><span style='margin-right:12px;color:#E53E3E'>X</span>Operation Failed</div>
   </div>
   <div class="ut-n">Error Alert</div>
   <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:10px">Chakra Error</div>
@@ -1858,16 +1858,16 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 <!-- TAILWIND UI -->
 <div class="dv"></div>
-<section class="s-v4"><div class="ctr"><div class="sl rv">28 â€” Tailwind UI</div><div class="st rv d1">Utility <span>Patterns</span></div>
+<section class="s-v4"><div class="ctr"><div class="sl rv">28 - Tailwind UI</div><div class="st rv d1">Utility <span>Patterns</span></div>
 <div class="tw-g sg rv d2 paginated">
 
-<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#fff;padding:32px;border-radius:16px;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);max-width:320px;font-family:system-ui"&gt;&lt;h3 style="font-size:18px;font-weight:600;color:#111827;margin:0 0 16px"&gt;Hobby&lt;/h3&gt;&lt;div style="font-size:48px;font-weight:800;color:#111827;margin-bottom:24px"&gt;$15&lt;span style="font-size:16px;font-weight:500;color:#6b7280"&gt;/mo&lt;/span&gt;&lt;/div&gt;&lt;button style="width:100%;padding:12px;background:#4f46e5;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer"&gt;Buy plan&lt;/button&gt;&lt;ul style="margin:24px 0 0;padding:0;list-style:none;color:#4b5563;font-size:14px;line-height:2"&gt;&lt;li&gt;âœ“ 5 products&lt;/li&gt;&lt;li&gt;âœ“ Up to 1,000 subscribers&lt;/li&gt;&lt;li&gt;âœ“ Basic analytics&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;'><div style="background:#fff;padding:20px;border-radius:12px;font-family:system-ui"><h3 style="font-size:14px;font-weight:600;color:#111827;margin:0 0 8px">Pricing Card</h3><div style="font-size:24px;font-weight:800;color:#111827;margin-bottom:12px">$15<span style="font-size:12px;font-weight:500;color:#6b7280">/mo</span></div><button style="width:100%;padding:8px;background:#4f46e5;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600">Buy plan</button></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#fff;padding:32px;border-radius:16px;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);max-width:320px;font-family:system-ui"&gt;&lt;h3 style="font-size:18px;font-weight:600;color:#111827;margin:0 0 16px"&gt;Hobby&lt;/h3&gt;&lt;div style="font-size:48px;font-weight:800;color:#111827;margin-bottom:24px"&gt;$15&lt;span style="font-size:16px;font-weight:500;color:#6b7280"&gt;/mo&lt;/span&gt;&lt;/div&gt;&lt;button style="width:100%;padding:12px;background:#4f46e5;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer"&gt;Buy plan&lt;/button&gt;&lt;ul style="margin:24px 0 0;padding:0;list-style:none;color:#4b5563;font-size:14px;line-height:2"&gt;&lt;li&gt;OK 5 products&lt;/li&gt;&lt;li&gt;OK Up to 1,000 subscribers&lt;/li&gt;&lt;li&gt;OK Basic analytics&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;'><div style="background:#fff;padding:20px;border-radius:12px;font-family:system-ui"><h3 style="font-size:14px;font-weight:600;color:#111827;margin:0 0 8px">Pricing Card</h3><div style="font-size:24px;font-weight:800;color:#111827;margin-bottom:12px">$15<span style="font-size:12px;font-weight:500;color:#6b7280">/mo</span></div><button style="width:100%;padding:8px;background:#4f46e5;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600">Buy plan</button></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#111827;border:1px solid #1f2937;border-radius:12px;overflow:hidden"&gt;&lt;div style="padding:20px;border-bottom:1px solid #1f2937"&gt;&lt;h3 style="font-size:16px;font-weight:500;color:#f9fafb;margin:0 0 4px"&gt;Team Members&lt;/h3&gt;&lt;p style="font-size:14px;color:#9ca3af;margin:0"&gt;Manage your team.&lt;/p&gt;&lt;/div&gt;&lt;ul style="list-style:none;padding:0;margin:0"&gt;&lt;li style="display:flex;align-items:center;padding:16px 20px;border-bottom:1px solid #1f2937"&gt;&lt;div style="width:40px;height:40px;border-radius:50%;background:#374151;margin-right:16px"&gt;&lt;/div&gt;&lt;div style="flex:1"&gt;&lt;div style="font-size:14px;font-weight:500;color:#f9fafb"&gt;Jane Doe&lt;/div&gt;&lt;div style="font-size:14px;color:#9ca3af"&gt;jane@example.com&lt;/div&gt;&lt;/div&gt;&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;'><div class="tw-card"><div class="tw-header"><h3>Team Members</h3><p>Manage your team.</p></div><ul class="tw-list"><li class="tw-li"><div class="tw-av"></div><div class="tw-li-info"><div class="tw-li-n">Jane Doe</div><div class="tw-li-e">jane@example.com</div></div></li></ul></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 
-<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;div style=&apos;text-align:center;padding:20px;border:2px dashed #374151;border-radius:12px;width:100%;font-family:system-ui&apos;&gt;&lt;div style=&apos;font-size:24px;margin-bottom:8px&apos;&gt;ðŸ“&lt;/div&gt;&lt;h3 style=&apos;font-size:14px;font-weight:500;color:#f9fafb;margin:0&apos;&gt;No projects&lt;/h3&gt;&lt;p style=&apos;font-size:12px;color:#9ca3af;margin:4px 0 12px&apos;&gt;Get started by creating a new project.&lt;/p&gt;&lt;button style=&apos;background:#4f46e5;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer&apos;&gt;+ New Project&lt;/button&gt;&lt;/div&gt;">
+<div class="ut-c has-copy page-item" data-snippet="btn" data-html="&lt;div style=&apos;text-align:center;padding:20px;border:2px dashed #374151;border-radius:12px;width:100%;font-family:system-ui&apos;&gt;&lt;div style=&apos;font-size:24px;margin-bottom:8px&apos;&gt;Folder&lt;/div&gt;&lt;h3 style=&apos;font-size:14px;font-weight:500;color:#f9fafb;margin:0&apos;&gt;No projects&lt;/h3&gt;&lt;p style=&apos;font-size:12px;color:#9ca3af;margin:4px 0 12px&apos;&gt;Get started by creating a new project.&lt;/p&gt;&lt;button style=&apos;background:#4f46e5;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer&apos;&gt;+ New Project&lt;/button&gt;&lt;/div&gt;">
   <div style="width:100%;height:80px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(255,255,255,0.02);border-radius:8px;padding:10px;margin-bottom:10px">
-    <div style='text-align:center;padding:20px;border:2px dashed #374151;border-radius:12px;width:100%;font-family:system-ui'><div style='font-size:24px;margin-bottom:8px'>ðŸ“</div><h3 style='font-size:14px;font-weight:500;color:#f9fafb;margin:0'>No projects</h3><p style='font-size:12px;color:#9ca3af;margin:4px 0 12px'>Get started by creating a new project.</p><button style='background:#4f46e5;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer'>+ New Project</button></div>
+    <div style='text-align:center;padding:20px;border:2px dashed #374151;border-radius:12px;width:100%;font-family:system-ui'><div style='font-size:24px;margin-bottom:8px'>Folder</div><h3 style='font-size:14px;font-weight:500;color:#f9fafb;margin:0'>No projects</h3><p style='font-size:12px;color:#9ca3af;margin:4px 0 12px'>Get started by creating a new project.</p><button style='background:#4f46e5;color:#fff;border:none;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer'>+ New Project</button></div>
   </div>
   <div class="ut-n">Empty State</div>
   <div style="font-size:10px;color:rgba(255,255,255,0.5);margin-bottom:10px">Tailwind placeholder</div>
@@ -1955,7 +1955,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 
 <div class="dv"></div>
-<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 29 sections • 320+ copyable elements • Background soundtrack • Zero dependencies</p></footer>
+<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 29 sections - 320+ copyable elements - Background soundtrack - Zero dependencies</p></footer>
 <audio id="background-audio" preload="auto" autoplay playsinline loop>
   <source src="assets/audio/the-high-ridge.mp3" type="audio/mpeg">
 </audio>
