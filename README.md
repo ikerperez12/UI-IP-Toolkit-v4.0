@@ -1,7 +1,7 @@
 # UI IP Toolkit
 
 <p align="center">
-  <a href="https://ui-ip-toolkit.vercel.app/"><strong>Live Demo</strong></a>
+  <a href="https://ui-ip-toolkit.vercel.app/"><strong>ui-ip-toolkit web</strong></a>
   |
   <a href="#quick-start"><strong>Run Locally</strong></a>
   |
