@@ -5,6 +5,81 @@ const backgroundAudioState = {
   unlockAttached: false,
 };
 
+const catalogPaginationState = {
+  instances: [],
+  frame: 0,
+  resizeObserver: null,
+};
+
+const catalogSectionConfig = {
+  "#colors .pal-g": {
+    minWidth: 130,
+    gap: 10,
+    rows: { wide: 3, desktop: 3, tablet: 3, mobile: 4 },
+    reserveHeight: { wide: 372, desktop: 372, tablet: 472, mobile: 0 },
+  },
+  "#gradients .gr-g": {
+    minWidth: 260,
+    gap: 16,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 336, desktop: 336, tablet: 520, mobile: 0 },
+  },
+  "#animations .an-g": {
+    minWidth: 155,
+    gap: 14,
+    rows: { wide: 3, desktop: 3, tablet: 3, mobile: 4 },
+    reserveHeight: { wide: 556, desktop: 556, tablet: 620, mobile: 0 },
+  },
+  "#typography .fn-r": {
+    minWidth: 220,
+    gap: 16,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 540, desktop: 540, tablet: 760, mobile: 0 },
+  },
+  "#buttons .btn-g": {
+    minWidth: 250,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 536, desktop: 536, tablet: 690, mobile: 0 },
+  },
+  "#loading .load-g": {
+    minWidth: 220,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 518, desktop: 518, tablet: 690, mobile: 0 },
+  },
+  "#textfx .tx-g": {
+    minWidth: 300,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 474, desktop: 474, tablet: 620, mobile: 0 },
+  },
+  "#shadows .sh-g": {
+    minWidth: 200,
+    gap: 16,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 422, desktop: 422, tablet: 568, mobile: 0 },
+  },
+  "#hover .hf-g": {
+    minWidth: 260,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 612, desktop: 612, tablet: 760, mobile: 0 },
+  },
+  "#glass .gl-g": {
+    minWidth: 280,
+    gap: 20,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 650, desktop: 650, tablet: 810, mobile: 0 },
+  },
+  "#utils .ut-g": {
+    minWidth: 220,
+    gap: 14,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 510, desktop: 510, tablet: 680, mobile: 0 },
+  },
+};
+
 async function copySnippet(btn) {
   const card = btn.closest("[data-snippet]") || btn.closest(".has-copy");
   if (!card) return;
@@ -230,17 +305,142 @@ function getWrappedColumnCount(items) {
   return Math.max(columns, 1);
 }
 
-function measurePageSize(grid, items) {
+function getViewportTier() {
+  if (window.innerWidth >= 1280) return "wide";
+  if (window.innerWidth >= 1024) return "desktop";
+  if (window.innerWidth >= 768) return "tablet";
+  return "mobile";
+}
+
+function getResponsiveConfigValue(value, tier) {
+  if (value == null || typeof value === "number") return value;
+  return value[tier] ?? value.desktop ?? value.wide ?? Object.values(value)[0];
+}
+
+function getSectionConfig(grid) {
+  return catalogSectionConfig[grid.dataset.catalogKey] || {};
+}
+
+function getGridGap(grid) {
+  const config = getSectionConfig(grid);
+  return Number(grid.dataset.gridGap || config.gap || 16);
+}
+
+function getGridMinWidth(grid) {
+  const config = getSectionConfig(grid);
+  return Number(grid.dataset.minCardWidth || config.minWidth || 220);
+}
+
+function applyGridStability(grid, items, minHeightOverride = null) {
+  const config = getSectionConfig(grid);
+  const tier = getViewportTier();
+  const minWidth = getGridMinWidth(grid);
+  const gap = getGridGap(grid);
+  const reserveHeight =
+    minHeightOverride == null
+      ? Number(getResponsiveConfigValue(config.reserveHeight, tier) || 0)
+      : Number(minHeightOverride || 0);
+
+  grid.classList.add("catalog-grid");
+  grid.dataset.tier = tier;
+  grid.style.display = "grid";
+  grid.style.gap = `${gap}px`;
+  grid.style.alignItems = "stretch";
+  grid.style.gridTemplateColumns = `repeat(auto-fill, minmax(min(${minWidth}px, 100%), 1fr))`;
+  grid.style.setProperty("--catalog-min-card-width", `${minWidth}px`);
+  grid.style.setProperty("--catalog-grid-gap", `${gap}px`);
+
+  if (reserveHeight > 0 && items.length > 1) {
+    grid.style.minHeight = `${reserveHeight}px`;
+  } else {
+    grid.style.removeProperty("min-height");
+  }
+}
+
+function getTargetRowCount(grid) {
+  const config = getSectionConfig(grid);
+  const tier = getViewportTier();
+  return Number(getResponsiveConfigValue(config.rows, tier) || 2);
+}
+
+function measureColumns(grid, items) {
+  const minWidth = getGridMinWidth(grid);
+  const gap = getGridGap(grid);
+  const gridWidth = Math.max(grid.clientWidth, grid.getBoundingClientRect().width);
+
+  if (gridWidth > 0) {
+    return Math.max(1, Math.min(items.length, Math.floor((gridWidth + gap) / (minWidth + gap))));
+  }
+
+  return Math.max(1, Math.min(items.length, getGridColumnCount(grid) || getWrappedColumnCount(items)));
+}
+
+function measureGridProfile(instance) {
+  const { grid, items } = instance;
+  const tier = getViewportTier();
+  const width = Math.round(Math.max(grid.clientWidth, grid.getBoundingClientRect().width));
+  const signature = `${tier}:${width}`;
+
+  if (instance.measurementSignature === signature && instance.cardProfile) {
+    return instance.cardProfile;
+  }
+
+  const snapshot = items.map((item) => ({
+    hidden: item.hidden,
+    hasHiddenClass: item.classList.contains("hidden"),
+    opacity: item.style.opacity,
+    transform: item.style.transform,
+  }));
+
+  applyGridStability(grid, items, 0);
+
+  items.forEach((item) => {
+    item.hidden = false;
+    item.classList.remove("hidden");
+    item.style.opacity = "1";
+    item.style.transform = "";
+  });
+
+  const columns = measureColumns(grid, items);
+  const rows = getTargetRowCount(grid);
+  const gap = getGridGap(grid);
+  const maxCardHeight = items.reduce((maxHeight, item) => {
+    return Math.max(maxHeight, Math.ceil(item.getBoundingClientRect().height));
+  }, 0);
+
+  snapshot.forEach((state, index) => {
+    const item = items[index];
+    item.hidden = state.hidden;
+    item.classList.toggle("hidden", state.hasHiddenClass);
+    item.style.opacity = state.opacity;
+    item.style.transform = state.transform;
+  });
+
+  const reserveHeight = maxCardHeight
+    ? maxCardHeight * rows + gap * Math.max(rows - 1, 0)
+    : 0;
+
+  instance.measurementSignature = signature;
+  instance.cardProfile = {
+    columns,
+    rows,
+    gap,
+    maxCardHeight,
+    reserveHeight,
+  };
+
+  return instance.cardProfile;
+}
+
+function measurePageSize(grid, items, profile) {
   if (!items.length) return 1;
 
-  const explicit = Number(grid.dataset.pageSize || 0);
-  if (explicit > 0) return Math.min(items.length, explicit);
+  const columns = profile?.columns || measureColumns(grid, items);
+  const rows = profile?.rows || getTargetRowCount(grid);
+  const minimum = Number(grid.dataset.minPageSize || 1);
+  const pageSize = columns * rows;
 
-  const columns = getGridColumnCount(grid) || getWrappedColumnCount(items);
-  const rows = window.innerWidth < 640 ? 4 : columns >= 4 ? 3 : columns >= 2 ? 3 : 6;
-  const minimum = Number(grid.dataset.minPageSize || (window.innerWidth < 640 ? 5 : 8));
-
-  return Math.min(items.length, Math.max(minimum, columns * rows));
+  return Math.min(items.length, Math.max(minimum, pageSize));
 }
 
 function createPaginationControls(grid) {
@@ -264,17 +464,24 @@ function updatePaginationInstance(instance) {
   const { grid, items, controls, prevButton, nextButton, status } = instance;
 
   const previousPage = instance.currentPage || 1;
-  instance.pageSize = measurePageSize(grid, items);
+  const profile = measureGridProfile(instance);
+  applyGridStability(grid, items, profile.reserveHeight);
+  instance.columns = profile.columns;
+  instance.pageSize = measurePageSize(grid, items, profile);
   instance.maxPage = Math.max(1, Math.ceil(items.length / instance.pageSize));
   instance.currentPage = Math.min(previousPage, instance.maxPage);
 
   if (items.length <= instance.pageSize) {
+    grid.style.removeProperty("min-height");
     items.forEach((item) => {
       item.hidden = false;
+      item.classList.remove("hidden");
       item.style.opacity = "1";
       item.style.transform = "";
     });
     controls.hidden = true;
+    prevButton.disabled = true;
+    nextButton.disabled = true;
     return;
   }
 
@@ -286,6 +493,7 @@ function updatePaginationInstance(instance) {
       index < instance.currentPage * instance.pageSize;
 
     item.hidden = !visible;
+    item.classList.toggle("hidden", !visible);
     item.style.opacity = visible ? "1" : "0";
     item.style.transform = visible ? "translateY(0)" : "translateY(8px)";
   });
@@ -343,13 +551,52 @@ function removeCardsByTitle(selector, matcher) {
   });
 }
 
-function setGridPageConfig(selector, pageSize, minPageSize = pageSize) {
+function normalizeButtonShelves() {
+  document.querySelectorAll("#buttons .bw").forEach((shelf) => {
+    if (shelf.dataset.shelfReady) return;
+
+    const copyButton = shelf.querySelector(".cpb");
+    const previewButton = Array.from(shelf.querySelectorAll("button")).find((button) => button !== copyButton);
+    if (!previewButton) return;
+
+    shelf.dataset.shelfReady = "true";
+    shelf.classList.add("page-item", "btn-shelf");
+
+    if (!shelf.querySelector(".btn-shelf-stage")) {
+      const stage = document.createElement("div");
+      stage.className = "btn-shelf-stage";
+      previewButton.replaceWith(stage);
+      stage.appendChild(previewButton);
+    }
+
+    if (!shelf.querySelector(".btn-shelf-meta")) {
+      const meta = document.createElement("div");
+      meta.className = "btn-shelf-meta";
+
+      const title = document.createElement("div");
+      title.className = "btn-shelf-title";
+      title.textContent = previewButton.textContent.replace(/\s+/g, " ").trim();
+
+      const note = document.createElement("div");
+      note.className = "btn-shelf-note";
+      note.textContent = "Classic example";
+
+      meta.append(title, note);
+      shelf.appendChild(meta);
+    }
+  });
+}
+
+function setGridPageConfig(selector, config) {
   const grid = document.querySelector(selector);
   if (!grid) return;
 
   grid.classList.add("paginated");
-  grid.dataset.pageSize = String(pageSize);
-  grid.dataset.minPageSize = String(minPageSize);
+  grid.dataset.catalogKey = selector;
+  grid.dataset.minPageSize = String(config.minPageSize || 1);
+  grid.dataset.minCardWidth = String(config.minWidth || 220);
+  grid.dataset.gridGap = String(config.gap || 16);
+  delete grid.dataset.pageSize;
 }
 
 function createColorCard(item) {
@@ -639,17 +886,11 @@ function pruneCatalogNoise() {
 }
 
 function configureCatalogPagination() {
-  setGridPageConfig("#colors .pal-g", 12);
-  setGridPageConfig("#gradients .gr-g", 6);
-  setGridPageConfig("#animations .an-g", 8);
-  setGridPageConfig("#typography .fn-r", 8);
-  setGridPageConfig("#buttons .btn-g", 8);
-  setGridPageConfig("#loading .load-g", 8);
-  setGridPageConfig("#textfx .tx-g", 8);
-  setGridPageConfig("#shadows .sh-g", 8);
-  setGridPageConfig("#hover .hf-g", 6);
-  setGridPageConfig("#glass .gl-g", 6);
-  setGridPageConfig("#utils .ut-g", 8);
+  normalizeButtonShelves();
+
+  Object.entries(catalogSectionConfig).forEach(([selector, config]) => {
+    setGridPageConfig(selector, config);
+  });
 }
 
 function deepenCatalog() {
@@ -682,6 +923,10 @@ function deepenCatalog() {
       { name: "Launch Flame", css: "linear-gradient(135deg,#111827,#f97316,#facc15)" },
       { name: "Rose Circuit", css: "linear-gradient(135deg,#111827,#db2777,#fb7185)" },
       { name: "Mono Aurora", css: "linear-gradient(135deg,#020617,#475569,#e2e8f0)" },
+      { name: "Electric Mint", css: "linear-gradient(135deg,#020617,#0f766e,#5eead4)" },
+      { name: "Studio Iris", css: "linear-gradient(135deg,#1e1b4b,#7c3aed,#c4b5fd)" },
+      { name: "Solar Bloom", css: "linear-gradient(135deg,#451a03,#fb923c,#fde68a)" },
+      { name: "Ocean Depth", css: "radial-gradient(circle at 15% 15%,#38bdf8,transparent 26%),linear-gradient(135deg,#020617,#0f172a,#0f766e)" },
     ].map(createGradientCard).join(""));
   }
 
@@ -724,6 +969,30 @@ function deepenCatalog() {
         previewStyle: "border-radius:50%;background:linear-gradient(135deg,#111827,#6366f1);animation:scaleUp 1.2s ease-in-out infinite alternate",
         html: "<style>@keyframes dialPop{0%{transform:scale(.82)}100%{transform:scale(1.08)}}</style><div style=\"width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#111827,#6366f1);animation:dialPop 1.2s ease-in-out infinite alternate\"></div>",
       },
+      {
+        name: "Signal Blink",
+        description: "Status light with clean pulse",
+        previewStyle: "border-radius:50%;background:#4ade80;animation:pulse 1s ease-in-out infinite",
+        html: "<style>@keyframes signalBlink{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}</style><div style=\"width:16px;height:16px;border-radius:50%;background:#4ade80;animation:signalBlink 1s ease-in-out infinite\"></div>",
+      },
+      {
+        name: "Ribbon Slide",
+        description: "Horizontal ribbon sweep",
+        previewStyle: "border-radius:999px;background:linear-gradient(90deg,#38bdf8,#c2a4ff);animation:slideIO 1.1s ease-in-out infinite",
+        html: "<style>@keyframes ribbonSlide{0%,100%{transform:translateX(-90%)}50%{transform:translateX(90%)}}</style><div style=\"width:90px;height:10px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)\"><div style=\"width:55%;height:100%;border-radius:999px;background:linear-gradient(90deg,#38bdf8,#c2a4ff);animation:ribbonSlide 1.1s ease-in-out infinite\"></div></div>",
+      },
+      {
+        name: "Flip Tile",
+        description: "Card flip attention state",
+        previewStyle: "border-radius:12px;background:linear-gradient(135deg,#f8fafc,#c2a4ff);animation:spin 1.8s linear infinite",
+        html: "<style>@keyframes flipTile{0%,100%{transform:rotateY(0)}50%{transform:rotateY(180deg)}}</style><div style=\"width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#f8fafc,#c2a4ff);animation:flipTile 1.6s ease-in-out infinite\"></div>",
+      },
+      {
+        name: "Beacon Rise",
+        description: "Equalizer-style beacon pulse",
+        previewStyle: "border-radius:10px;background:linear-gradient(180deg,#fb7185,#facc15);animation:bounce 1.1s ease infinite",
+        html: "<style>@keyframes beaconRise{0%,100%{transform:scaleY(.6);transform-origin:bottom}50%{transform:scaleY(1)}}</style><div style=\"width:16px;height:44px;border-radius:10px;background:linear-gradient(180deg,#fb7185,#facc15);animation:beaconRise 1.1s ease infinite\"></div>",
+      },
     ].map(createAnimationCard).join(""));
   }
 
@@ -734,6 +1003,10 @@ function deepenCatalog() {
     { title: "Ticket Stub", description: "Commerce-style button with perforated ends.", preview: `<button style="padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,#facc15,#f97316);color:#111827;border:0;font-weight:900;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)">Reserve</button>`, html: `<button style="padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,#facc15,#f97316);color:#111827;border:0;font-weight:900;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)">Reserve</button>` },
     { title: "Signal Underline", description: "Minimal text CTA with strong active line.", preview: `<button style="padding:0 0 6px;background:transparent;border:0;border-bottom:2px solid #38bdf8;color:#fff">Read docs</button>`, html: `<button style="padding:0 0 6px;background:transparent;border:0;border-bottom:2px solid #38bdf8;color:#fff">Read docs</button>` },
     { title: "Inset Key", description: "Keyboard-like keycap for utilities.", preview: `<button style="padding:10px 16px;border-radius:10px;background:#e5e7eb;border:1px solid #cbd5e1;box-shadow:inset 0 -2px 0 rgba(15,23,42,.16);color:#0f172a;font-weight:800">Cmd</button>`, html: `<button style="padding:10px 16px;border-radius:10px;background:#e5e7eb;border:1px solid #cbd5e1;box-shadow:inset 0 -2px 0 rgba(15,23,42,.16);color:#0f172a;font-weight:800">Cmd</button>` },
+    { title: "Status Split", description: "Button with secondary state rail and count.", preview: `<button style="display:inline-flex;gap:10px;align-items:center;padding:11px 16px;border-radius:14px;background:#fff;color:#020617;border:0;font-weight:800"><span>Inbox</span><span style="padding:4px 8px;border-radius:999px;background:#e2e8f0">12</span></button>`, html: `<button style="display:inline-flex;gap:10px;align-items:center;padding:11px 16px;border-radius:14px;background:#fff;color:#020617;border:0;font-weight:800"><span>Inbox</span><span style="padding:4px 8px;border-radius:999px;background:#e2e8f0">12</span></button>` },
+    { title: "Outline Rail", description: "Industrial outline button with lower depth rail.", preview: `<button style="padding:12px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:#0b1120;color:#fff;box-shadow:inset 0 -3px 0 rgba(56,189,248,.28)">Inspect</button>`, html: `<button style="padding:12px 18px;border-radius:12px;border:1px solid rgba(255,255,255,.18);background:#0b1120;color:#fff;box-shadow:inset 0 -3px 0 rgba(56,189,248,.28)">Inspect</button>` },
+    { title: "Live Chip", description: "Compact live-state action chip for dashboards.", preview: `<button style="display:inline-flex;gap:8px;align-items:center;padding:9px 14px;border-radius:999px;background:rgba(74,222,128,.14);border:1px solid rgba(74,222,128,.24);color:#4ade80"><span style="width:8px;height:8px;border-radius:50%;background:#4ade80"></span>Live</button>`, html: `<button style="display:inline-flex;gap:8px;align-items:center;padding:9px 14px;border-radius:999px;background:rgba(74,222,128,.14);border:1px solid rgba(74,222,128,.24);color:#4ade80"><span style="width:8px;height:8px;border-radius:50%;background:#4ade80"></span>Live</button>` },
+    { title: "Corner Badge CTA", description: "Action with floating beta badge.", preview: `<button style="position:relative;padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;border:0;font-weight:800">Preview<span style="position:absolute;top:-8px;right:-6px;padding:3px 7px;border-radius:999px;background:#f8fafc;color:#020617;font-size:9px">Beta</span></button>`, html: `<button style="position:relative;padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,#38bdf8,#6366f1);color:#fff;border:0;font-weight:800">Preview<span style="position:absolute;top:-8px;right:-6px;padding:3px 7px;border-radius:999px;background:#f8fafc;color:#020617;font-size:9px">Beta</span></button>` },
   ]);
 
   addToolkitCards("#loading .load-g", [
@@ -743,6 +1016,10 @@ function deepenCatalog() {
     { title: "Glass Skeleton", description: "Soft loading panel for premium cards.", preview: `<div style="width:100%;height:56px;border-radius:18px;background:linear-gradient(120deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:220% 100%;animation:shimmer 1.4s ease-in-out infinite"></div>`, html: `<div style="width:220px;height:76px;border-radius:18px;background:linear-gradient(120deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:220% 100%;animation:shimmer 1.4s ease-in-out infinite"></div>` },
     { title: "Dial Loader", description: "Conic loader with clean center cutout.", preview: `<div style="width:42px;height:42px;border-radius:50%;background:conic-gradient(#38bdf8,#c2a4ff,#38bdf8);display:grid;place-items:center;animation:spin 1.1s linear infinite"><span style="width:26px;height:26px;border-radius:50%;background:#060507"></span></div>`, html: `<style>@keyframes dialLoader{to{transform:rotate(360deg)}}</style><div style="width:42px;height:42px;border-radius:50%;background:conic-gradient(#38bdf8,#c2a4ff,#38bdf8);display:grid;place-items:center;animation:dialLoader 1.1s linear infinite"><span style="width:26px;height:26px;border-radius:50%;background:#060507"></span></div>` },
     { title: "Beacon Grid", description: "Grid pulse for dashboards and maps.", preview: `<div style="display:grid;grid-template-columns:repeat(3,8px);gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:#38bdf8"></span><span style="width:8px;height:8px;border-radius:2px;background:#c2a4ff"></span><span style="width:8px;height:8px;border-radius:2px;background:#4ade80"></span><span style="width:8px;height:8px;border-radius:2px;background:#c2a4ff"></span><span style="width:8px;height:8px;border-radius:2px;background:#fff"></span><span style="width:8px;height:8px;border-radius:2px;background:#fb7185"></span></div>`, html: `<style>@keyframes beaconGrid{0%,100%{opacity:.35}50%{opacity:1}}</style><div style="display:grid;grid-template-columns:repeat(3,10px);gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#38bdf8;animation:beaconGrid .9s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#c2a4ff;animation:beaconGrid .9s .1s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#4ade80;animation:beaconGrid .9s .2s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#c2a4ff;animation:beaconGrid .9s .3s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#fff;animation:beaconGrid .9s .4s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#fb7185;animation:beaconGrid .9s .5s infinite"></span></div>` },
+    { title: "Progress Nodes", description: "Node chain loader for workflow steps.", preview: `<div style="display:flex;gap:8px;align-items:center"><span style="width:10px;height:10px;border-radius:50%;background:#4ade80"></span><span style="width:28px;height:2px;background:#4ade80"></span><span style="width:10px;height:10px;border-radius:50%;background:#c2a4ff"></span><span style="width:28px;height:2px;background:rgba(255,255,255,.12)"></span><span style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18)"></span></div>`, html: `<div style="display:flex;gap:8px;align-items:center"><span style="width:10px;height:10px;border-radius:50%;background:#4ade80"></span><span style="width:28px;height:2px;background:#4ade80"></span><span style="width:10px;height:10px;border-radius:50%;background:#c2a4ff"></span><span style="width:28px;height:2px;background:rgba(255,255,255,.12)"></span><span style="width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.18)"></span></div>` },
+    { title: "Thin Scan", description: "Single scanning line for console shells.", preview: `<div style="width:100px;height:12px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:42px;height:100%;border-radius:999px;background:linear-gradient(90deg,transparent,#4ade80,transparent);animation:slideIO 1.2s ease-in-out infinite"></div></div>`, html: `<style>@keyframes thinScan{0%,100%{transform:translateX(-100%)}50%{transform:translateX(100%)}}</style><div style="width:120px;height:12px;overflow:hidden;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:42px;height:100%;border-radius:999px;background:linear-gradient(90deg,transparent,#4ade80,transparent);animation:thinScan 1.2s ease-in-out infinite"></div></div>` },
+    { title: "Column Rise", description: "Four-column rise for media and audio screens.", preview: `<div style="display:flex;gap:6px;align-items:flex-end;height:34px"><span style="width:7px;height:14px;background:#38bdf8;border-radius:999px"></span><span style="width:7px;height:22px;background:#c2a4ff;border-radius:999px"></span><span style="width:7px;height:30px;background:#fb7185;border-radius:999px"></span><span style="width:7px;height:18px;background:#facc15;border-radius:999px"></span></div>`, html: `<style>@keyframes columnRise{0%,100%{transform:scaleY(.45);transform-origin:bottom}50%{transform:scaleY(1)}}</style><div style="display:flex;gap:6px;align-items:flex-end;height:38px"><span style="width:7px;height:14px;background:#38bdf8;border-radius:999px;animation:columnRise .9s infinite"></span><span style="width:7px;height:22px;background:#c2a4ff;border-radius:999px;animation:columnRise .9s .1s infinite"></span><span style="width:7px;height:30px;background:#fb7185;border-radius:999px;animation:columnRise .9s .2s infinite"></span><span style="width:7px;height:18px;background:#facc15;border-radius:999px;animation:columnRise .9s .3s infinite"></span></div>` },
+    { title: "Data Ladder", description: "Stepped loader for metrics and charts.", preview: `<div style="display:grid;grid-template-columns:repeat(4,10px);gap:6px;align-items:end;height:34px"><span style="height:10px;background:#4ade80;border-radius:3px"></span><span style="height:18px;background:#38bdf8;border-radius:3px"></span><span style="height:26px;background:#c2a4ff;border-radius:3px"></span><span style="height:34px;background:#fb7185;border-radius:3px"></span></div>`, html: `<div style="display:grid;grid-template-columns:repeat(4,10px);gap:6px;align-items:end;height:34px"><span style="height:10px;background:#4ade80;border-radius:3px"></span><span style="height:18px;background:#38bdf8;border-radius:3px"></span><span style="height:26px;background:#c2a4ff;border-radius:3px"></span><span style="height:34px;background:#fb7185;border-radius:3px"></span></div>` },
   ]);
 
   addToolkitCards("#textfx .tx-g", [
@@ -751,6 +1028,9 @@ function deepenCatalog() {
     { title: "Mono Badge", description: "Compact monospaced annotation label.", preview: `<span style="font-family:monospace;font-size:12px;letter-spacing:.18em;color:#4ade80">BUILD READY</span>`, html: `<span style="font-family:monospace;font-size:12px;letter-spacing:.18em;color:#4ade80">BUILD READY</span>` },
     { title: "Layered Blur", description: "Soft duplicate blur for premium titles.", preview: `<strong style="font-size:32px;color:#fff;text-shadow:0 0 16px rgba(194,164,255,.32),0 0 36px rgba(56,189,248,.18)">Soft Layer</strong>`, html: `<h2 style="font-size:52px;color:#fff;text-shadow:0 0 16px rgba(194,164,255,.32),0 0 36px rgba(56,189,248,.18)">Soft Layer</h2>` },
     { title: "Outline Capsule", description: "Uppercase category chip with border emphasis.", preview: `<span style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);font-size:11px;letter-spacing:.18em;color:#fff">TOOLKIT</span>`, html: `<span style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);font-size:11px;letter-spacing:.18em;color:#fff">TOOLKIT</span>` },
+    { title: "Contrast Stack", description: "Thick black-and-white stack for posters.", preview: `<strong style="font-size:32px;color:#fff;text-shadow:4px 4px 0 #020617">Impact</strong>`, html: `<h2 style="font-size:54px;color:#fff;text-shadow:4px 4px 0 #020617">Impact</h2>` },
+    { title: "Signal Outline", description: "Neon-lined uppercase tag for data products.", preview: `<strong style="font-size:24px;color:transparent;-webkit-text-stroke:1px #38bdf8;letter-spacing:.18em">STATUS</strong>`, html: `<span style="font-size:32px;color:transparent;-webkit-text-stroke:1px #38bdf8;letter-spacing:.18em">STATUS</span>` },
+    { title: "Soft Serif Note", description: "Small editorial lockup for product notes.", preview: `<strong style="font-family:'Instrument Serif',serif;font-size:30px;color:#f8fafc">Release note</strong>`, html: `<h3 style="font-family:'Instrument Serif',serif;font-size:44px;color:#f8fafc">Release note</h3>` },
   ]);
 
   addToolkitCards("#shadows .sh-g", [
@@ -769,6 +1049,10 @@ function deepenCatalog() {
     { title: "Press Tile", description: "Tile that sinks with tactile feedback.", preview: `<div style="width:110px;height:78px;border-radius:18px;background:#f8fafc;box-shadow:0 8px 0 #94a3b8"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;background:#f8fafc;box-shadow:0 8px 0 #94a3b8;transition:.12s" onmousedown="this.style.transform='translateY(8px)';this.style.boxShadow='0 0 0 #94a3b8'" onmouseup="this.style.transform='none';this.style.boxShadow='0 8px 0 #94a3b8'"></div>` },
     { title: "Halo Link", description: "Inline link with glowing underline.", preview: `<span style="padding-bottom:4px;border-bottom:2px solid #38bdf8;color:#fff">Open guide</span>`, html: `<a style="padding-bottom:4px;border-bottom:2px solid #38bdf8;color:#fff;text-decoration:none;transition:text-shadow .24s" onmouseover="this.style.textShadow='0 0 20px rgba(56,189,248,.4)'" onmouseout="this.style.textShadow='none'">Open guide</a>` },
     { title: "Depth Orbit", description: "Circular hover with rotating highlight.", preview: `<div style="width:78px;height:78px;border-radius:50%;background:conic-gradient(from 0deg,#38bdf8,#c2a4ff,#38bdf8)"></div>`, html: `<div style="width:120px;height:120px;border-radius:50%;background:conic-gradient(from 0deg,#38bdf8,#c2a4ff,#38bdf8);transition:transform .3s" onmouseover="this.style.transform='rotate(28deg) scale(1.06)'" onmouseout="this.style.transform='none'"></div>` },
+    { title: "Glow Lift", description: "Ambient glow that lifts a solid card.", preview: `<div style="width:110px;height:78px;border-radius:18px;background:#111827;box-shadow:0 0 28px rgba(194,164,255,.18)"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;background:#111827;transition:transform .25s,box-shadow .25s" onmouseover="this.style.transform='translateY(-8px)';this.style.boxShadow='0 0 34px rgba(194,164,255,.24)'" onmouseout="this.style.transform='none';this.style.boxShadow='none'"></div>` },
+    { title: "Border Sweep", description: "Card edge accent that travels on hover.", preview: `<div style="width:110px;height:78px;border-radius:18px;background:#0f172a;border:1px solid rgba(255,255,255,.12)"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;background:#0f172a;border:1px solid rgba(255,255,255,.12);position:relative;overflow:hidden" onmouseover="this.lastChild.style.transform='translateX(160px)'" onmouseout="this.lastChild.style.transform='translateX(-160px)'"><span style="position:absolute;left:-160px;top:0;bottom:0;width:80px;background:linear-gradient(90deg,transparent,rgba(194,164,255,.28),transparent);transition:transform .35s"></span></div>` },
+    { title: "Soft Zoom", description: "Image-style zoom without hard movement.", preview: `<div style="width:110px;height:78px;border-radius:18px;background:linear-gradient(135deg,#38bdf8,#c2a4ff);transform:scale(1.02)"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;background:linear-gradient(135deg,#38bdf8,#c2a4ff);transition:transform .3s" onmouseover="this.style.transform='scale(1.08)'" onmouseout="this.style.transform='scale(1)'"></div>` },
+    { title: "Inset Focus", description: "Hovered panel with an inner focus ring.", preview: `<div style="width:110px;height:78px;border-radius:18px;background:#0b1120;box-shadow:inset 0 0 0 1px rgba(194,164,255,.22)"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;background:#0b1120;transition:box-shadow .25s" onmouseover="this.style.boxShadow='inset 0 0 0 2px rgba(194,164,255,.32)'" onmouseout="this.style.boxShadow='none'"></div>` },
   ]);
 
   addToolkitCards("#glass .gl-g", [
@@ -776,6 +1060,9 @@ function deepenCatalog() {
     { title: "Metric Duo", description: "Two-up stat slab with frosted panel.", preview: `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%"><div style="height:52px;border-radius:16px;background:rgba(255,255,255,.08)"></div><div style="height:52px;border-radius:16px;background:rgba(255,255,255,.08)"></div></div>`, html: `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(20px)"><div style="padding:16px;border-radius:16px;background:rgba(255,255,255,.06)">42%</div><div style="padding:16px;border-radius:16px;background:rgba(255,255,255,.06)">89%</div></div>` },
     { title: "Glass Slab", description: "Wide radial glass plate for hero copy.", preview: `<div style="width:100%;height:62px;border-radius:24px;background:radial-gradient(circle at top left,rgba(255,255,255,.16),rgba(255,255,255,.05));backdrop-filter:blur(18px)"></div>`, html: `<div style="padding:24px;border-radius:24px;background:radial-gradient(circle at top left,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(18px)">Glass slab</div>` },
     { title: "Overlay Card", description: "Translucent card with soft gradient orb.", preview: `<div style="position:relative;width:100%;height:70px;border-radius:20px;background:rgba(255,255,255,.08);overflow:hidden"><span style="position:absolute;top:-14px;right:-10px;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle,#fb7185,transparent 70%)"></span></div>`, html: `<div style="position:relative;padding:24px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(18px);overflow:hidden"><span style="position:absolute;top:-20px;right:-12px;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle,#fb7185,transparent 70%)"></span>Overlay card</div>` },
+    { title: "Sidebar Sheet", description: "Frosted side sheet for menus and inspectors.", preview: `<div style="width:100%;height:76px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.14)"></div>`, html: `<div style="padding:24px;border-radius:24px;background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(18px)">Sidebar sheet</div>` },
+    { title: "Badge Cluster", description: "Small frosted chips for filters and modes.", preview: `<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.09)">AI</span><span style="padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.09)">3D</span><span style="padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.09)">CSS</span></div>`, html: `<div style="display:flex;gap:8px;flex-wrap:wrap"><span style="padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14)">AI</span><span style="padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14)">3D</span><span style="padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14)">CSS</span></div>` },
+    { title: "Glass Meter", description: "Frosted progress meter for premium panels.", preview: `<div style="width:100%;padding:12px;border-radius:18px;background:rgba(255,255,255,.08)"><div style="height:8px;border-radius:999px;background:rgba(255,255,255,.12)"><div style="width:64%;height:100%;border-radius:999px;background:#c2a4ff"></div></div></div>`, html: `<div style="padding:12px;border-radius:18px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(16px)"><div style="height:8px;border-radius:999px;background:rgba(255,255,255,.12)"><div style="width:64%;height:100%;border-radius:999px;background:#c2a4ff"></div></div></div>` },
   ]);
 
   addToolkitCards("#utils .ut-g", [
@@ -785,11 +1072,16 @@ function deepenCatalog() {
     { title: "Code Capsule", description: "Inline code shell for docs and tokens.", preview: `<code style="padding:8px 10px;border-radius:10px;background:#0f172a;color:#38bdf8">npm run start</code>`, html: `<code style="padding:8px 10px;border-radius:10px;background:#0f172a;color:#38bdf8">npm run start</code>` },
     { title: "Legend Row", description: "Chart legend utility with compact dots.", preview: `<div style="display:flex;gap:10px"><span style="display:flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:50%;background:#38bdf8"></i>Traffic</span></div>`, html: `<div style="display:flex;gap:12px;flex-wrap:wrap"><span style="display:flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:50%;background:#38bdf8"></i>Traffic</span><span style="display:flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:50%;background:#4ade80"></i>Conversion</span></div>` },
     { title: "Window Rail", description: "Top shell rail for editor mockups.", preview: `<div style="display:flex;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.05);width:max-content"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></span><span style="width:10px;height:10px;border-radius:50%;background:#febc2e"></span><span style="width:10px;height:10px;border-radius:50%;background:#28c840"></span></div>`, html: `<div style="display:flex;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.05);width:max-content"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></span><span style="width:10px;height:10px;border-radius:50%;background:#febc2e"></span><span style="width:10px;height:10px;border-radius:50%;background:#28c840"></span></div>` },
+    { title: "Command Strip", description: "Shortcut bar with compact actionable keys.", preview: `<div style="display:flex;gap:6px"><span class="kit-pill">Ctrl</span><span class="kit-pill">Shift</span><span class="kit-pill">P</span></div>`, html: `<div style="display:flex;gap:6px"><kbd style="padding:6px 9px;border-radius:8px;background:#111827;color:#c2a4ff">Ctrl</kbd><kbd style="padding:6px 9px;border-radius:8px;background:#111827;color:#c2a4ff">Shift</kbd><kbd style="padding:6px 9px;border-radius:8px;background:#111827;color:#c2a4ff">P</kbd></div>` },
+    { title: "Status Pair", description: "Two-state micro summary for headers.", preview: `<div style="display:flex;gap:8px"><span style="padding:7px 10px;border-radius:999px;background:rgba(74,222,128,.14);color:#4ade80">Synced</span><span style="padding:7px 10px;border-radius:999px;background:rgba(56,189,248,.14);color:#38bdf8">Cached</span></div>`, html: `<div style="display:flex;gap:8px"><span style="padding:7px 10px;border-radius:999px;background:rgba(74,222,128,.14);color:#4ade80">Synced</span><span style="padding:7px 10px;border-radius:999px;background:rgba(56,189,248,.14);color:#38bdf8">Cached</span></div>` },
+    { title: "Alert Rail", description: "Thin status rail for app-shell notifications.", preview: `<div style="width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,#fb7185,#facc15,#4ade80)"></div>`, html: `<div style="width:100%;height:8px;border-radius:999px;background:linear-gradient(90deg,#fb7185,#facc15,#4ade80)"></div>` },
+    { title: "Breadcrumb Ghost", description: "Soft breadcrumb trail for dense apps.", preview: `<div style="display:flex;gap:8px;color:#94a3b8"><span>Projects</span><span>/</span><span style="color:#fff">Toolkit</span></div>`, html: `<nav style="display:flex;gap:8px;color:#94a3b8"><a>Projects</a><span>/</span><strong style="color:#fff">Toolkit</strong></nav>` },
   ]);
 }
 
 function initPagination() {
   const instances = [];
+  catalogPaginationState.instances = instances;
 
   document.querySelectorAll(".paginated").forEach((grid) => {
     const items = getPaginationItems(grid);
@@ -832,13 +1124,32 @@ function initPagination() {
     instances.push(instance);
   });
 
+  const scheduleRefresh = () => {
+    window.cancelAnimationFrame(catalogPaginationState.frame);
+    catalogPaginationState.frame = window.requestAnimationFrame(() => {
+      instances.forEach((instance) => {
+        instance.measurementSignature = "";
+        updatePaginationInstance(instance);
+      });
+    });
+  };
+
   let resizeTimer = 0;
   window.addEventListener("resize", () => {
     window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(() => {
-      instances.forEach((instance) => updatePaginationInstance(instance));
-    }, 150);
+    resizeTimer = window.setTimeout(scheduleRefresh, 120);
   });
+
+  if ("ResizeObserver" in window) {
+    catalogPaginationState.resizeObserver?.disconnect();
+    const observer = new ResizeObserver(() => scheduleRefresh());
+    catalogPaginationState.resizeObserver = observer;
+    instances.forEach((instance) => observer.observe(instance.grid));
+  }
+
+  if (document.fonts?.ready) {
+    document.fonts.ready.then(scheduleRefresh).catch(() => {});
+  }
 }
 
 function initBackgroundAudio() {
