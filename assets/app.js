@@ -329,6 +329,75 @@ function addToolkitCards(selector, items, className = "ut-c") {
   grid.dataset.minPageSize = grid.dataset.minPageSize || "8";
 }
 
+function removeCardsByTitle(selector, matcher) {
+  const grid = document.querySelector(selector);
+  if (!grid) return;
+
+  Array.from(grid.children).forEach((card) => {
+    const title =
+      card.querySelector(".ut-n, .ln, .tx-label, .sn, .hf-i h4, .gl-p, .an, .gl, .cn")?.textContent?.trim() || "";
+
+    if (title && matcher(title)) {
+      card.remove();
+    }
+  });
+}
+
+function setGridPageConfig(selector, pageSize, minPageSize = pageSize) {
+  const grid = document.querySelector(selector);
+  if (!grid) return;
+
+  grid.classList.add("paginated");
+  grid.dataset.pageSize = String(pageSize);
+  grid.dataset.minPageSize = String(minPageSize);
+}
+
+function createColorCard(item) {
+  return `
+    <div class="cc has-copy page-item" data-snippet="color" data-color="${item.hex}" data-name="${item.name}">
+      <div class="csw" style="background:${item.hex}"></div>
+      <div class="ci"><div class="cn">${item.name}</div><div class="ch">${item.hex}</div></div>
+      ${copyButtonMarkup()}
+    </div>
+  `;
+}
+
+function createGradientCard(item) {
+  return `
+    <div class="gc has-copy page-item" style="background:${item.css}" data-snippet="gradient" data-css="${encodeAttribute(item.css)}">
+      <span class="gl">${item.name}</span>
+      ${copyButtonMarkup()}
+    </div>
+  `;
+}
+
+function createFontCard(item) {
+  const weights = item.weights.map((weight) => `<span class="wt">${weight}</span>`).join("");
+  const sample = item.sample.replaceAll("\n", "<br>");
+
+  return `
+    <div class="fc has-copy page-item" data-snippet="font" data-font="'${item.family}', ${item.fallback || "sans-serif"}">
+      <div>
+        <div class="fn-n">${item.label}</div>
+        <div class="fn-s" style="font-family:'${item.family}',${item.fallback || "sans-serif"}">${sample}</div>
+      </div>
+      <div class="fn-w">${weights}</div>
+      ${copyButtonMarkup()}
+    </div>
+  `;
+}
+
+function createAnimationCard(item) {
+  return `
+    <div class="ac has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}">
+      <div class="db" style="${item.previewStyle}">${item.previewInner || ""}</div>
+      <div class="an">${item.name}</div>
+      <div class="ad">${item.description}</div>
+      ${copyButtonMarkup()}
+    </div>
+  `;
+}
+
 function createStyleCard(item) {
   const vars = Object.entries(item.colors)
     .map(([name, value]) => `--${name}:${value};`)
@@ -536,6 +605,189 @@ function addMarketplaceDepth() {
   ]);
 }
 
+function rebuildTypographyLibrary() {
+  const grid = document.querySelector("#typography .fn-r");
+  if (!grid) return;
+
+  const fonts = [
+    { label: "Space Grotesk", family: "Space Grotesk", sample: "Spatial\nInterface", weights: ["400", "500", "700"] },
+    { label: "Sora", family: "Sora", sample: "Future\nSignal", weights: ["300", "400", "600"] },
+    { label: "Manrope", family: "Manrope", sample: "Quiet\nProduct", weights: ["400", "600", "800"] },
+    { label: "Outfit", family: "Outfit", sample: "Launch\nKit", weights: ["300", "500", "700"] },
+    { label: "Plus Jakarta Sans", family: "Plus Jakarta Sans", sample: "Clear\nDashboard", weights: ["400", "600", "800"] },
+    { label: "DM Sans", family: "DM Sans", sample: "Editorial\nSystem", weights: ["400", "500", "700"] },
+    { label: "Syne", family: "Syne", sample: "Bold\nPoster", weights: ["400", "500", "700"] },
+    { label: "Fraunces", family: "Fraunces", sample: "Luxury\nNotes", fallback: "serif", weights: ["300", "400", "600"] },
+    { label: "IBM Plex Sans", family: "IBM Plex Sans", sample: "Utility\nForms", weights: ["400", "500", "700"] },
+    { label: "Archivo", family: "Archivo", sample: "Sport\nMetrics", weights: ["400", "600", "700"] },
+    { label: "Urbanist", family: "Urbanist", sample: "Fluid\nInterface", weights: ["300", "500", "700"] },
+    { label: "Instrument Serif", family: "Instrument Serif", fallback: "serif", sample: "Cinematic\nStory", weights: ["400", "500", "700"] },
+    { label: "Onest", family: "Onest", sample: "Sharp\nProduct", weights: ["400", "600", "700"] },
+    { label: "Rajdhani", family: "Rajdhani", sample: "Motion\nSystem", weights: ["400", "500", "700"] },
+    { label: "System Serif", family: "Fraunces", fallback: "serif", sample: "Readable\nStory", weights: ["400", "500", "700"] },
+  ];
+
+  grid.innerHTML = fonts.map(createFontCard).join("");
+  grid.classList.add("sg", "paginated");
+}
+
+function pruneCatalogNoise() {
+  removeCardsByTitle("#gradients .gr-g", (title) => /^Dynamic \d+$/i.test(title));
+  removeCardsByTitle("#buttons .btn-g", (title) => /^(Brutal|Gradient Btn) \d+$/i.test(title));
+  removeCardsByTitle("#loading .load-g", (title) => /^(Spinner|Ping Ring) \d+$/i.test(title));
+  removeCardsByTitle("#shadows .sh-g", (title) => /^Shadow \d+$/i.test(title));
+}
+
+function configureCatalogPagination() {
+  setGridPageConfig("#colors .pal-g", 12);
+  setGridPageConfig("#gradients .gr-g", 6);
+  setGridPageConfig("#animations .an-g", 8);
+  setGridPageConfig("#typography .fn-r", 8);
+  setGridPageConfig("#buttons .btn-g", 8);
+  setGridPageConfig("#loading .load-g", 8);
+  setGridPageConfig("#textfx .tx-g", 8);
+  setGridPageConfig("#shadows .sh-g", 8);
+  setGridPageConfig("#hover .hf-g", 6);
+  setGridPageConfig("#glass .gl-g", 6);
+  setGridPageConfig("#utils .ut-g", 8);
+}
+
+function deepenCatalog() {
+  const colorGrid = document.querySelector("#colors .pal-g");
+  if (colorGrid) {
+    colorGrid.insertAdjacentHTML("beforeend", [
+      { name: "Graphite", hex: "#1f2937" },
+      { name: "Steel", hex: "#334155" },
+      { name: "Cloud", hex: "#cbd5e1" },
+      { name: "Indigo", hex: "#6366f1" },
+      { name: "Skyline", hex: "#38bdf8" },
+      { name: "Lagoon", hex: "#14b8a6" },
+      { name: "Emerald", hex: "#10b981" },
+      { name: "Sunbeam", hex: "#facc15" },
+      { name: "Coral", hex: "#fb7185" },
+      { name: "Signal Red", hex: "#ef4444" },
+      { name: "Amber", hex: "#f59e0b" },
+      { name: "Pearl", hex: "#f8fafc" },
+    ].map(createColorCard).join(""));
+  }
+
+  const gradientGrid = document.querySelector("#gradients .gr-g");
+  if (gradientGrid) {
+    gradientGrid.insertAdjacentHTML("beforeend", [
+      { name: "Signal Bloom", css: "linear-gradient(135deg,#0f172a,#7c3aed,#fb7185)" },
+      { name: "Mint Terminal", css: "linear-gradient(135deg,#020617,#0f766e,#4ade80)" },
+      { name: "Copper Editorial", css: "linear-gradient(135deg,#1c1917,#b45309,#f5f5f4)" },
+      { name: "Cloud Burst", css: "linear-gradient(135deg,#f8fafc,#cbd5e1,#38bdf8)" },
+      { name: "Night Mesh", css: "radial-gradient(circle at 20% 20%,#7c3aed,transparent 35%),radial-gradient(circle at 80% 10%,#06b6d4,transparent 25%),#020617" },
+      { name: "Launch Flame", css: "linear-gradient(135deg,#111827,#f97316,#facc15)" },
+      { name: "Rose Circuit", css: "linear-gradient(135deg,#111827,#db2777,#fb7185)" },
+      { name: "Mono Aurora", css: "linear-gradient(135deg,#020617,#475569,#e2e8f0)" },
+    ].map(createGradientCard).join(""));
+  }
+
+  const animationGrid = document.querySelector("#animations .an-g");
+  if (animationGrid) {
+    animationGrid.insertAdjacentHTML("beforeend", [
+      {
+        name: "Radar Sweep",
+        description: "Rotating sonar line",
+        previewStyle: "border-radius:50%;background:conic-gradient(from 90deg,transparent,rgba(194,164,255,.85),transparent);animation:spin 1.6s linear infinite",
+        html: "<style>@keyframes radarSweep{to{transform:rotate(360deg)}}</style><div style=\"width:56px;height:56px;border-radius:50%;background:conic-gradient(from 90deg,transparent,rgba(194,164,255,.85),transparent);animation:radarSweep 1.6s linear infinite\"></div>",
+      },
+      {
+        name: "Wave Lift",
+        description: "Organic vertical motion",
+        previewStyle: "border-radius:12px;background:linear-gradient(135deg,#38bdf8,#c2a4ff);animation:floatUp 1.8s ease-in-out infinite",
+        html: "<style>@keyframes waveLift{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}</style><div style=\"width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#38bdf8,#c2a4ff);animation:waveLift 1.8s ease-in-out infinite\"></div>",
+      },
+      {
+        name: "Hue Orbit",
+        description: "Color-cycling badge",
+        previewStyle: "border-radius:999px;background:linear-gradient(135deg,#c2a4ff,#fb8dff);animation:glow 1.4s ease-in-out infinite alternate",
+        html: "<style>@keyframes hueOrbit{0%{filter:hue-rotate(0)}100%{filter:hue-rotate(120deg)}}</style><div style=\"display:inline-flex;padding:10px 16px;border-radius:999px;background:linear-gradient(135deg,#c2a4ff,#fb8dff);animation:hueOrbit 1.8s linear infinite\">Orbit</div>",
+      },
+      {
+        name: "Scanline",
+        description: "Fast horizontal scan",
+        previewStyle: "background:linear-gradient(90deg,transparent,#4ade80,transparent);animation:slideIO 1.5s ease-in-out infinite",
+        html: "<style>@keyframes scanline{0%,100%{transform:translateX(-110%)}50%{transform:translateX(110%)}}</style><div style=\"overflow:hidden;width:84px;height:10px;border-radius:999px;background:rgba(255,255,255,.08)\"><div style=\"width:60%;height:100%;background:linear-gradient(90deg,transparent,#4ade80,transparent);animation:scanline 1.5s ease-in-out infinite\"></div></div>",
+      },
+      {
+        name: "Pendulum",
+        description: "Balanced swing motion",
+        previewStyle: "border-radius:12px;background:linear-gradient(135deg,#facc15,#fb7185);transform-origin:top center;animation:swing 1.8s ease-in-out infinite",
+        html: "<style>@keyframes pendulum{0%,100%{transform:rotate(0)}25%{transform:rotate(10deg)}75%{transform:rotate(-10deg)}}</style><div style=\"width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#facc15,#fb7185);transform-origin:top center;animation:pendulum 1.8s ease-in-out infinite\"></div>",
+      },
+      {
+        name: "Dial Pop",
+        description: "Interface attention pulse",
+        previewStyle: "border-radius:50%;background:linear-gradient(135deg,#111827,#6366f1);animation:scaleUp 1.2s ease-in-out infinite alternate",
+        html: "<style>@keyframes dialPop{0%{transform:scale(.82)}100%{transform:scale(1.08)}}</style><div style=\"width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#111827,#6366f1);animation:dialPop 1.2s ease-in-out infinite alternate\"></div>",
+      },
+    ].map(createAnimationCard).join(""));
+  }
+
+  addToolkitCards("#buttons .btn-g", [
+    { title: "Corner Cut", description: "Sharp editorial CTA with clipped corners.", preview: `<button style="padding:12px 20px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);background:#e2e8f0;color:#020617;border:0;font-weight:800">Launch</button>`, html: `<button style="padding:12px 20px;clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px);background:#e2e8f0;color:#020617;border:0;font-weight:800">Launch</button>` },
+    { title: "Glass Rail", description: "Segmented glass action with subtle depth.", preview: `<button style="padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(14px);color:#fff">Preview</button>`, html: `<button style="padding:12px 22px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(14px);color:#fff">Preview</button>` },
+    { title: "Loader CTA", description: "Action button with inline progress cue.", preview: `<button style="display:flex;gap:10px;align-items:center;padding:12px 18px;border-radius:12px;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.1)"><span style="width:10px;height:10px;border-radius:50%;background:#4ade80"></span>Syncing</button>`, html: `<button style="display:flex;gap:10px;align-items:center;padding:12px 18px;border-radius:12px;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.1)"><span style="width:10px;height:10px;border-radius:50%;background:#4ade80"></span>Syncing</button>` },
+    { title: "Ticket Stub", description: "Commerce-style button with perforated ends.", preview: `<button style="padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,#facc15,#f97316);color:#111827;border:0;font-weight:900;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)">Reserve</button>`, html: `<button style="padding:12px 20px;border-radius:14px;background:linear-gradient(135deg,#facc15,#f97316);color:#111827;border:0;font-weight:900;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)">Reserve</button>` },
+    { title: "Signal Underline", description: "Minimal text CTA with strong active line.", preview: `<button style="padding:0 0 6px;background:transparent;border:0;border-bottom:2px solid #38bdf8;color:#fff">Read docs</button>`, html: `<button style="padding:0 0 6px;background:transparent;border:0;border-bottom:2px solid #38bdf8;color:#fff">Read docs</button>` },
+    { title: "Inset Key", description: "Keyboard-like keycap for utilities.", preview: `<button style="padding:10px 16px;border-radius:10px;background:#e5e7eb;border:1px solid #cbd5e1;box-shadow:inset 0 -2px 0 rgba(15,23,42,.16);color:#0f172a;font-weight:800">Cmd</button>`, html: `<button style="padding:10px 16px;border-radius:10px;background:#e5e7eb;border:1px solid #cbd5e1;box-shadow:inset 0 -2px 0 rgba(15,23,42,.16);color:#0f172a;font-weight:800">Cmd</button>` },
+  ]);
+
+  addToolkitCards("#loading .load-g", [
+    { title: "Square Orbit", description: "Rotating square loader for app shells.", preview: `<div style="width:34px;height:34px;border:3px solid rgba(255,255,255,.15);border-top-color:#c2a4ff;animation:spin .9s linear infinite"></div>`, html: `<style>@keyframes squareOrbit{to{transform:rotate(360deg)}}</style><div style="width:34px;height:34px;border:3px solid rgba(255,255,255,.15);border-top-color:#c2a4ff;animation:squareOrbit .9s linear infinite"></div>` },
+    { title: "Typing Rail", description: "Chat-like typing indicator with soft pulse.", preview: `<div style="display:flex;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#fff"></span><span style="width:8px;height:8px;border-radius:50%;background:#c2a4ff"></span><span style="width:8px;height:8px;border-radius:50%;background:#fb8dff"></span></div>`, html: `<style>@keyframes typingRail{0%,100%{transform:translateY(0);opacity:.35}50%{transform:translateY(-6px);opacity:1}}</style><div style="display:flex;gap:5px"><span style="width:8px;height:8px;border-radius:50%;background:#fff;animation:typingRail .9s infinite"></span><span style="width:8px;height:8px;border-radius:50%;background:#c2a4ff;animation:typingRail .9s .15s infinite"></span><span style="width:8px;height:8px;border-radius:50%;background:#fb8dff;animation:typingRail .9s .3s infinite"></span></div>` },
+    { title: "Split Bar", description: "Dual-lane progress for queued tasks.", preview: `<div style="display:grid;gap:8px;width:100%"><div style="height:6px;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:72%;height:100%;border-radius:999px;background:#c2a4ff"></div></div><div style="height:6px;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:44%;height:100%;border-radius:999px;background:#38bdf8"></div></div></div>`, html: `<div style="display:grid;gap:8px;width:180px"><div style="height:6px;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:72%;height:100%;border-radius:999px;background:#c2a4ff"></div></div><div style="height:6px;border-radius:999px;background:rgba(255,255,255,.08)"><div style="width:44%;height:100%;border-radius:999px;background:#38bdf8"></div></div></div>` },
+    { title: "Glass Skeleton", description: "Soft loading panel for premium cards.", preview: `<div style="width:100%;height:56px;border-radius:18px;background:linear-gradient(120deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:220% 100%;animation:shimmer 1.4s ease-in-out infinite"></div>`, html: `<div style="width:220px;height:76px;border-radius:18px;background:linear-gradient(120deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:220% 100%;animation:shimmer 1.4s ease-in-out infinite"></div>` },
+    { title: "Dial Loader", description: "Conic loader with clean center cutout.", preview: `<div style="width:42px;height:42px;border-radius:50%;background:conic-gradient(#38bdf8,#c2a4ff,#38bdf8);display:grid;place-items:center;animation:spin 1.1s linear infinite"><span style="width:26px;height:26px;border-radius:50%;background:#060507"></span></div>`, html: `<style>@keyframes dialLoader{to{transform:rotate(360deg)}}</style><div style="width:42px;height:42px;border-radius:50%;background:conic-gradient(#38bdf8,#c2a4ff,#38bdf8);display:grid;place-items:center;animation:dialLoader 1.1s linear infinite"><span style="width:26px;height:26px;border-radius:50%;background:#060507"></span></div>` },
+    { title: "Beacon Grid", description: "Grid pulse for dashboards and maps.", preview: `<div style="display:grid;grid-template-columns:repeat(3,8px);gap:5px"><span style="width:8px;height:8px;border-radius:2px;background:#38bdf8"></span><span style="width:8px;height:8px;border-radius:2px;background:#c2a4ff"></span><span style="width:8px;height:8px;border-radius:2px;background:#4ade80"></span><span style="width:8px;height:8px;border-radius:2px;background:#c2a4ff"></span><span style="width:8px;height:8px;border-radius:2px;background:#fff"></span><span style="width:8px;height:8px;border-radius:2px;background:#fb7185"></span></div>`, html: `<style>@keyframes beaconGrid{0%,100%{opacity:.35}50%{opacity:1}}</style><div style="display:grid;grid-template-columns:repeat(3,10px);gap:6px"><span style="width:10px;height:10px;border-radius:2px;background:#38bdf8;animation:beaconGrid .9s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#c2a4ff;animation:beaconGrid .9s .1s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#4ade80;animation:beaconGrid .9s .2s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#c2a4ff;animation:beaconGrid .9s .3s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#fff;animation:beaconGrid .9s .4s infinite"></span><span style="width:10px;height:10px;border-radius:2px;background:#fb7185;animation:beaconGrid .9s .5s infinite"></span></div>` },
+  ]);
+
+  addToolkitCards("#textfx .tx-g", [
+    { title: "Noise Gradient", description: "Hero headline with soft spectral range.", preview: `<strong style="font-size:30px;background:linear-gradient(135deg,#fff,#38bdf8,#c2a4ff);-webkit-background-clip:text;color:transparent">Spectrum</strong>`, html: `<h2 style="font-size:54px;background:linear-gradient(135deg,#fff,#38bdf8,#c2a4ff);-webkit-background-clip:text;color:transparent">Spectrum</h2>` },
+    { title: "Stamp Serif", description: "Editorial serif lockup for launch pages.", preview: `<strong style="font-family:'Fraunces',serif;font-size:34px;color:#f8fafc">Editorial</strong>`, html: `<h2 style="font-family:'Fraunces',serif;font-size:56px;color:#f8fafc">Editorial</h2>` },
+    { title: "Mono Badge", description: "Compact monospaced annotation label.", preview: `<span style="font-family:monospace;font-size:12px;letter-spacing:.18em;color:#4ade80">BUILD READY</span>`, html: `<span style="font-family:monospace;font-size:12px;letter-spacing:.18em;color:#4ade80">BUILD READY</span>` },
+    { title: "Layered Blur", description: "Soft duplicate blur for premium titles.", preview: `<strong style="font-size:32px;color:#fff;text-shadow:0 0 16px rgba(194,164,255,.32),0 0 36px rgba(56,189,248,.18)">Soft Layer</strong>`, html: `<h2 style="font-size:52px;color:#fff;text-shadow:0 0 16px rgba(194,164,255,.32),0 0 36px rgba(56,189,248,.18)">Soft Layer</h2>` },
+    { title: "Outline Capsule", description: "Uppercase category chip with border emphasis.", preview: `<span style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);font-size:11px;letter-spacing:.18em;color:#fff">TOOLKIT</span>`, html: `<span style="padding:7px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.18);font-size:11px;letter-spacing:.18em;color:#fff">TOOLKIT</span>` },
+  ]);
+
+  addToolkitCards("#shadows .sh-g", [
+    { title: "Panel Float", description: "Long diffuse shadow for modals.", preview: `<div style="width:100%;height:70px;border-radius:18px;background:#111827;box-shadow:0 24px 80px rgba(2,6,23,.52)"></div>`, html: `<div style="padding:24px;border-radius:18px;background:#111827;box-shadow:0 24px 80px rgba(2,6,23,.52)">Panel float</div>` },
+    { title: "Soft Canvas", description: "Paper-like shadow for calm interfaces.", preview: `<div style="width:100%;height:70px;border-radius:18px;background:#f8fafc;box-shadow:0 14px 40px rgba(15,23,42,.14)"></div>`, html: `<div style="padding:24px;border-radius:18px;background:#f8fafc;box-shadow:0 14px 40px rgba(15,23,42,.14)">Soft canvas</div>` },
+    { title: "Aqua Glow", description: "Cold luminous edge for charts.", preview: `<div style="width:100%;height:70px;border-radius:18px;background:#0f172a;box-shadow:0 0 0 1px rgba(56,189,248,.24),0 0 34px rgba(56,189,248,.28)"></div>`, html: `<div style="padding:24px;border-radius:18px;background:#0f172a;box-shadow:0 0 0 1px rgba(56,189,248,.24),0 0 34px rgba(56,189,248,.28)">Aqua glow</div>` },
+    { title: "Rose Halo", description: "Warm glow for editorial promos.", preview: `<div style="width:100%;height:70px;border-radius:18px;background:#18181b;box-shadow:0 18px 46px rgba(251,113,133,.26)"></div>`, html: `<div style="padding:24px;border-radius:18px;background:#18181b;box-shadow:0 18px 46px rgba(251,113,133,.26)">Rose halo</div>` },
+    { title: "Double Stack", description: "Two-layer elevation for hero tiles.", preview: `<div style="width:100%;height:70px;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(15,23,42,.08),0 24px 80px rgba(15,23,42,.12)"></div>`, html: `<div style="padding:24px;border-radius:18px;background:#fff;box-shadow:0 8px 20px rgba(15,23,42,.08),0 24px 80px rgba(15,23,42,.12)">Double stack</div>` },
+    { title: "Inset Console", description: "Pressed interior for shells and panels.", preview: `<div style="width:100%;height:70px;border-radius:18px;background:#0b1120;box-shadow:inset 0 0 24px rgba(148,163,184,.16)"></div>`, html: `<div style="padding:24px;border-radius:18px;background:#0b1120;box-shadow:inset 0 0 24px rgba(148,163,184,.16)">Inset console</div>` },
+  ]);
+
+  addToolkitCards("#hover .hf-g", [
+    { title: "Shear Card", description: "Poster-style shear on hover.", preview: `<div style="width:110px;height:78px;border-radius:18px;background:linear-gradient(135deg,#0f172a,#7c3aed);transform:skewX(-6deg)"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;background:linear-gradient(135deg,#0f172a,#7c3aed);transition:transform .24s" onmouseover="this.style.transform='skewX(-6deg) translateY(-6px)'" onmouseout="this.style.transform='none'"></div>` },
+    { title: "Glow Border", description: "Border-only hover with ambient light.", preview: `<div style="width:110px;height:78px;border-radius:18px;border:1px solid rgba(194,164,255,.4);box-shadow:0 0 28px rgba(194,164,255,.18)"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;border:1px solid rgba(194,164,255,.4);transition:box-shadow .24s" onmouseover="this.style.boxShadow='0 0 34px rgba(194,164,255,.24)'" onmouseout="this.style.boxShadow='none'"></div>` },
+    { title: "Reveal Badge", description: "Badge that brightens on hover.", preview: `<span style="padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:#fff">Hover me</span>`, html: `<span style="padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.08);color:#fff;transition:all .24s" onmouseover="this.style.background='rgba(194,164,255,.18)';this.style.color='#c2a4ff'" onmouseout="this.style.background='rgba(255,255,255,.08)';this.style.color='#fff'">Hover me</span>` },
+    { title: "Press Tile", description: "Tile that sinks with tactile feedback.", preview: `<div style="width:110px;height:78px;border-radius:18px;background:#f8fafc;box-shadow:0 8px 0 #94a3b8"></div>`, html: `<div style="width:220px;height:140px;border-radius:22px;background:#f8fafc;box-shadow:0 8px 0 #94a3b8;transition:.12s" onmousedown="this.style.transform='translateY(8px)';this.style.boxShadow='0 0 0 #94a3b8'" onmouseup="this.style.transform='none';this.style.boxShadow='0 8px 0 #94a3b8'"></div>` },
+    { title: "Halo Link", description: "Inline link with glowing underline.", preview: `<span style="padding-bottom:4px;border-bottom:2px solid #38bdf8;color:#fff">Open guide</span>`, html: `<a style="padding-bottom:4px;border-bottom:2px solid #38bdf8;color:#fff;text-decoration:none;transition:text-shadow .24s" onmouseover="this.style.textShadow='0 0 20px rgba(56,189,248,.4)'" onmouseout="this.style.textShadow='none'">Open guide</a>` },
+    { title: "Depth Orbit", description: "Circular hover with rotating highlight.", preview: `<div style="width:78px;height:78px;border-radius:50%;background:conic-gradient(from 0deg,#38bdf8,#c2a4ff,#38bdf8)"></div>`, html: `<div style="width:120px;height:120px;border-radius:50%;background:conic-gradient(from 0deg,#38bdf8,#c2a4ff,#38bdf8);transition:transform .3s" onmouseover="this.style.transform='rotate(28deg) scale(1.06)'" onmouseout="this.style.transform='none'"></div>` },
+  ]);
+
+  addToolkitCards("#glass .gl-g", [
+    { title: "Creator Mode", description: "Glass command chip for creative tools.", preview: `<div style="padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.09);backdrop-filter:blur(18px);color:#fff">Creator mode</div>`, html: `<div style="padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(18px);color:#fff">Creator mode</div>` },
+    { title: "Metric Duo", description: "Two-up stat slab with frosted panel.", preview: `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;width:100%"><div style="height:52px;border-radius:16px;background:rgba(255,255,255,.08)"></div><div style="height:52px;border-radius:16px;background:rgba(255,255,255,.08)"></div></div>`, html: `<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:14px;border-radius:22px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);backdrop-filter:blur(20px)"><div style="padding:16px;border-radius:16px;background:rgba(255,255,255,.06)">42%</div><div style="padding:16px;border-radius:16px;background:rgba(255,255,255,.06)">89%</div></div>` },
+    { title: "Glass Slab", description: "Wide radial glass plate for hero copy.", preview: `<div style="width:100%;height:62px;border-radius:24px;background:radial-gradient(circle at top left,rgba(255,255,255,.16),rgba(255,255,255,.05));backdrop-filter:blur(18px)"></div>`, html: `<div style="padding:24px;border-radius:24px;background:radial-gradient(circle at top left,rgba(255,255,255,.16),rgba(255,255,255,.05));border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(18px)">Glass slab</div>` },
+    { title: "Overlay Card", description: "Translucent card with soft gradient orb.", preview: `<div style="position:relative;width:100%;height:70px;border-radius:20px;background:rgba(255,255,255,.08);overflow:hidden"><span style="position:absolute;top:-14px;right:-10px;width:44px;height:44px;border-radius:50%;background:radial-gradient(circle,#fb7185,transparent 70%)"></span></div>`, html: `<div style="position:relative;padding:24px;border-radius:20px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);backdrop-filter:blur(18px);overflow:hidden"><span style="position:absolute;top:-20px;right:-12px;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle,#fb7185,transparent 70%)"></span>Overlay card</div>` },
+  ]);
+
+  addToolkitCards("#utils .ut-g", [
+    { title: "Status Dock", description: "Dock row for app and deploy states.", preview: `<div style="display:flex;gap:8px"><span class="kit-pill">Live</span><span class="kit-pill">Build</span><span class="kit-pill">DNS</span></div>`, html: `<div style="display:flex;gap:8px"><span style="padding:7px 10px;border-radius:999px;background:rgba(74,222,128,.14);color:#4ade80">Live</span><span style="padding:7px 10px;border-radius:999px;background:rgba(56,189,248,.14);color:#38bdf8">Build</span><span style="padding:7px 10px;border-radius:999px;background:rgba(250,204,21,.14);color:#facc15">DNS</span></div>` },
+    { title: "Filter Tokens", description: "Dense token strip for search states.", preview: `<div style="display:flex;gap:6px;flex-wrap:wrap"><span class="kit-pill">CSS</span><span class="kit-pill">React</span><span class="kit-pill">3D</span></div>`, html: `<div style="display:flex;gap:6px;flex-wrap:wrap"><span style="padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06)">CSS</span><span style="padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06)">React</span><span style="padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.06)">3D</span></div>` },
+    { title: "Metric Chip", description: "Compact KPI badge with delta.", preview: `<div style="padding:10px 12px;border-radius:14px;background:#111827;color:#fff">+18.4%</div>`, html: `<div style="display:inline-flex;gap:8px;align-items:center;padding:10px 12px;border-radius:14px;background:#111827;color:#fff"><strong>+18.4%</strong><span style="color:#4ade80">up</span></div>` },
+    { title: "Code Capsule", description: "Inline code shell for docs and tokens.", preview: `<code style="padding:8px 10px;border-radius:10px;background:#0f172a;color:#38bdf8">npm run start</code>`, html: `<code style="padding:8px 10px;border-radius:10px;background:#0f172a;color:#38bdf8">npm run start</code>` },
+    { title: "Legend Row", description: "Chart legend utility with compact dots.", preview: `<div style="display:flex;gap:10px"><span style="display:flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:50%;background:#38bdf8"></i>Traffic</span></div>`, html: `<div style="display:flex;gap:12px;flex-wrap:wrap"><span style="display:flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:50%;background:#38bdf8"></i>Traffic</span><span style="display:flex;gap:6px;align-items:center"><i style="width:8px;height:8px;border-radius:50%;background:#4ade80"></i>Conversion</span></div>` },
+    { title: "Window Rail", description: "Top shell rail for editor mockups.", preview: `<div style="display:flex;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.05);width:max-content"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></span><span style="width:10px;height:10px;border-radius:50%;background:#febc2e"></span><span style="width:10px;height:10px;border-radius:50%;background:#28c840"></span></div>`, html: `<div style="display:flex;gap:8px;padding:8px 10px;border-radius:999px;background:rgba(255,255,255,.05);width:max-content"><span style="width:10px;height:10px;border-radius:50%;background:#ff5f57"></span><span style="width:10px;height:10px;border-radius:50%;background:#febc2e"></span><span style="width:10px;height:10px;border-radius:50%;background:#28c840"></span></div>` },
+  ]);
+}
+
 function initPagination() {
   const instances = [];
 
@@ -627,6 +879,10 @@ document.addEventListener("DOMContentLoaded", () => {
   initScrollEffects();
   enhanceCatalog();
   addMarketplaceDepth();
+  pruneCatalogNoise();
+  rebuildTypographyLibrary();
+  deepenCatalog();
+  configureCatalogPagination();
   initPagination();
   initBackgroundAudio();
 });

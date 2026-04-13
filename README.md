@@ -1,92 +1,95 @@
-# UI IP Toolkit v4
-
-UI IP Toolkit is a public-ready static showcase for premium frontend assets, motion patterns, design tokens, UI references, and copyable HTML/CSS snippets.
-
-Production site: https://ui-ip-toolkit.vercel.app/
+# UI IP Toolkit
 
 <p align="center">
   <a href="https://ui-ip-toolkit.vercel.app/">
-    <img src="docs/images/readme-desktop.jpg" alt="Desktop screenshot of UI IP Toolkit" width="780">
+    <img src=".github/assets/ui-ip-toolkit-hero.png" alt="UI IP Toolkit hero banner" width="100%">
   </a>
-  <img src="docs/images/readme-mobile.jpg" alt="Mobile screenshot of UI IP Toolkit" width="220">
 </p>
 
-## Overview
+<p align="center">
+  <a href="https://ui-ip-toolkit.vercel.app/"><strong>Live Demo</strong></a>
+  |
+  <a href="#quick-start"><strong>Run Locally</strong></a>
+  |
+  <a href="#architecture"><strong>Architecture</strong></a>
+</p>
 
-This repository packages the entire experience as a single static deployment with zero backend requirements. It is designed to be easy to publish, safe to expose publicly, and simple to inspect or extend.
+<p align="center">
+  <img alt="Static Site" src="https://img.shields.io/badge/runtime-static-0b0b10?style=flat-square">
+  <img alt="JavaScript" src="https://img.shields.io/badge/frontend-HTML%20%2B%20CSS%20%2B%20JS-c2a4ff?style=flat-square">
+  <img alt="Deployment" src="https://img.shields.io/badge/deploy-Vercel-111827?style=flat-square">
+  <img alt="Security Headers" src="https://img.shields.io/badge/security-hardened-38bdf8?style=flat-square">
+</p>
 
-Core scope:
+UI IP Toolkit is a public-facing static catalog of copy-ready frontend assets: gradients, buttons, fonts, loading states, hover treatments, glass surfaces, layout fragments, and reusable product UI patterns. It is designed to feel like a polished product library rather than a loose code dump, while remaining safe to publish and trivial to deploy on Vercel.
 
-- Single-page static interface with 29 sections and 320+ copyable elements.
-- Visual coverage across buttons, cards, forms, gradients, motion studies, 3D patterns, framework-inspired references, and design tokens.
-- Local browser interactions for copy-to-clipboard, pagination, cursor effects, reveal animations, and synthesized audio demos.
-- Vercel-ready deployment with hardened response headers and a restrictive Content Security Policy.
+## Preview
 
-## Live Demo
+<p align="center">
+  <img src=".github/assets/ui-ip-toolkit-demo.gif" alt="Animated preview of UI IP Toolkit" width="100%">
+</p>
 
-- Public URL: https://ui-ip-toolkit.vercel.app/
-- Hosting target: Vercel static deployment
-- Runtime profile: no backend, no database, no remote media dependencies
+<p align="center">
+  <img src=".github/assets/ui-ip-toolkit-bento.png" alt="Bento overview of key UI IP Toolkit sections" width="100%">
+</p>
 
 ## Highlights
 
-- Zero runtime dependencies on third-party CDNs or media hosts.
-- Static asset delivery from `self` with CSP hashes for the remaining inline demo handlers.
-- Public-safe metadata and repository configuration for open-source hosting.
-- Desktop and mobile-friendly presentation from the same static artifact.
+- Poster-style landing page with dense sectioned browsing and explicit pagination instead of endless oversized grids.
+- Expanded visual systems across color tokens, curated gradients, keyframe patterns, typography, buttons, loading states, text effects, shadows, hover effects, glass UI, and interactive utilities.
+- Local asset strategy only: background audio, fonts, scripts, and documentation media are served from the repository with no third-party runtime dependencies.
+- Copy-first workflow: each card keeps a direct snippet payload so the catalog remains useful as a working toolkit, not just a gallery.
+- Public-safe static deployment posture with Vercel headers, CSP, restrictive policies, and no backend surface.
+- README and preview assets generated from the real deployed experience to keep the repository presentation aligned with the product.
 
-## Security Profile
+## Tech Stack
 
-- `Content-Security-Policy`, `Referrer-Policy`, `Permissions-Policy`, `X-Content-Type-Options`, `X-Frame-Options`, `Cross-Origin-Opener-Policy`, and `Cross-Origin-Resource-Policy` are defined in [vercel.json](vercel.json).
-- Runtime scripts are served locally from [assets/app.js](assets/app.js).
-- Audio interactions are synthesized in-browser instead of loading external audio files.
-- The package is marked `private` to avoid accidental registry publication.
-- No application secrets are required for local preview or production delivery.
+| Layer | Tools |
+| --- | --- |
+| App shell | `index.html`, semantic sections, handcrafted CSS |
+| Interaction | `assets/app.js`, DOM-driven pagination, copy actions, background audio control |
+| Motion | CSS keyframes, reveal transitions, cursor layer, hover states |
+| Typography | Local font assets in `assets/fonts/` |
+| Documentation media | Generated screenshots, GIF, hero, bento assets in `.github/assets/` |
+| Deployment | Vercel static hosting via `vercel.json` |
+| Security | CSP, `Referrer-Policy`, `Permissions-Policy`, frame blocking, MIME hardening |
 
-## Project Structure
+## Architecture
 
-```text
-.
-|- assets/
-|  \- app.js
-|- docs/
-|  \- images/
-|     |- readme-desktop.jpg
-|     \- readme-mobile.jpg
-|- index.html
-|- package.json
-|- README.md
-\- vercel.json
+```mermaid
+flowchart LR
+  User["Browser user"] --> Vercel["Vercel static deployment"]
+  Vercel --> HTML["index.html"]
+  HTML --> JS["assets/app.js"]
+  HTML --> Fonts["assets/fonts/*"]
+  HTML --> Audio["assets/audio/the-high-ridge.mp3"]
+  HTML --> Media[".github/assets + docs/images"]
+  JS --> Catalog["Paginated UI sections + copy payloads"]
+  JS --> UX["Cursor, reveal, audio, navigation state"]
 ```
 
-## Local Development
-
-Open [index.html](index.html) directly in a browser, or serve the directory locally:
+## Quick Start
 
 ```bash
+git clone https://github.com/ikerperez12/UI-IP-Toolkit-v4.0.git
+cd UI-IP-Toolkit-v4.0
+npm install
 npm start
 ```
 
-The start script uses a lightweight static server and exposes the site on `http://127.0.0.1:3333`.
+Open `http://127.0.0.1:3333/`.
 
-## Deployment
+This project is fully static, so there is no backend boot sequence, no environment secret requirement, and no build-time service dependency for local preview.
 
-This repository is prepared for static deployment on Vercel. The live production target is:
+## Production Notes
 
-- https://ui-ip-toolkit.vercel.app/
+- Live URL: [ui-ip-toolkit.vercel.app](https://ui-ip-toolkit.vercel.app/)
+- Deployment target: Vercel static site from the repository root
+- Security contract: response headers are defined in `vercel.json`
+- Runtime assets: `assets/app.js`, `assets/audio/`, and `assets/fonts/` are self-hosted
+- Marketing assets: `.github/assets/` is reserved for README and repository presentation media
+- Metadata: canonical URL and social tags live in `index.html`
 
-Deployment behavior:
+## Repository Status
 
-- `main` is the public branch.
-- Vercel serves the static site directly from the repository root.
-- Cache policy is conservative for HTML and long-lived for versioned static assets.
-
-## Public Metadata
-
-- Canonical URL and social preview metadata are defined in [index.html](index.html).
-- Project homepage metadata is defined in [package.json](package.json).
-- README screenshots are stored locally in the repository so documentation does not depend on remote image hosts.
-
-## License
-
-MIT. See [LICENSE](LICENSE).
+This repository is intentionally shaped as a clean public product surface: static-only, deployable as-is, documentation-backed, and free from internal environment coupling.
