@@ -17,7 +17,7 @@ This repository packages the entire experience as a single static deployment wit
 
 Core scope:
 
-- Single-page static interface with 30 sections and 200+ copyable elements.
+- Single-page static interface with 29 sections and 280+ copyable elements.
 - Visual coverage across buttons, cards, forms, gradients, motion studies, 3D patterns, framework-inspired references, and design tokens.
 - Local browser interactions for copy-to-clipboard, pagination, cursor effects, reveal animations, and synthesized audio demos.
 - Vercel-ready deployment with hardened response headers and a restrictive Content Security Policy.

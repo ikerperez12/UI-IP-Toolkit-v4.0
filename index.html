@@ -441,8 +441,15 @@ section{position:relative;z-index:2;padding:120px 60px 90px}.ctr{max-width:1400p
 /* â•â•â• PAGINATION â•â•â• */
 .page-item.hidden { display: none !important; }
 .pagination-controls{margin-top:26px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:center;width:100%}
+.pagination-controls button{min-width:112px;justify-content:center}
 .pagination-controls button:disabled { opacity: 0.3; cursor: not-allowed; }
-.pagination-status{font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(234,229,236,.42)}
+.pagination-status{min-width:92px;text-align:center;font-size:11px;letter-spacing:1px;text-transform:uppercase;color:rgba(234,229,236,.42)}
+.mini-preview{min-height:106px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.045);border-radius:12px;padding:14px;margin-bottom:12px}
+.mini-preview.stack{align-items:stretch;justify-content:flex-start;flex-direction:column;gap:8px}
+.kit-meta{font-size:10px;color:rgba(234,229,236,.48);line-height:1.55;margin:4px 0 12px}
+.kit-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.kit-pill{padding:4px 8px;border-radius:999px;background:rgba(194,164,255,.1);border:1px solid rgba(194,164,255,.16);color:#c2a4ff;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}
+.catalog-source-note{position:relative;z-index:2;margin:24px auto 0;max-width:880px;text-align:center;color:rgba(234,229,236,.45);font-size:12px;letter-spacing:.04em}
 .svg-g { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 14px; }
 
 /* â•â•â• SECTIONS V4 â•â•â• */
@@ -1948,7 +1955,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 
 <div class="dv"></div>
-<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 29 sections • 249 copyable elements • Background soundtrack • Zero dependencies</p></footer>
+<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 29 sections • 280+ copyable elements • Background soundtrack • Zero dependencies</p></footer>
 <audio id="background-audio" preload="auto" autoplay playsinline loop>
   <source src="assets/audio/the-high-ridge.mp3" type="audio/mpeg">
 </audio>
