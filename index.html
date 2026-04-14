@@ -310,10 +310,28 @@ section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84
 
 /* === LAYOUTS === */
 .ly-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:18px}
-.ly-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:16px;padding:24px;transition:border-color .3s;position:relative;display:flex;flex-direction:column;min-height:244px}
+.ly-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:16px;padding:24px;transition:border-color .3s;position:relative;display:flex;flex-direction:column;min-height:244px;min-width:0;overflow:hidden}
 .ly-c:hover{border-color:rgba(194,164,255,.12)}
 .ly-c h4{font-size:12px;font-weight:600;margin-bottom:12px}
 .ly-c > :not(h4):not(.cpb){flex:1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ly-stage{width:100%;height:92px;padding:10px;border-radius:16px;background:linear-gradient(180deg,rgba(15,23,42,.88),rgba(11,17,32,.58));border:1px solid rgba(194,164,255,.12);box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.ly-stage.soft{background:linear-gradient(180deg,rgba(15,23,42,.78),rgba(11,17,32,.42))}
+.ly-grail{display:grid;grid-template-rows:12px 1fr;gap:8px;width:100%;height:100%}
+.ly-grail-head{border-radius:999px;background:linear-gradient(90deg,rgba(194,164,255,.42),rgba(56,189,248,.18))}
+.ly-grail-body{display:grid;grid-template-columns:1.05fr 2.4fr .9fr;gap:8px}
+.ly-grail-body span,.ly-side-content span,.ly-bento-grid span,.ly-editorial-grid span,.ly-dense-grid span{display:block;border-radius:10px;border:1px solid rgba(194,164,255,.12);background:rgba(194,164,255,.12)}
+.ly-grail-body span:nth-child(2){background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(194,164,255,.08))}
+.ly-side-content{display:grid;grid-template-columns:1fr 2.6fr;gap:8px;width:100%;height:100%}
+.ly-side-content span:nth-child(1){background:linear-gradient(180deg,rgba(56,189,248,.14),rgba(194,164,255,.12))}
+.ly-side-content span:nth-child(2){background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(194,164,255,.08))}
+.ly-bento-grid{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:8px;width:100%;height:100%}
+.ly-bento-grid span:first-child{grid-row:span 2;background:linear-gradient(180deg,rgba(194,164,255,.18),rgba(56,189,248,.12))}
+.ly-editorial-grid{display:grid;grid-template-columns:.9fr 2.3fr .9fr;gap:8px;width:100%;height:100%}
+.ly-editorial-grid span:nth-child(2){background:linear-gradient(180deg,rgba(255,255,255,.14),rgba(194,164,255,.08))}
+.ly-dense-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;width:100%;height:100%}
+.ly-dense-grid span{display:grid;align-content:start;gap:6px;padding:8px}
+.ly-dense-grid span i{display:block;height:6px;border-radius:999px;background:rgba(255,255,255,.14)}
+.ly-dense-grid span i:nth-child(2){width:72%}
 .lm{display:flex;gap:6px;height:70px}.lm .ls{width:50px;background:rgba(194,164,255,.06);border-radius:6px;border:1px solid rgba(194,164,255,.08)}
 .lm .ln{flex:1;background:rgba(194,164,255,.035);border-radius:6px;border:1px solid rgba(194,164,255,.05);display:flex;flex-direction:column;gap:3px;padding:5px}
 .lm .lb{height:5px;border-radius:2px;background:rgba(194,164,255,.08)}.lm .lb:nth-child(2){width:65%}
@@ -339,14 +357,16 @@ section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84
 
 /* === EXTRA SECTIONS (tokens, easing, styles, palettes, spacing, radius) === */
 .ez-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.ez-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:14px;padding:20px;transition:border-color .3s;position:relative}
+.ez-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:14px;padding:20px;transition:border-color .3s;position:relative;overflow:hidden;min-height:154px}
 .ez-c:hover{border-color:rgba(194,164,255,.15)}
 .ez-c .ez-n{font-size:12px;font-weight:600;margin-bottom:4px}
 .ez-c .ez-v{font-size:9px;color:rgba(194,164,255,.5);font-family:'Geist',monospace;margin-bottom:12px}
-.ez-b{height:4px;border-radius:2px;background:rgba(194,164,255,.08);position:relative;overflow:hidden}
-.ez-d{width:24px;height:4px;border-radius:2px;background:#c2a4ff;position:absolute;left:0}
-.ez-c:hover .ez-d{animation:ezSlide 1.2s infinite}
-@keyframes ezSlide{0%{left:0}50%{left:calc(100% - 24px)}100%{left:0}}
+.ez-b{height:58px;border-radius:18px;background:linear-gradient(180deg,rgba(15,23,42,.88),rgba(11,17,32,.58));border:1px solid rgba(194,164,255,.12);position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
+.ez-b::before{content:'';position:absolute;left:14px;right:14px;top:50%;height:2px;transform:translateY(-50%);background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(194,164,255,.24),rgba(255,255,255,.05))}
+.ez-b::after{content:'';position:absolute;inset:10px;border-radius:12px;border:1px dashed rgba(194,164,255,.08)}
+.ez-d{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#fff,#c2a4ff);position:absolute;top:50%;left:14px;transform:translateY(-50%);box-shadow:0 0 0 5px rgba(194,164,255,.12),0 10px 24px rgba(194,164,255,.26);animation:ezSlide 1.8s var(--ease,ease) infinite alternate}
+.ez-c:hover .ez-d{animation-duration:1.35s}
+@keyframes ezSlide{0%{left:14px}100%{left:calc(100% - 30px)}}
 
 .sty-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
 .sty-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:14px;padding:18px;transition:border-color .3s,transform .35s cubic-bezier(.16,1,.3,1);position:relative}
@@ -584,15 +604,15 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 #sera-navigation .cp-c,
 #sera-navigation .ut-c{min-height:272px;display:flex;flex-direction:column}
-#sera-navigation .cp-p{flex:1;min-height:156px;padding:24px 18px}
+#sera-navigation .cp-p{flex:1;min-height:156px;padding:24px 18px;background:linear-gradient(180deg,rgba(10,16,30,.72),rgba(12,13,22,.4));border-bottom:1px solid rgba(255,255,255,.04)}
 
 #sera-cards .cp-c,
 #sera-cards .ut-c{min-height:310px;display:flex;flex-direction:column}
-#sera-cards .cp-p{flex:1;min-height:194px;padding:24px 18px}
+#sera-cards .cp-p{flex:1;min-height:194px;padding:24px 18px;background:linear-gradient(180deg,rgba(10,16,30,.72),rgba(12,13,22,.4));border-bottom:1px solid rgba(255,255,255,.04)}
 
 #sera-sections .cp-c,
 #sera-sections .ut-c{min-height:332px;display:flex;flex-direction:column}
-#sera-sections .cp-p{flex:1;min-height:214px;padding:26px 20px}
+#sera-sections .cp-p{flex:1;min-height:214px;padding:26px 20px;background:linear-gradient(180deg,rgba(10,16,30,.72),rgba(12,13,22,.4));border-bottom:1px solid rgba(255,255,255,.04)}
 
 .pagination-controls{margin-top:30px;gap:14px}
 .pagination-status{min-width:176px}
@@ -1744,13 +1764,13 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 <section id="layouts"><div class="ctr"><div class="sl rv">18 - Layouts</div><div class="st rv d1">Layout <span>Blueprints</span></div>
 <div class="ly-g sg rv d2 paginated">
 <div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px"&gt;&lt;div style="height:150px;border-radius:14px;background:rgba(255,255,255,.05)"&gt;&lt;/div&gt;&lt;div style="height:110px;border-radius:14px;background:rgba(255,255,255,.05)"&gt;&lt;/div&gt;&lt;div style="height:180px;border-radius:14px;background:rgba(255,255,255,.05)"&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Masonry Mock</h4><div style="display:flex;gap:8px;height:80px;align-items:flex-start"><div style="flex:1;height:68px;border-radius:8px;background:rgba(194,164,255,.08)"></div><div style="flex:1;height:46px;border-radius:8px;background:rgba(194,164,255,.05)"></div><div style="flex:1;height:80px;border-radius:8px;background:rgba(194,164,255,.12)"></div></div><button class="cpb">Copy</button></div>
-<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;flex-direction:column;min-height:420px"&gt;&lt;header style="height:64px;background:rgba(255,255,255,.08)"&gt;&lt;/header&gt;&lt;div style="display:flex;flex:1"&gt;&lt;aside style="width:220px;background:rgba(255,255,255,.04)"&gt;&lt;/aside&gt;&lt;main style="flex:1"&gt;&lt;/main&gt;&lt;aside style="width:180px;background:rgba(255,255,255,.04)"&gt;&lt;/aside&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Holy Grail</h4><div style="display:flex;flex-direction:column;gap:6px;height:80px"><div style="height:12px;border-radius:8px;background:rgba(194,164,255,.1)"></div><div style="display:flex;gap:6px;flex:1"><div style="width:24%;border-radius:8px;background:rgba(194,164,255,.06)"></div><div style="flex:1;border-radius:8px;background:rgba(194,164,255,.03)"></div><div style="width:18%;border-radius:8px;background:rgba(194,164,255,.06)"></div></div></div><button class="cpb">Copy</button></div>
-<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;gap:14px"&gt;&lt;aside style="width:260px;border-radius:18px;background:rgba(255,255,255,.04)"&gt;&lt;/aside&gt;&lt;main style="flex:1;border-radius:18px;background:rgba(255,255,255,.03)"&gt;&lt;/main&gt;&lt;/div&gt;'><h4>Sidebar + Content</h4><div style="display:flex;gap:8px;height:80px"><div style="width:26%;border-radius:10px;background:rgba(194,164,255,.08)"></div><div style="flex:1;border-radius:10px;background:rgba(194,164,255,.04)"></div></div><button class="cpb">Copy</button></div>
-<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:12px"&gt;&lt;div style="grid-row:span 2;border-radius:18px;background:rgba(255,255,255,.05)"&gt;&lt;/div&gt;&lt;div style="border-radius:18px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="border-radius:18px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Bento Layout</h4><div class="lbn"><div></div><div></div><div></div></div><button class="cpb">Copy</button></div>
+<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;flex-direction:column;min-height:420px"&gt;&lt;header style="height:64px;background:rgba(255,255,255,.08)"&gt;&lt;/header&gt;&lt;div style="display:flex;flex:1"&gt;&lt;aside style="width:220px;background:rgba(255,255,255,.04)"&gt;&lt;/aside&gt;&lt;main style="flex:1"&gt;&lt;/main&gt;&lt;aside style="width:180px;background:rgba(255,255,255,.04)"&gt;&lt;/aside&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Holy Grail</h4><div class="ly-stage"><div class="ly-grail"><div class="ly-grail-head"></div><div class="ly-grail-body"><span></span><span></span><span></span></div></div></div><button class="cpb">Copy</button></div>
+<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:flex;gap:14px"&gt;&lt;aside style="width:260px;border-radius:18px;background:rgba(255,255,255,.04)"&gt;&lt;/aside&gt;&lt;main style="flex:1;border-radius:18px;background:rgba(255,255,255,.03)"&gt;&lt;/main&gt;&lt;/div&gt;'><h4>Sidebar + Content</h4><div class="ly-stage soft"><div class="ly-side-content"><span></span><span></span></div></div><button class="cpb">Copy</button></div>
+<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:12px"&gt;&lt;div style="grid-row:span 2;border-radius:18px;background:rgba(255,255,255,.05)"&gt;&lt;/div&gt;&lt;div style="border-radius:18px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="border-radius:18px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Bento Layout</h4><div class="ly-stage"><div class="ly-bento-grid"><span></span><span></span><span></span></div></div><button class="cpb">Copy</button></div>
 <div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center"&gt;&lt;div style="display:flex;flex-direction:column;gap:10px"&gt;&lt;div style="height:18px;width:70%;border-radius:999px;background:rgba(255,255,255,.08)"&gt;&lt;/div&gt;&lt;div style="height:18px;width:90%;border-radius:999px;background:rgba(255,255,255,.08)"&gt;&lt;/div&gt;&lt;/div&gt;&lt;div style="height:180px;border-radius:22px;background:linear-gradient(135deg,rgba(194,164,255,.18),rgba(251,141,255,.08))"&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Split Hero</h4><div style="display:grid;grid-template-columns:1.2fr .8fr;gap:8px;height:80px"><div style="display:flex;flex-direction:column;gap:8px"><div style="height:12px;width:70%;border-radius:999px;background:rgba(255,255,255,.12)"></div><div style="height:12px;width:92%;border-radius:999px;background:rgba(255,255,255,.08)"></div><div style="height:12px;width:56%;border-radius:999px;background:rgba(255,255,255,.06)"></div></div><div style="border-radius:12px;background:linear-gradient(135deg,rgba(194,164,255,.18),rgba(251,141,255,.08))"></div></div><button class="cpb">Copy</button></div>
 <div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:72px 1fr;gap:14px"&gt;&lt;aside style="border-radius:18px;background:rgba(255,255,255,.05)"&gt;&lt;/aside&gt;&lt;div style="display:grid;grid-template-rows:auto 1fr;gap:14px"&gt;&lt;header style="height:68px;border-radius:18px;background:rgba(255,255,255,.04)"&gt;&lt;/header&gt;&lt;main style="border-radius:18px;background:rgba(255,255,255,.03)"&gt;&lt;/main&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Dashboard Rail</h4><div style="display:grid;grid-template-columns:54px 1fr;gap:8px;height:80px"><div style="border-radius:12px;background:rgba(194,164,255,.08)"></div><div style="display:grid;grid-template-rows:18px 1fr;gap:8px"><div style="border-radius:8px;background:rgba(194,164,255,.06)"></div><div style="border-radius:12px;background:rgba(194,164,255,.03)"></div></div></div><button class="cpb">Copy</button></div>
-<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:1fr minmax(0,720px) 1fr"&gt;&lt;div&gt;&lt;/div&gt;&lt;main style="padding:0 24px"&gt;&lt;/main&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Editorial Stack</h4><div style="display:grid;grid-template-columns:1fr 2.3fr 1fr;gap:8px;height:80px"><div></div><div style="border-radius:12px;background:rgba(194,164,255,.06)"></div><div></div></div><button class="cpb">Copy</button></div>
-<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px"&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Dense Data Grid</h4><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;height:80px"><div style="border-radius:10px;background:rgba(194,164,255,.05)"></div><div style="border-radius:10px;background:rgba(194,164,255,.04)"></div><div style="border-radius:10px;background:rgba(194,164,255,.04)"></div><div style="border-radius:10px;background:rgba(194,164,255,.05)"></div></div><button class="cpb">Copy</button></div>
+<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:1fr minmax(0,720px) 1fr"&gt;&lt;div&gt;&lt;/div&gt;&lt;main style="padding:0 24px"&gt;&lt;/main&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Editorial Stack</h4><div class="ly-stage soft"><div class="ly-editorial-grid"><span></span><span></span><span></span></div></div><button class="cpb">Copy</button></div>
+<div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px"&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Dense Data Grid</h4><div class="ly-stage"><div class="ly-dense-grid"><span><i></i><i></i><i></i></span><span><i></i><i></i><i></i></span><span><i></i><i></i><i></i></span><span><i></i><i></i><i></i></span></div></div><button class="cpb">Copy</button></div>
 </div></div></section>
 
 <!-- 16 DESIGN TOKENS -->
@@ -1818,10 +1838,10 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 <div class="dv"></div>
 <section id="easing"><div class="ctr"><div class="sl rv">21 - Easing Curves</div><div class="st rv d1">Motion <span>Easings</span></div>
 <div class="ez-g sg rv d2">
-<div class="ez-c has-copy" data-snippet="code"><div class="ez-n">Ease Out Expo</div><div class="ez-v">cubic-bezier(0.16, 1, 0.3, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="ez-c has-copy" data-snippet="code"><div class="ez-n">Ease Out Back</div><div class="ez-v">cubic-bezier(0.34, 1.56, 0.64, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="ez-c has-copy" data-snippet="code"><div class="ez-n">Spring Bounce</div><div class="ez-v">cubic-bezier(0.68, -0.55, 0.27, 1.55)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
-<div class="ez-c has-copy" data-snippet="code"><div class="ez-n">Elastic Out</div><div class="ez-v">cubic-bezier(0.3, 1.7, 0.5, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ez-c has-copy" style="--ease:cubic-bezier(0.16, 1, 0.3, 1)" data-snippet="code"><div class="ez-n">Ease Out Expo</div><div class="ez-v">cubic-bezier(0.16, 1, 0.3, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ez-c has-copy" style="--ease:cubic-bezier(0.34, 1.56, 0.64, 1)" data-snippet="code"><div class="ez-n">Ease Out Back</div><div class="ez-v">cubic-bezier(0.34, 1.56, 0.64, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ez-c has-copy" style="--ease:cubic-bezier(0.68, -0.55, 0.27, 1.55)" data-snippet="code"><div class="ez-n">Spring Bounce</div><div class="ez-v">cubic-bezier(0.68, -0.55, 0.27, 1.55)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
+<div class="ez-c has-copy" style="--ease:cubic-bezier(0.3, 1.7, 0.5, 1)" data-snippet="code"><div class="ez-n">Elastic Out</div><div class="ez-v">cubic-bezier(0.3, 1.7, 0.5, 1)</div><div class="ez-b"><div class="ez-d"></div></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
 </div></div></section>
 
 <!-- 18 STYLE CATALOG -->
