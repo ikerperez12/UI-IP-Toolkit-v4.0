@@ -78,6 +78,60 @@ const catalogSectionConfig = {
     rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
     reserveHeight: { wide: 510, desktop: 510, tablet: 680, mobile: 0 },
   },
+  "#neutral .cp-g": {
+    minWidth: 260,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 552, desktop: 552, tablet: 720, mobile: 0 },
+  },
+  "#components .cp-g": {
+    minWidth: 260,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 552, desktop: 552, tablet: 720, mobile: 0 },
+  },
+  "#layouts .ly-g": {
+    minWidth: 260,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 540, desktop: 540, tablet: 720, mobile: 0 },
+  },
+  "#styles .sty-g": {
+    minWidth: 250,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 520, desktop: 520, tablet: 710, mobile: 0 },
+  },
+  "#palettes .ip-g": {
+    minWidth: 220,
+    gap: 16,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 428, desktop: 428, tablet: 580, mobile: 0 },
+  },
+  "#spacing .sp-g": {
+    minWidth: 220,
+    gap: 16,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 424, desktop: 424, tablet: 580, mobile: 0 },
+  },
+  "#sera-navigation .cp-g": {
+    minWidth: 260,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 552, desktop: 552, tablet: 720, mobile: 0 },
+  },
+  "#sera-cards .cp-g": {
+    minWidth: 280,
+    gap: 18,
+    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+    reserveHeight: { wide: 626, desktop: 626, tablet: 790, mobile: 0 },
+  },
+  "#sera-sections .cp-g": {
+    minWidth: 320,
+    gap: 20,
+    rows: { wide: 2, desktop: 2, tablet: 1, mobile: 2 },
+    reserveHeight: { wide: 666, desktop: 666, tablet: 412, mobile: 0 },
+  },
 };
 
 async function copySnippet(btn) {
@@ -590,6 +644,16 @@ function removeCardsByTitle(selector, matcher) {
   });
 }
 
+function promoteCards(selector, matcher) {
+  const grid = document.querySelector(selector);
+  if (!grid) return;
+
+  const cards = Array.from(grid.children).filter((card) => matcher(card));
+  cards.reverse().forEach((card) => {
+    grid.insertAdjacentElement("afterbegin", card);
+  });
+}
+
 function normalizeButtonShelves() {
   document.querySelectorAll("#buttons .bw").forEach((shelf) => {
     if (shelf.dataset.shelfReady) return;
@@ -940,14 +1004,6 @@ function addSeraCatalog() {
       preview: `<button style="position:relative;overflow:hidden;padding:12px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.12);background:#0f172a;color:#fff;font-weight:700">Upgrade<span style="position:absolute;inset:-18px auto -18px -40px;width:28px;background:rgba(255,255,255,.32);transform:rotate(14deg)"></span></button>`,
       html: `import ShimmerButton from "@/components/sera-ui/02-buttons/shimmer/shimmer";\n\n<ShimmerButton shimmerColor="#ffffff">Upgrade</ShimmerButton>`,
     },
-    {
-      source: "Sera UI",
-      title: "Dropdown Menu",
-      description: "Animated trigger plus compact menu for inline actions.",
-      previewMode: "stack",
-      preview: `<button style="display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#111827;color:#fff;font-weight:700">Actions <span style="opacity:.6">v</span></button><div style="display:grid;gap:6px;width:100%;max-width:168px;padding:10px;border-radius:14px;background:#0f172a;border:1px solid rgba(255,255,255,.08)"><span class="kit-pill" style="justify-content:flex-start">Edit</span><span class="kit-pill" style="justify-content:flex-start">Duplicate</span><span class="kit-pill" style="justify-content:flex-start">Delete</span></div>`,
-      html: `import Dropdown from "@/components/sera-ui/02-buttons/dropdown/dropdown";\n\n<Dropdown trigger="Actions" items={[{ label: "Edit" }, { label: "Delete", danger: true }]} />`,
-    },
   ]);
 
   addToolkitCards("#textfx .tx-g", [
@@ -1032,6 +1088,17 @@ function addSeraCatalog() {
       preview: `<div style="display:grid;gap:8px;width:100%"><div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:14px;background:#0f172a;border:1px solid rgba(74,222,128,.18);color:#fff"><span style="width:10px;height:10px;border-radius:50%;background:#4ade80;box-shadow:0 0 0 6px rgba(74,222,128,.12)"></span><div><strong style="display:block;font-size:13px">Saved</strong><span style="font-size:11px;color:#94a3b8">Changes synced</span></div></div><div style="display:flex;gap:10px;align-items:flex-start;padding:12px;border-radius:14px;background:#111827;border:1px solid rgba(56,189,248,.18);color:#fff"><span style="width:10px;height:10px;border-radius:50%;background:#38bdf8"></span><div><strong style="display:block;font-size:13px">Deploying</strong><span style="font-size:11px;color:#94a3b8">Preview in progress</span></div></div></div>`,
       html: `import { Toaster, toast } from "@/components/sera-ui/03-badges/toast/toast";\n\ntoast.success("Saved", "Changes synced");`,
     },
+  ]);
+
+  addComponentCards("#sera-navigation .cp-g", [
+    {
+      source: "Sera UI",
+      title: "Dropdown Menu",
+      description: "Animated trigger plus compact menu for inline actions and utility panels.",
+      previewMode: "stack",
+      preview: `<button style="display:inline-flex;align-items:center;gap:8px;padding:11px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#111827;color:#fff;font-weight:700">Actions <span style="opacity:.6">v</span></button><div style="display:grid;gap:6px;width:100%;padding:10px;border-radius:14px;background:#0f172a;border:1px solid rgba(255,255,255,.08)"><span class="kit-pill" style="justify-content:flex-start">Edit</span><span class="kit-pill" style="justify-content:flex-start">Duplicate</span><span class="kit-pill" style="justify-content:flex-start">Delete</span></div>`,
+      html: `import Dropdown from "@/components/sera-ui/02-buttons/dropdown/dropdown";\n\n<Dropdown trigger="Actions" items={[{ label: "Edit" }, { label: "Delete", danger: true }]} />`,
+    },
     {
       source: "Sera UI",
       title: "Tabs",
@@ -1048,6 +1115,22 @@ function addSeraCatalog() {
       preview: `<div style="display:grid;gap:8px;width:100%"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#0f172a;border:1px solid rgba(255,255,255,.08);color:#fff"><span>What is Sera UI?</span><span>+</span></div><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-radius:14px;background:#111827;color:#94a3b8"><span>Is it open source?</span><span>+</span></div></div>`,
       html: `import Accordion from "@/components/sera-ui/07-accordions/accordion/accordion";\n\n<Accordion items={[{ id: "q1", title: "What is Sera UI?", content: "A component library." }]} />`,
     },
+    {
+      title: "Command Overlay",
+      description: "Shortcut-first launcher for docs, search and quick navigation.",
+      previewMode: "stack",
+      preview: `<div style="width:100%;padding:14px;border-radius:16px;background:#0b1120;border:1px solid rgba(255,255,255,.08);color:#fff"><div style="display:flex;justify-content:space-between;align-items:center;gap:10px"><span style="font-size:11px;color:#94a3b8">Search docs</span><span class="kit-pill">Ctrl K</span></div><div style="margin-top:10px;height:10px;border-radius:999px;background:rgba(255,255,255,.08)"></div></div>`,
+      html: `<div style="display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-radius:16px;background:#0b1120;border:1px solid rgba(255,255,255,.08);color:#fff"><span>Search docs</span><kbd style="padding:4px 8px;border-radius:8px;background:#111827;color:#c2a4ff">Ctrl K</kbd></div>`,
+    },
+    {
+      title: "Breadcrumb Rail",
+      description: "Compact path indicator for nested dashboards and documentation.",
+      preview: `<nav style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:#94a3b8;font-size:12px"><span>Docs</span><span>/</span><span>Components</span><span>/</span><strong style="color:#fff">Navigation</strong></nav>`,
+      html: `<nav style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;color:#94a3b8"><a>Docs</a><span>/</span><a>Components</a><span>/</span><strong style="color:#fff">Navigation</strong></nav>`,
+    },
+  ]);
+
+  addComponentCards("#sera-cards .cp-g", [
     {
       source: "Sera UI",
       title: "Basic Card",
@@ -1072,6 +1155,23 @@ function addSeraCatalog() {
       html: `import LoginForm from "@/components/sera-ui/08-cards/login/login";\n\n<LoginForm onSubmit={handleLogin} />`,
     },
     {
+      title: "Pricing Stack",
+      description: "Commercial pricing slab with CTA and compact feature summary.",
+      previewMode: "stack",
+      preview: `<div style="width:100%;padding:16px;border-radius:18px;background:#fff;color:#020617"><span style="font-size:11px;color:#64748b">Pro</span><strong style="display:block;margin-top:8px;font-size:28px">$24</strong><div style="margin-top:12px;display:grid;gap:8px"><div style="height:10px;border-radius:999px;background:#e2e8f0"></div><div style="height:10px;width:78%;border-radius:999px;background:#e2e8f0"></div><button style="padding:10px 12px;border-radius:12px;border:0;background:#0f172a;color:#fff;font-weight:800">Start</button></div></div>`,
+      html: `<div style="padding:24px;border-radius:20px;background:#fff;color:#020617"><span style="font-size:12px;color:#64748b">Pro</span><strong style="display:block;margin-top:8px;font-size:40px">$24/mo</strong><button style="margin-top:16px;padding:12px 16px;border-radius:12px;border:0;background:#0f172a;color:#fff;font-weight:800">Start</button></div>`,
+    },
+    {
+      title: "Team List Card",
+      description: "Member management card with avatar rows and metadata blocks.",
+      previewMode: "stack",
+      preview: `<div style="width:100%;padding:16px;border-radius:18px;background:#111827;border:1px solid rgba(255,255,255,.08);color:#fff"><strong style="display:block;font-size:15px">Team members</strong><div style="margin-top:12px;display:grid;gap:10px"><div style="display:flex;gap:10px;align-items:center"><span style="width:28px;height:28px;border-radius:50%;background:#374151"></span><div style="display:grid;gap:4px;flex:1"><div style="height:8px;border-radius:999px;background:rgba(255,255,255,.12)"></div><div style="height:8px;width:68%;border-radius:999px;background:rgba(255,255,255,.08)"></div></div></div></div></div>`,
+      html: `<div style="padding:20px;border-radius:18px;background:#111827;color:#fff"><h3 style="margin:0 0 12px">Team members</h3><div style="display:flex;gap:12px;align-items:center"><span style="width:36px;height:36px;border-radius:50%;background:#374151"></span><div><strong>Jane Doe</strong><div style="color:#94a3b8">jane@example.com</div></div></div></div>`,
+    },
+  ]);
+
+  addComponentCards("#sera-sections .cp-g", [
+    {
       source: "Sera UI",
       title: "Hero Section",
       description: "Full landing hero with badge, headline, subcopy and dual CTAs.",
@@ -1079,7 +1179,32 @@ function addSeraCatalog() {
       preview: `<div style="width:100%;padding:18px;border-radius:22px;background:radial-gradient(circle at top,#7c3aed22,transparent 44%),#0b1120;border:1px solid rgba(255,255,255,.08);color:#fff"><span class="kit-pill">Animated components</span><strong style="display:block;margin-top:12px;font-size:22px;line-height:1.05">Build interfaces faster</strong><span style="display:block;margin-top:8px;font-size:11px;color:#94a3b8">React + Next.js + Tailwind</span><div class="kit-row" style="margin-top:14px"><span class="kit-pill" style="background:#fff;color:#020617">Get started</span><span class="kit-pill">GitHub</span></div></div>`,
       html: `import HeroSection from "@/components/sera-ui/12-sections/hero/hero";\n\n<HeroSection />`,
     },
+    {
+      title: "Feature Hero",
+      description: "Product hero with launch framing, value bullets and feature chips.",
+      previewMode: "stack",
+      preview: `<div style="width:100%;padding:18px;border-radius:22px;background:linear-gradient(135deg,#0b1120,#15162c);border:1px solid rgba(255,255,255,.08);color:#fff"><span class="kit-pill">Launch</span><strong style="display:block;margin-top:12px;font-size:22px;line-height:1.05">Ship the next release faster</strong><div class="kit-row" style="margin-top:12px"><span class="kit-pill">Metrics</span><span class="kit-pill">Docs</span><span class="kit-pill">Motion</span></div></div>`,
+      html: `<section style="padding:48px;border-radius:28px;background:linear-gradient(135deg,#0b1120,#15162c);color:#fff"><h1 style="margin:0;font-size:48px">Ship the next release faster</h1><p style="margin:12px 0 0;color:#94a3b8">Hero section with launch-ready framing.</p></section>`,
+    },
+    {
+      title: "CTA Banner",
+      description: "Wide call-to-action strip for docs, pricing and release pages.",
+      preview: `<div style="width:100%;padding:18px;border-radius:20px;background:linear-gradient(135deg,#fff,#e2e8f0);color:#020617"><strong style="display:block;font-size:18px">Ready to build?</strong><span style="display:block;margin-top:8px;font-size:11px;color:#475569">Copy a block and launch the next screen.</span></div>`,
+      html: `<section style="padding:28px;border-radius:20px;background:linear-gradient(135deg,#fff,#e2e8f0);color:#020617"><strong style="font-size:24px">Ready to build?</strong><p style="margin:8px 0 0;color:#475569">Copy a block and launch the next screen.</p></section>`,
+    },
+    {
+      title: "Stats Header",
+      description: "Upper-page metrics band with chips and supporting narrative.",
+      previewMode: "stack",
+      preview: `<div style="width:100%;padding:18px;border-radius:20px;background:#0f172a;border:1px solid rgba(255,255,255,.08);color:#fff"><div class="kit-row"><span class="kit-pill">Revenue</span><span class="kit-pill">Users</span></div><strong style="display:block;margin-top:12px;font-size:26px">$71,897</strong><span style="display:block;margin-top:6px;color:#4ade80;font-size:11px">+18.4% vs last month</span></div>`,
+      html: `<section style="padding:24px;border-radius:20px;background:#0f172a;color:#fff"><div style="display:flex;gap:8px"><span style="padding:6px 10px;border-radius:999px;background:rgba(56,189,248,.14);color:#38bdf8">Revenue</span><span style="padding:6px 10px;border-radius:999px;background:rgba(74,222,128,.14);color:#4ade80">Users</span></div><strong style="display:block;margin-top:12px;font-size:34px">$71,897</strong></section>`,
+    },
   ]);
+
+  promoteCards("#buttons .btn-g", (card) => card.querySelector(".kit-source")?.textContent?.trim() === "Sera UI");
+  promoteCards("#textfx .tx-g", (card) => card.querySelector(".kit-source")?.textContent?.trim() === "Sera UI");
+  promoteCards("#loading .load-g", (card) => card.querySelector(".kit-source")?.textContent?.trim() === "Sera UI");
+  promoteCards("#components .cp-g", (card) => card.querySelector(".kit-source")?.textContent?.trim() === "Sera UI");
 }
 
 function configureCatalogPagination() {

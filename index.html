@@ -202,7 +202,7 @@ section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84
 .inp-preview.stack{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:10px}
 .inp-preview.split{flex-direction:column;align-items:stretch;justify-content:flex-start;gap:10px}
 .inp-note{font-size:10px;color:rgba(234,229,236,.45);margin-bottom:10px;min-height:26px}
-.inp-field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%}
+.inp-field-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px;width:100%}
 .inp-otp{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:100%}
 .inp-chip{display:inline-flex;align-items:center;justify-content:center;padding:8px 12px;border-radius:999px;background:rgba(194,164,255,.08);border:1px solid rgba(194,164,255,.16);font-size:11px;color:#c2a4ff}
 .inp-card-actions{display:flex;gap:10px;flex-wrap:wrap}
@@ -270,7 +270,8 @@ section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84
 
 /* === CSS UTILS === */
 .ut-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px}
-.ut-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:12px;padding:18px;transition:border-color .3s;position:relative;display:flex;flex-direction:column;min-height:236px}
+.ut-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:12px;padding:18px;transition:border-color .3s;position:relative;display:flex;flex-direction:column;min-height:236px;overflow:hidden;min-width:0}
+.ut-c>*{max-width:100%;min-width:0;box-sizing:border-box}
 .ut-c:hover{border-color:rgba(194,164,255,.15)}
 .ut-c .ut-n{font-size:11px;font-weight:600;margin-bottom:5px}.ut-c code{display:block;font-size:9px;color:rgba(194,164,255,.55);font-family:'Geist',monospace;background:rgba(194,164,255,.04);padding:8px 10px;border-radius:6px;line-height:1.7;white-space:pre;overflow-x:auto}
 
@@ -292,8 +293,8 @@ section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84
 .p-br::before{top:0;left:0;border-right:none;border-bottom:none}.p-br::after{bottom:0;right:0;border-left:none;border-top:none}
 .cp-c:hover .p-br::before,.cp-c:hover .p-br::after{width:20px;height:20px}
 .p-mg{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,rgba(194,164,255,.1),rgba(251,141,255,.07));border:1px solid rgba(194,164,255,.15);font-size:20px;transition:transform .3s cubic-bezier(.16,1,.3,1)}
-.p-tt{position:relative;padding:10px 20px;background:rgba(194,164,255,.06);border:1px solid rgba(194,164,255,.12);border-radius:8px;font-size:12px;color:#c2a4ff}
-.p-tt::after{content:'Tooltip';position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(4px);background:rgba(6,5,7,.95);border:1px solid rgba(194,164,255,.18);padding:5px 12px;border-radius:6px;font-size:10px;white-space:nowrap;opacity:0;transition:all .3s;pointer-events:none;color:#eae5ec}
+.p-tt{position:relative;padding:10px 20px;background:rgba(194,164,255,.06);border:1px solid rgba(194,164,255,.12);border-radius:8px;font-size:12px;color:#c2a4ff;max-width:100%;text-align:center}
+.p-tt::after{content:'Tooltip';position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%) translateY(4px);background:rgba(6,5,7,.95);border:1px solid rgba(194,164,255,.18);padding:5px 12px;border-radius:6px;font-size:10px;white-space:normal;max-width:160px;opacity:0;transition:all .3s;pointer-events:none;color:#eae5ec;text-align:center}
 .cp-c:hover .p-tt::after{opacity:1;transform:translateX(-50%) translateY(0)}
 .p-toggle{width:48px;height:26px;border-radius:13px;background:rgba(194,164,255,.15);position:relative;cursor:pointer;transition:background .3s}
 .p-toggle::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#eae5ec;transition:transform .3s}
@@ -581,6 +582,18 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 
 #utils .ut-c{min-height:204px;display:flex;flex-direction:column}
 
+#sera-navigation .cp-c,
+#sera-navigation .ut-c{min-height:272px;display:flex;flex-direction:column}
+#sera-navigation .cp-p{flex:1;min-height:156px;padding:24px 18px}
+
+#sera-cards .cp-c,
+#sera-cards .ut-c{min-height:310px;display:flex;flex-direction:column}
+#sera-cards .cp-p{flex:1;min-height:194px;padding:24px 18px}
+
+#sera-sections .cp-c,
+#sera-sections .ut-c{min-height:332px;display:flex;flex-direction:column}
+#sera-sections .cp-p{flex:1;min-height:214px;padding:26px 20px}
+
 .pagination-controls{margin-top:30px;gap:14px}
 .pagination-status{min-width:176px}
 
@@ -597,6 +610,7 @@ section{padding:80px 18px 86px}
 .catalog-grid .mini-preview{min-height:100px;padding:12px}
 .catalog-grid .kit-copy-meta{margin-top:12px}
 .kit-source{font-size:7px;letter-spacing:.14em;padding:3px 7px}
+.inp-field-row{grid-template-columns:1fr}
 .ut-c{min-height:214px;padding:14px}
 .cp-c{min-height:262px}
 .cp-p{min-height:146px;padding:22px 16px}
@@ -624,6 +638,12 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 #glass .gl-c,
 #glass .ut-c,
 #utils .ut-c{min-height:auto}
+#sera-navigation .cp-c,
+#sera-cards .cp-c,
+#sera-sections .cp-c{min-height:auto}
+#sera-navigation .cp-p{min-height:148px;padding:22px 16px}
+#sera-cards .cp-p{min-height:176px;padding:22px 16px}
+#sera-sections .cp-p{min-height:194px;padding:22px 16px}
 .inp-g,.sp-g,.tw-g,.cha-g,.cp-g,.gl-g,.tx-g,.ly-g{grid-template-columns:1fr}
 }
 </style>
@@ -2104,6 +2124,21 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="perspective:1000px;width:100%;height:250px"&gt;&lt;div style="width:100%;height:100%;position:relative;transition:transform .6s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d" onmouseover="this.style.transform=&quot;rotateY(18deg) rotateX(10deg)&quot;" onmouseout="this.style.transform=&quot;rotateY(0) rotateX(0)&quot;"&gt;&lt;div style="position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,#111318,#242b36);box-shadow:0 20px 40px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1)"&gt;&lt;/div&gt;&lt;div style="position:absolute;inset:0;padding:28px;transform:translateZ(60px);display:flex;flex-direction:column;justify-content:flex-end"&gt;&lt;h3 style="margin:0;color:#fff;font-size:24px"&gt;Night Panel&lt;/h3&gt;&lt;p style="margin:10px 0 0;color:rgba(255,255,255,.65);font-size:14px"&gt;Clean dark surface for product shots.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'><div class="card-3d-wrap"><div class="card-3d"><div class="card-3d-bg" style="background:linear-gradient(135deg,#111318,#242b36)"></div><div class="card-3d-content"><h3 style="font-size:24px;color:white;margin:0;font-family:system-ui">Night Panel</h3><p style="color:rgba(255,255,255,0.6);margin-top:10px;font-size:14px">Clean dark surface for product shots.</p></div></div></div><button class="cpb">Copy</button></div>
 </div></div></section>
 
+<!-- SERA NAVIGATION -->
+<div class="dv"></div>
+<section id="sera-navigation" class="s-v4"><div class="ctr"><div class="sl rv">30 - Sera Navigation</div><div class="st rv d1">Menus, tabs and <span>navigation flows</span></div><div class="sdesc rv d2">Recovered Sera UI navigation patterns separated from generic components so they stop getting buried in the main grid.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SERA CARDS -->
+<div class="dv"></div>
+<section id="sera-cards" class="s-v4"><div class="ctr"><div class="sl rv">31 - Sera Cards</div><div class="st rv d1">Structured forms and <span>card surfaces</span></div><div class="sdesc rv d2">Higher-density Sera UI cards, auth blocks and spotlight panels grouped in one place for easier scanning.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SERA SECTIONS -->
+<div class="dv"></div>
+<section id="sera-sections" class="s-v4"><div class="ctr"><div class="sl rv">32 - Sera Sections</div><div class="st rv d1">Hero blocks and <span>section-level composition</span></div><div class="sdesc rv d2">Dedicated landing-page and header compositions, separated from utility cards so full-width ideas are easier to find.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
 <!-- 22 REFERENCES -->
 <div class="dv"></div>
 
@@ -2117,7 +2152,7 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 
 
 <div class="dv"></div>
-<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 29 sections - 320+ copyable elements - Background soundtrack - Zero dependencies</p></footer>
+<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 32 sections - 330+ copyable elements - Background soundtrack - Zero dependencies</p></footer>
 <audio id="background-audio" preload="auto" autoplay playsinline loop>
   <source src="assets/audio/the-high-ridge.mp3" type="audio/mpeg">
 </audio>
