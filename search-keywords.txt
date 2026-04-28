@@ -1,0 +1,52 @@
+# UI IP Toolkit Search Discovery Vocabulary
+
+This file lists legitimate search phrases that describe UI IP Toolkit. It is designed as a crawlable reference for humans, search engines and AI tools. It is not a hidden keyword dump.
+
+Primary English phrases:
+- frontend asset library
+- visual frontend toolkit
+- copy-ready UI snippets
+- CSS snippets for web developers
+- reusable frontend assets
+- static UI toolkit
+- web developer asset catalog
+- visual CSS utility catalog
+- UI pattern library
+- HTML CSS JavaScript UI toolkit
+
+Component and pattern phrases:
+- CSS button examples
+- gradient collection for websites
+- loading state examples
+- frontend loader snippets
+- CTA block examples
+- pricing CTA components
+- footer design examples
+- bento grid layouts
+- navigation pattern examples
+- 404 page design examples
+- product UI patterns
+- hover effect snippets
+- glassmorphism UI components
+- text effect examples
+- CSS utility snippets
+
+Spanish discovery phrases:
+- libreria visual frontend
+- assets frontend reutilizables
+- snippets CSS para desarrolladores web
+- catalogo visual de componentes UI
+- patrones UI copy-ready
+- botones CSS listos para copiar
+- gradientes para paginas web
+- loaders frontend
+- CTAs para landing pages
+- footers para sitios web
+- bento grids para frontend
+- patrones de navegacion web
+- paginas 404 para productos web
+- utilidades CSS reutilizables
+
+Official links:
+- Live site: https://ui-ip-toolkit.vercel.app/
+- GitHub repository: https://github.com/ikerperez12/UI-IP-Toolkit-v4.0

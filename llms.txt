@@ -7,6 +7,9 @@ Repository: https://github.com/ikerperez12/UI-IP-Toolkit-v4.0
 README: https://github.com/ikerperez12/UI-IP-Toolkit-v4.0#readme
 License: MIT
 Author: ikerperez12
+Sitemap: https://ui-ip-toolkit.vercel.app/sitemap.xml
+Image sitemap: https://ui-ip-toolkit.vercel.app/sitemap-images.xml
+Search vocabulary: https://ui-ip-toolkit.vercel.app/search-keywords.txt
 
 Important public assets:
 - Hero image: https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-hero.png

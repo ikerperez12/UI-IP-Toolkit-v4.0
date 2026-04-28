@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://ui-ip-toolkit.vercel.app/sitemap.xml
+Sitemap: https://ui-ip-toolkit.vercel.app/sitemap-images.xml
