@@ -11,128 +11,105 @@ const catalogPaginationState = {
   resizeObserver: null,
 };
 
-const catalogSectionConfig = {
-  "#colors .pal-g": {
-    minWidth: 130,
-    gap: 10,
-    rows: { wide: 3, desktop: 3, tablet: 3, mobile: 4 },
-    reserveHeight: { wide: 372, desktop: 372, tablet: 472, mobile: 0 },
-  },
-  "#gradients .gr-g": {
-    minWidth: 260,
-    gap: 16,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 336, desktop: 336, tablet: 520, mobile: 0 },
-  },
-  "#animations .an-g": {
-    minWidth: 155,
-    gap: 14,
-    rows: { wide: 3, desktop: 3, tablet: 3, mobile: 4 },
-    reserveHeight: { wide: 556, desktop: 556, tablet: 620, mobile: 0 },
-  },
-  "#typography .fn-r": {
-    minWidth: 220,
-    gap: 16,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 540, desktop: 540, tablet: 760, mobile: 0 },
-  },
-  "#buttons .btn-g": {
-    minWidth: 250,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 536, desktop: 536, tablet: 690, mobile: 0 },
-  },
-  "#loading .load-g": {
-    minWidth: 220,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 518, desktop: 518, tablet: 690, mobile: 0 },
-  },
-  "#textfx .tx-g": {
-    minWidth: 300,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 474, desktop: 474, tablet: 620, mobile: 0 },
-  },
-  "#shadows .sh-g": {
-    minWidth: 200,
-    gap: 16,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 422, desktop: 422, tablet: 568, mobile: 0 },
-  },
-  "#hover .hf-g": {
-    minWidth: 260,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 612, desktop: 612, tablet: 760, mobile: 0 },
-  },
-  "#glass .gl-g": {
-    minWidth: 280,
-    gap: 20,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 650, desktop: 650, tablet: 810, mobile: 0 },
-  },
-  "#utils .ut-g": {
-    minWidth: 220,
-    gap: 14,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 510, desktop: 510, tablet: 680, mobile: 0 },
-  },
-  "#neutral .cp-g": {
-    minWidth: 260,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 552, desktop: 552, tablet: 720, mobile: 0 },
-  },
-  "#components .cp-g": {
-    minWidth: 260,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 552, desktop: 552, tablet: 720, mobile: 0 },
-  },
-  "#layouts .ly-g": {
-    minWidth: 260,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 540, desktop: 540, tablet: 720, mobile: 0 },
-  },
-  "#styles .sty-g": {
-    minWidth: 250,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 520, desktop: 520, tablet: 710, mobile: 0 },
-  },
-  "#palettes .ip-g": {
-    minWidth: 220,
-    gap: 16,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 428, desktop: 428, tablet: 580, mobile: 0 },
-  },
-  "#spacing .sp-g": {
-    minWidth: 220,
-    gap: 16,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 424, desktop: 424, tablet: 580, mobile: 0 },
-  },
-  "#sera-navigation .cp-g": {
-    minWidth: 260,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 552, desktop: 552, tablet: 720, mobile: 0 },
-  },
-  "#sera-cards .cp-g": {
-    minWidth: 280,
-    gap: 18,
-    rows: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
-    reserveHeight: { wide: 626, desktop: 626, tablet: 790, mobile: 0 },
-  },
-  "#sera-sections .cp-g": {
-    minWidth: 320,
-    gap: 20,
-    rows: { wide: 2, desktop: 2, tablet: 1, mobile: 2 },
-    reserveHeight: { wide: 666, desktop: 666, tablet: 412, mobile: 0 },
-  },
+const GRID_ROWS = {
+  dense: { wide: 3, desktop: 3, tablet: 3, mobile: 4 },
+  standard: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+  compact: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
+  section: { wide: 2, desktop: 2, tablet: 1, mobile: 2 },
 };
+
+function createPageConfig(selector, minWidth, gap, rows, wide, desktop = wide, tablet = wide, mobile = 0, minPageSize = 1) {
+  return {
+    selector,
+    minWidth,
+    gap,
+    rows,
+    reserveHeight: { wide, desktop, tablet, mobile },
+    minPageSize,
+  };
+}
+
+const catalogSections = [
+  { id: "neu", eyebrow: "Neumorphism", titleHtml: 'Soft <span>UI Kit</span>', description: "Modern Neumorphic elements with deep and surface shadows.", family: "foundation", priority: "core", navLabel: "Neu", active: true, page: createPageConfig("#neu .neu-g", 220, 16, GRID_ROWS.standard, 372, 372, 472) },
+  { id: "borders", eyebrow: "Animated Borders", titleHtml: 'Rotating <span>Edges</span>', description: "Inspired by ReactBits - CSS-only conic gradient border animations.", family: "foundation", priority: "core", active: true, page: createPageConfig("#borders .abd-g", 280, 18, GRID_ROWS.standard, 410, 410, 560) },
+  { id: "textreveal", eyebrow: "Text Reveal", titleHtml: 'Kinetic <span>Typography</span>', description: "Hero-grade reveal treatments and marquee-style motion typography.", family: "motion", priority: "support", active: true },
+  { id: "colors", eyebrow: "Colors", titleHtml: 'Color <span>System</span>', description: "Curated palette - click any swatch to copy standalone HTML.", family: "foundation", priority: "core", navLabel: "Colors", active: true, page: createPageConfig("#colors .pal-g", 130, 10, GRID_ROWS.dense, 372, 372, 472) },
+  { id: "gradients", eyebrow: "Gradients", titleHtml: 'Gradient <span>Library</span>', description: "Launch-ready gradients for hero backgrounds, dashboards and premium surfaces.", family: "foundation", priority: "core", active: true, page: createPageConfig("#gradients .gr-g", 260, 16, GRID_ROWS.standard, 336, 336, 520) },
+  { id: "animations", eyebrow: "Animations", titleHtml: 'Keyframe <span>Animations</span>', description: "Reusable motion primitives for loaders, reveals and status states.", family: "motion", priority: "core", active: true, page: createPageConfig("#animations .an-g", 155, 14, GRID_ROWS.dense, 556, 556, 620) },
+  { id: "typography", eyebrow: "Typography", titleHtml: 'Font <span>Collection</span>', description: "Expressive type families for product UI, launch pages and editorial surfaces.", family: "foundation", priority: "support", active: true, page: createPageConfig("#typography .fn-r", 220, 16, GRID_ROWS.standard, 540, 540, 760) },
+  { id: "buttons", eyebrow: "Buttons Kit", titleHtml: 'Button <span>Variants</span>', description: "High-contrast actions, pills and CTA treatments that stay readable in dark product shells.", family: "controls", priority: "core", navLabel: "Buttons", active: true, page: createPageConfig("#buttons .btn-g", 250, 18, GRID_ROWS.standard, 536, 536, 690) },
+  { id: "inputs", eyebrow: "Input Kit", titleHtml: 'Form <span>Elements</span>', description: "Filters, segmented controls and payment inputs tuned for app-grade forms.", family: "controls", priority: "core", active: true, page: createPageConfig("#inputs .inp-g", 260, 18, GRID_ROWS.standard, 578, 578, 740) },
+  { id: "loading", eyebrow: "Loading States", titleHtml: 'Loading <span>Patterns</span>', description: "Progress, skeleton and waiting states for async-heavy interfaces.", family: "feedback", priority: "core", active: true, page: createPageConfig("#loading .load-g", 220, 18, GRID_ROWS.standard, 518, 518, 690) },
+  { id: "textfx", eyebrow: "Text Effects", titleHtml: 'Text <span>Styles</span>', description: "Headline and annotation effects for launch pages, badges and product narratives.", family: "foundation", priority: "support", active: true, page: createPageConfig("#textfx .tx-g", 300, 18, GRID_ROWS.standard, 474, 474, 620) },
+  { id: "shadows", eyebrow: "Shadows", titleHtml: 'Shadow <span>Collection</span>', description: "Ambient elevation recipes for panels, modals and premium cards.", family: "foundation", priority: "support", active: true, page: createPageConfig("#shadows .sh-g", 200, 16, GRID_ROWS.standard, 422, 422, 568) },
+  { id: "hover", eyebrow: "Hover FX", titleHtml: 'Hover <span>Effects</span>', description: "Strong but readable hover patterns for cards, buttons and promo tiles.", family: "motion", priority: "support", active: true, page: createPageConfig("#hover .hf-g", 260, 18, GRID_ROWS.standard, 612, 612, 760) },
+  { id: "glass", eyebrow: "Glassmorphism", titleHtml: 'Glass <span>Components</span>', description: "Frosted shells, overlays and slabs with enough contrast to stay useful.", family: "surface", priority: "support", active: true, page: createPageConfig("#glass .gl-g", 280, 20, GRID_ROWS.standard, 650, 650, 810) },
+  { id: "utils", eyebrow: "CSS Utils", titleHtml: 'Interactive <span>Utilities</span>', description: "Small production helpers for states, legends, rails and shell chrome.", family: "utility", priority: "support", active: true, page: createPageConfig("#utils .ut-g", 220, 14, GRID_ROWS.standard, 510, 510, 680) },
+  { id: "neutral", eyebrow: "Neutral Toolkit", titleHtml: 'Core <span>Components</span>', description: "Baseline components with no brand lock-in, useful across product categories.", family: "components", priority: "core", active: true, page: createPageConfig("#neutral .cp-g", 260, 18, GRID_ROWS.standard, 552, 552, 720) },
+  { id: "components", eyebrow: "Components", titleHtml: 'UI <span>Components</span>', description: "Generic building blocks after duplicate product-oriented patterns are pulled into dedicated sections.", family: "components", priority: "core", navLabel: "Components", active: true, page: createPageConfig("#components .cp-g", 260, 18, GRID_ROWS.standard, 552, 552, 720) },
+  { id: "layouts", eyebrow: "Layouts", titleHtml: 'Layout <span>Blueprints</span>', description: "Only spatial blueprints and shell compositions that read clearly without hover.", family: "layouts", priority: "core", navLabel: "Layouts", active: true, page: createPageConfig("#layouts .ly-g", 260, 18, GRID_ROWS.standard, 540, 540, 720) },
+  { id: "dialogs-overlays", eyebrow: "Dialogs & Overlays", titleHtml: 'Dialogs & <span>Overlays</span>', description: "Modals, drawers, command layers and stacked alerts tuned for production product flows.", family: "product-ui", priority: "core", navLabel: "Dialogs", active: true, page: createPageConfig("#dialogs-overlays .cp-g", 280, 18, GRID_ROWS.standard, 648, 648, 820) },
+  { id: "tables-data", eyebrow: "Tables & Data Views", titleHtml: 'Tables & <span>Data Views</span>', description: "Dense admin tables, KPI grids and list-detail compositions that still read cleanly at a glance.", family: "product-ui", priority: "core", navLabel: "Tables", active: true, page: createPageConfig("#tables-data .cp-g", 300, 20, GRID_ROWS.standard, 682, 682, 860) },
+  { id: "empty-states", eyebrow: "Empty States & Feedback", titleHtml: 'Empty States & <span>Feedback</span>', description: "Zero states, inline success and failure messaging, and onboarding prompts with stronger product presence.", family: "product-ui", priority: "core", active: true, page: createPageConfig("#empty-states .cp-g", 280, 18, GRID_ROWS.standard, 640, 640, 820) },
+  { id: "panels-settings", eyebrow: "Panels & Settings", titleHtml: 'Panels & <span>Settings</span>', description: "Inspector rails, settings slabs and split-pane shells for account, security and workspace management.", family: "product-ui", priority: "core", active: true, page: createPageConfig("#panels-settings .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "navigation-patterns", eyebrow: "Navigation Patterns", titleHtml: 'Navigation <span>Patterns</span>', description: "Native navigation systems inspired by current gallery taxonomies: sticky bars, mega menus, sidebars and search-first flows.", family: "inspiration", priority: "core", navLabel: "Nav", active: true, page: createPageConfig("#navigation-patterns .cp-g", 290, 18, GRID_ROWS.standard, 654, 654, 824) },
+  { id: "hero-headlines", eyebrow: "Hero Headlines", titleHtml: 'Hero <span>Headlines</span>', description: "Headline systems for SaaS, editorial and launch pages, built as native HTML snippets instead of copied gallery assets.", family: "inspiration", priority: "core", navLabel: "H1", active: true, page: createPageConfig("#hero-headlines .cp-g", 320, 20, GRID_ROWS.standard, 704, 704, 880) },
+  { id: "cta-blocks", eyebrow: "CTA Blocks", titleHtml: 'CTA <span>Blocks</span>', description: "Conversion blocks for pricing, downloads, newsletters and modal actions with readable preview stages.", family: "inspiration", priority: "core", navLabel: "CTA", active: true, page: createPageConfig("#cta-blocks .cp-g", 290, 18, GRID_ROWS.standard, 654, 654, 824) },
+  { id: "error-pages", eyebrow: "404 & Error Pages", titleHtml: '404 & <span>Error Pages</span>', description: "Recovery states with clear hierarchy, fallback actions and enough personality to avoid dead-end product moments.", family: "inspiration", priority: "core", active: true, page: createPageConfig("#error-pages .cp-g", 290, 18, GRID_ROWS.standard, 654, 654, 824) },
+  { id: "footer-systems", eyebrow: "Footer Systems", titleHtml: 'Footer <span>Systems</span>', description: "Typographic, sitemap, newsletter and app-footers built as reusable closing systems.", family: "inspiration", priority: "core", active: true, page: createPageConfig("#footer-systems .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "bento-systems", eyebrow: "Bento Systems", titleHtml: 'Bento <span>Systems</span>', description: "Feature, dashboard, stats and media bento layouts generated as responsive native snippets.", family: "inspiration", priority: "core", navLabel: "Bento", active: true, page: createPageConfig("#bento-systems .cp-g", 320, 20, GRID_ROWS.standard, 706, 706, 880) },
+  { id: "pricing-sections", eyebrow: "Pricing Sections", titleHtml: 'Pricing <span>Sections</span>', description: "Plan cards, comparison bands and upgrade prompts generated as native pricing UI.", family: "inspiration", priority: "core", active: true, page: createPageConfig("#pricing-sections .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "form-patterns", eyebrow: "Form Patterns", titleHtml: 'Form <span>Patterns</span>', description: "Lead forms, onboarding forms, checkout forms and search inputs with strong preview anatomy.", family: "inspiration", priority: "core", active: true, page: createPageConfig("#form-patterns .cp-g", 290, 18, GRID_ROWS.standard, 654, 654, 824) },
+  { id: "feature-sections", eyebrow: "Feature Sections", titleHtml: 'Feature <span>Sections</span>', description: "Feature rows, process strips and comparison sections built as reusable landing-page blocks.", family: "inspiration", priority: "core", navLabel: "Features", active: true, page: createPageConfig("#feature-sections .cp-g", 310, 20, GRID_ROWS.standard, 686, 686, 860) },
+  { id: "social-proof", eyebrow: "Social Proof", titleHtml: 'Social <span>Proof</span>', description: "Testimonials, logo clouds, review blocks and trust bands separated from generic CTA content.", family: "inspiration", priority: "core", active: true, page: createPageConfig("#social-proof .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "nav-static-sticky", eyebrow: "Navbar Static & Sticky", titleHtml: 'Static & <span>Sticky Nav</span>', description: "Fixed headers, compact product bars and sticky navigation treatments generated as native snippets.", family: "inspiration", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", qaStatus: "keep", priority: "core", navLabel: "Nav+", active: true, page: createPageConfig("#nav-static-sticky .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "nav-dropdown-mega", eyebrow: "Navbar Dropdown & Mega", titleHtml: 'Dropdown & <span>Mega Menus</span>', description: "Flyouts, grouped mega menus and nested navigation structures inspired by navigation taxonomies.", family: "inspiration", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#nav-dropdown-mega .cp-g", 310, 20, GRID_ROWS.standard, 686, 686, 860) },
+  { id: "nav-sidebar-search", eyebrow: "Navbar Sidebar & Search", titleHtml: 'Sidebar & <span>Search Nav</span>', description: "Vertical menus, command-forward headers and search-first navigation layouts for dense products.", family: "inspiration", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#nav-sidebar-search .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "nav-announcement-breadcrumb", eyebrow: "Navbar Announcement & Breadcrumb", titleHtml: 'Announcement & <span>Breadcrumbs</span>', description: "Announcement bars, secondary paths and progress navigation states for product and docs surfaces.", family: "inspiration", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#nav-announcement-breadcrumb .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "h1-ai-saas", eyebrow: "H1 AI & SaaS", titleHtml: 'AI & <span>SaaS Headlines</span>', description: "Original headline systems for AI tools, cloud platforms, analytics and B2B workflow products.", family: "inspiration", catalogSource: "h1-gallery-taxonomy", sourcePillar: "h1", qaStatus: "keep", priority: "core", navLabel: "H1+", active: true, page: createPageConfig("#h1-ai-saas .cp-g", 320, 20, GRID_ROWS.standard, 704, 704, 880) },
+  { id: "h1-commerce-creator", eyebrow: "H1 Commerce & Creator", titleHtml: 'Commerce & <span>Creator Headlines</span>', description: "Original marketing headlines for commerce, creator tools, memberships and download-led products.", family: "inspiration", catalogSource: "h1-gallery-taxonomy", sourcePillar: "h1", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#h1-commerce-creator .cp-g", 320, 20, GRID_ROWS.standard, 704, 704, 880) },
+  { id: "h1-editorial-portfolio", eyebrow: "H1 Editorial & Portfolio", titleHtml: 'Editorial & <span>Portfolio Headlines</span>', description: "Large-type headline compositions for studios, editorial surfaces and personal portfolio pages.", family: "inspiration", catalogSource: "h1-gallery-taxonomy", sourcePillar: "h1", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#h1-editorial-portfolio .cp-g", 320, 20, GRID_ROWS.standard, 704, 704, 880) },
+  { id: "cta-purchase-subscription", eyebrow: "CTA Purchase & Subscription", titleHtml: 'Purchase & <span>Subscription CTAs</span>', description: "Buy, upgrade, pricing and subscription prompts built as reusable conversion blocks.", family: "inspiration", catalogSource: "cta-gallery-taxonomy", sourcePillar: "cta", qaStatus: "keep", priority: "core", navLabel: "CTA+", active: true, page: createPageConfig("#cta-purchase-subscription .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "cta-download-template", eyebrow: "CTA Download & Template", titleHtml: 'Download & <span>Template CTAs</span>', description: "Download, starter kit, free resource and template CTAs with clear payload framing.", family: "inspiration", catalogSource: "cta-gallery-taxonomy", sourcePillar: "cta", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#cta-download-template .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "cta-form-newsletter-popup", eyebrow: "CTA Form, Newsletter & Popup", titleHtml: 'Forms, Newsletter & <span>Popups</span>', description: "Lead capture, newsletter, modal and navigation CTAs kept separate from generic button patterns.", family: "inspiration", catalogSource: "cta-gallery-taxonomy", sourcePillar: "cta", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#cta-form-newsletter-popup .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "error-style-studies", eyebrow: "404 Style Studies", titleHtml: '404 <span>Style Studies</span>', description: "Minimal, bold, typographic, playful and visual error-page styles built as original native blocks.", family: "inspiration", catalogSource: "404s-design-taxonomy", sourcePillar: "404", qaStatus: "keep", priority: "core", navLabel: "404+", active: true, page: createPageConfig("#error-style-studies .cp-g", 310, 20, GRID_ROWS.standard, 686, 686, 860) },
+  { id: "error-recovery-flows", eyebrow: "404 Recovery Flows", titleHtml: 'Error <span>Recovery Flows</span>', description: "Search, support, retry, route-switch and permission recovery states for real product failures.", family: "inspiration", catalogSource: "404s-design-taxonomy", sourcePillar: "404", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#error-recovery-flows .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "error-industry-pages", eyebrow: "404 Industry Pages", titleHtml: 'Industry <span>Error Pages</span>', description: "Original 404 systems tailored for SaaS, commerce, media, finance, nonprofit and portfolio contexts.", family: "inspiration", catalogSource: "404s-design-taxonomy", sourcePillar: "404", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#error-industry-pages .cp-g", 310, 20, GRID_ROWS.standard, 686, 686, 860) },
+  { id: "footer-type-systems", eyebrow: "Footer Type Systems", titleHtml: 'Footer <span>Type Systems</span>', description: "Large type, small type, typographic and bold footers generated as reusable closing systems.", family: "inspiration", catalogSource: "footer-design-taxonomy", sourcePillar: "footer", qaStatus: "keep", priority: "core", navLabel: "Footer", active: true, page: createPageConfig("#footer-type-systems .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "footer-grid-cards", eyebrow: "Footer Grid & Cards", titleHtml: 'Grid & <span>Card Footers</span>', description: "Sitemaps, newsletter panels, product cards and app-footers with structured link architecture.", family: "inspiration", catalogSource: "footer-design-taxonomy", sourcePillar: "footer", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#footer-grid-cards .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "footer-style-modes", eyebrow: "Footer Style Modes", titleHtml: 'Footer <span>Style Modes</span>', description: "Bright, dark, flat, animated and illustrative footer treatments generated without external assets.", family: "inspiration", catalogSource: "footer-design-taxonomy", sourcePillar: "footer", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#footer-style-modes .cp-g", 300, 20, GRID_ROWS.standard, 676, 676, 840) },
+  { id: "bento-feature-landing", eyebrow: "Bento Feature Landing", titleHtml: 'Feature <span>Landing Bentos</span>', description: "Landing-page bento grids for feature storytelling, product proof and modular value props.", family: "inspiration", catalogSource: "bentogrids-taxonomy", sourcePillar: "bento", qaStatus: "keep", priority: "core", navLabel: "Bento+", active: true, page: createPageConfig("#bento-feature-landing .cp-g", 320, 20, GRID_ROWS.standard, 706, 706, 880) },
+  { id: "bento-dashboard-grids", eyebrow: "Bento Dashboard Grids", titleHtml: 'Dashboard <span>Bento Grids</span>', description: "Dashboard, metrics, automation and operations bento layouts with reusable native surfaces.", family: "inspiration", catalogSource: "bentogrids-taxonomy", sourcePillar: "bento", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#bento-dashboard-grids .cp-g", 320, 20, GRID_ROWS.standard, 706, 706, 880) },
+  { id: "bento-media-portfolio", eyebrow: "Bento Media & Portfolio", titleHtml: 'Media & <span>Portfolio Bentos</span>', description: "Portfolio, creator, media and case-study bento compositions with mobile-safe geometry.", family: "inspiration", catalogSource: "bentogrids-taxonomy", sourcePillar: "bento", qaStatus: "keep", priority: "core", active: true, page: createPageConfig("#bento-media-portfolio .cp-g", 320, 20, GRID_ROWS.standard, 706, 706, 880) },
+  { id: "tokens", eyebrow: "Design Tokens", titleHtml: 'Token <span>System</span>', description: "Semantic variables and system primitives for spacing, motion, surfaces and containers.", family: "systems", priority: "support", navLabel: "Tokens", active: true, page: createPageConfig("#tokens .ut-g", 220, 14, GRID_ROWS.standard, 474, 474, 628) },
+  { id: "easing", eyebrow: "Easing Curves", titleHtml: 'Motion <span>Easings</span>', description: "Always-on easing demos that read as motion curves, not just labels.", family: "systems", priority: "support", active: true, page: createPageConfig("#easing .ez-g", 260, 18, GRID_ROWS.standard, 420, 420, 560) },
+  { id: "styles", eyebrow: "Style Catalog", titleHtml: 'UI Style <span>Archetypes</span>', description: "Visual archetypes. Copy any palette as CSS variables.", family: "systems", priority: "support", active: true, page: createPageConfig("#styles .sty-g", 250, 18, GRID_ROWS.standard, 520, 520, 710) },
+  { id: "palettes", eyebrow: "Industry Palettes", titleHtml: 'Product <span>Color Kits</span>', description: "Industry-specific color kits with usable contrast and clear role labels.", family: "systems", priority: "support", active: true, page: createPageConfig("#palettes .ip-g", 220, 16, GRID_ROWS.standard, 428, 428, 580) },
+  { id: "spacing", eyebrow: "Spacing Scale", titleHtml: 'Spacing <span>Visualization</span>', description: "Spacing tokens visualized as product-friendly rhythm steps.", family: "systems", priority: "support", active: true, page: createPageConfig("#spacing .sp-g", 220, 16, GRID_ROWS.standard, 424, 424, 580) },
+  { id: "radius", eyebrow: "Border Radius", titleHtml: 'Radius <span>System</span>', description: "Corner scale reference for shells, controls and cards.", family: "systems", priority: "support", active: true },
+  { id: "material-ui", eyebrow: "Material UI", titleHtml: 'Google <span>Material</span>', description: "Material Design patterns like ripple buttons and floating labels.", family: "marketplace", priority: "support", active: true, page: createPageConfig("#material-ui .mui-g", 280, 18, GRID_ROWS.standard, 552, 552, 720) },
+  { id: "chakra-ui", eyebrow: "Chakra UI", titleHtml: 'Accessible <span>Components</span>', description: "Chakra-inspired alerts, stats and tags kept as reference patterns.", family: "marketplace", priority: "support", active: true, page: createPageConfig("#chakra-ui .cha-g", 260, 18, GRID_ROWS.standard, 552, 552, 720) },
+  { id: "tailwind-ui", eyebrow: "Tailwind UI", titleHtml: 'Utility <span>Patterns</span>', description: "Utility-driven cards, placeholders and settings blocks with stronger previews.", family: "marketplace", priority: "support", active: true, page: createPageConfig("#tailwind-ui .tw-g", 300, 20, GRID_ROWS.standard, 628, 628, 790) },
+  { id: "cards3d", eyebrow: "3D Hover Cards", titleHtml: 'Interactive <span>Cards</span>', description: "Depth-based promo cards and shells for richer marketing or showcase moments.", family: "showcase", priority: "support", navLabel: "3D", active: true, page: createPageConfig("#cards3d .tw-g", 300, 20, GRID_ROWS.standard, 706, 706, 870) },
+  { id: "sera-navigation", eyebrow: "Sera Navigation", titleHtml: 'Menus, tabs and <span>navigation flows</span>', description: "Recovered Sera UI navigation patterns separated from generic components so they stop getting buried in the main grid.", family: "sera", priority: "support", active: true, page: createPageConfig("#sera-navigation .cp-g", 260, 18, GRID_ROWS.standard, 552, 552, 720) },
+  { id: "sera-cards", eyebrow: "Sera Cards", titleHtml: 'Structured forms and <span>card surfaces</span>', description: "Higher-density Sera UI cards, auth blocks and spotlight panels grouped in one place for easier scanning.", family: "sera", priority: "support", active: true, page: createPageConfig("#sera-cards .cp-g", 280, 18, GRID_ROWS.standard, 626, 626, 790) },
+  { id: "sera-sections", eyebrow: "Sera Sections", titleHtml: 'Hero blocks and <span>section-level composition</span>', description: "Dedicated landing-page and header compositions, separated from utility cards so full-width ideas are easier to find.", family: "sera", priority: "support", active: true, page: createPageConfig("#sera-sections .cp-g", 320, 20, GRID_ROWS.section, 666, 666, 412) },
+];
+
+const catalogSectionConfig = Object.fromEntries(
+  catalogSections
+    .filter((section) => section.active !== false && section.page?.selector)
+    .map((section) => [
+      section.page.selector,
+      {
+        minWidth: section.page.minWidth,
+        gap: section.page.gap,
+        rows: section.page.rows,
+        reserveHeight: section.page.reserveHeight,
+        minPageSize: section.page.minPageSize,
+      },
+    ]),
+);
 
 async function copySnippet(btn) {
   const card = btn.closest("[data-snippet]") || btn.closest(".has-copy");
@@ -580,11 +557,201 @@ function createCardSource(item) {
   return item.source ? `<div class="kit-source">${item.source}</div>` : "";
 }
 
-function createToolkitCard(item, className = "ut-c") {
-  const previewClass = ["mini-preview", item.previewMode || "", item.previewClass || ""].filter(Boolean).join(" ");
+function getActiveCatalogSections() {
+  return catalogSections.filter((section) => section.active !== false);
+}
+
+function normalizeCatalogItems(items, defaults = {}) {
+  return items
+    .map((item, index) => {
+      const resolved = { ...defaults, ...item };
+      return {
+        ...resolved,
+        family: resolved.family || "general",
+        qaStatus: resolved.qaStatus || "keep",
+        priority: resolved.priority ?? 50,
+        catalogSource: resolved.catalogSource || (resolved.source ? resolved.source.toLowerCase().replace(/\s+/g, "-") : "native"),
+        _catalogOrder: index,
+      };
+    })
+    .filter((item) => item.qaStatus !== "remove")
+    .sort((a, b) => (a.priority ?? 50) - (b.priority ?? 50) || a._catalogOrder - b._catalogOrder);
+}
+
+function buildCardMetaAttributes(item) {
+  return [
+    ["data-title", item.title],
+    ["data-family", item.family],
+    ["data-catalog-source", item.catalogSource],
+    ["data-source-pillar", item.sourcePillar],
+    ["data-preview-mode", item.previewMode || "default"],
+    ["data-qa-status", item.qaStatus || "keep"],
+    ["data-priority", String(item.priority ?? 50)],
+  ]
+    .filter(([, value]) => value !== undefined && value !== null && value !== "")
+    .map(([name, value]) => `${name}="${encodeAttribute(value)}"`)
+    .join(" ");
+}
+
+function syncCatalogStructure() {
+  const activeSections = getActiveCatalogSections();
+  const nav = document.querySelector(".nav-r");
+
+  activeSections.forEach((section, index) => {
+    const sectionNode = document.getElementById(section.id);
+    if (!sectionNode) return;
+
+    const number = String(index + 1).padStart(2, "0");
+    const kicker = sectionNode.querySelector(".sl");
+    const title = sectionNode.querySelector(".st");
+    let description = sectionNode.querySelector(".sdesc");
+    const pageSelector = section.page?.selector;
+    const grid = pageSelector ? document.querySelector(pageSelector) : null;
+
+    sectionNode.dataset.catalogId = section.id;
+    sectionNode.dataset.catalogFamily = section.family || "general";
+    sectionNode.dataset.catalogPriority = section.priority || "support";
+    sectionNode.dataset.catalogSource = section.catalogSource || "native";
+    if (section.sourcePillar) sectionNode.dataset.sourcePillar = section.sourcePillar;
+    if (section.qaStatus) sectionNode.dataset.qaStatus = section.qaStatus;
+    sectionNode.dataset.catalogActive = "true";
+
+    if (kicker) {
+      kicker.textContent = `${number} - ${section.eyebrow}`;
+    }
+
+    if (title && section.titleHtml) {
+      title.innerHTML = section.titleHtml;
+    }
+
+    if (section.description) {
+      if (!description) {
+        description = document.createElement("div");
+        description.className = "sdesc rv d2";
+        title?.insertAdjacentElement("afterend", description);
+      }
+      description.textContent = section.description;
+    } else if (description) {
+      description.remove();
+    }
+
+    if (grid) {
+      grid.classList.add("catalog-grid");
+      grid.dataset.catalogSectionId = section.id;
+    }
+  });
+
+  if (nav) {
+    nav.innerHTML = buildSectionMenu(activeSections);
+  }
+}
+
+function getSectionMenuGroup(section) {
+  if (section.sourcePillar === "navbar") return "Navbar";
+  if (section.sourcePillar === "h1") return "Headlines";
+  if (section.sourcePillar === "cta") return "CTAs";
+  if (section.sourcePillar === "404") return "404 / Error";
+  if (section.sourcePillar === "footer") return "Footers";
+  if (section.sourcePillar === "bento") return "Bentos";
+  if (section.family === "foundation") return "Foundations";
+  if (section.family === "motion") return "Motion";
+  if (section.family === "controls") return "Controls";
+  if (section.family === "feedback") return "Feedback";
+  if (["surface", "utility", "components", "layouts"].includes(section.family)) return "Components & Layout";
+  if (section.family === "product-ui") return "Product UI";
+  if (section.family === "inspiration") return "Gallery Core";
+  if (section.family === "systems") return "Systems";
+  if (["marketplace", "showcase"].includes(section.family)) return "Frameworks";
+  if (section.family === "sera") return "Sera UI";
+  return "Other";
+}
+
+function buildSectionMenu(activeSections) {
+  const groupOrder = [
+    "Foundations",
+    "Motion",
+    "Controls",
+    "Feedback",
+    "Components & Layout",
+    "Product UI",
+    "Gallery Core",
+    "Navbar",
+    "Headlines",
+    "CTAs",
+    "404 / Error",
+    "Footers",
+    "Bentos",
+    "Systems",
+    "Frameworks",
+    "Sera UI",
+    "Other",
+  ];
+  const grouped = new Map(groupOrder.map((group) => [group, []]));
+
+  activeSections.forEach((section, index) => {
+    const group = getSectionMenuGroup(section);
+    if (!grouped.has(group)) grouped.set(group, []);
+    grouped.get(group).push({ ...section, number: String(index + 1).padStart(2, "0") });
+  });
+
+  const groups = Array.from(grouped.entries())
+    .filter(([, sections]) => sections.length)
+    .map(([group, sections]) => {
+      const links = sections
+        .map((section) => `<a href="#${section.id}" data-number="${section.number}">${encodeAttribute(section.eyebrow || section.navLabel || section.id)}</a>`)
+        .join("");
+
+      return `<div class="section-menu-group"><div class="section-menu-title">${encodeAttribute(group)}</div><div class="section-menu-links">${links}</div></div>`;
+    })
+    .join("");
 
   return `
-    <div class="${className} has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}">
+    <details class="section-menu">
+      <summary><span class="section-menu-trigger">Sections</span></summary>
+      <div class="section-menu-panel">
+        <div class="section-menu-grid">${groups}</div>
+      </div>
+    </details>
+  `;
+}
+
+function initSectionMenu() {
+  document.addEventListener("click", (event) => {
+    const menu = document.querySelector(".section-menu");
+    if (!menu?.open) return;
+
+    if (event.target.closest(".section-menu-links a")) {
+      menu.open = false;
+      return;
+    }
+
+    if (!event.target.closest(".section-menu")) {
+      menu.open = false;
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") return;
+    const menu = document.querySelector(".section-menu");
+    if (menu) menu.open = false;
+  });
+}
+
+function syncCatalogFooter() {
+  const footerCopy = document.querySelector("footer.final-cta p");
+  if (!footerCopy) return;
+
+  const sectionCount = getActiveCatalogSections().length;
+  const itemCount = document.querySelectorAll("section .cpb").length;
+  footerCopy.textContent = `UI IP Toolkit v4 - ${sectionCount} sections - ${itemCount} copyable elements - Background soundtrack - Zero dependencies`;
+}
+
+function createToolkitCard(item, className = "ut-c") {
+  const previewClass = ["mini-preview", item.previewMode || "", item.previewClass || ""].filter(Boolean).join(" ");
+  const cardMeta = buildCardMetaAttributes(item);
+
+  return `
+    <div class="${className} has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}" ${cardMeta}>
       <div class="${previewClass}">${item.preview}</div>
       <div class="kit-copy-meta">
         ${createCardSource(item)}
@@ -596,20 +763,22 @@ function createToolkitCard(item, className = "ut-c") {
   `;
 }
 
-function addToolkitCards(selector, items, className = "ut-c") {
+function addToolkitCards(selector, items, className = "ut-c", defaults = {}) {
   const grid = document.querySelector(selector);
   if (!grid) return;
 
-  grid.insertAdjacentHTML("beforeend", items.map((item) => createToolkitCard(item, className)).join(""));
+  const normalizedItems = normalizeCatalogItems(items, defaults);
+  grid.insertAdjacentHTML("beforeend", normalizedItems.map((item) => createToolkitCard(item, className)).join(""));
   grid.classList.add("paginated");
   grid.dataset.minPageSize = grid.dataset.minPageSize || "8";
 }
 
 function createComponentCard(item) {
   const previewClass = ["cp-p", item.previewMode || "", item.previewClass || ""].filter(Boolean).join(" ");
+  const cardMeta = buildCardMetaAttributes(item);
 
   return `
-    <div class="cp-c has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}">
+    <div class="cp-c has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}" ${cardMeta}>
       <div class="${previewClass}">${item.preview}</div>
       <div class="cp-i">
         ${createCardSource(item)}
@@ -621,11 +790,12 @@ function createComponentCard(item) {
   `;
 }
 
-function addComponentCards(selector, items) {
+function addComponentCards(selector, items, defaults = {}) {
   const grid = document.querySelector(selector);
   if (!grid) return;
 
-  grid.insertAdjacentHTML("beforeend", items.map((item) => createComponentCard(item)).join(""));
+  const normalizedItems = normalizeCatalogItems(items, defaults);
+  grid.insertAdjacentHTML("beforeend", normalizedItems.map((item) => createComponentCard(item)).join(""));
   grid.classList.add("paginated");
   grid.dataset.minPageSize = grid.dataset.minPageSize || "8";
 }
@@ -988,6 +1158,331 @@ function pruneCatalogNoise() {
   removeCardsByTitle("#shadows .sh-g", (title) => /^Shadow \d+$/i.test(title));
 }
 
+function uiLines(widths = ["82%", "64%", "46%"], color = "rgba(255,255,255,.12)") {
+  return widths
+    .map((width) => `<span style="display:block;width:${width};height:8px;border-radius:999px;background:${color}"></span>`)
+    .join("");
+}
+
+function uiChips(labels = [], accent = "#c2a4ff") {
+  return labels
+    .map((label, index) => `<span style="display:inline-flex;align-items:center;min-height:24px;padding:5px 9px;border-radius:999px;background:${index === 0 ? accent : "rgba(255,255,255,.08)"};color:${index === 0 ? "#020617" : "#e5e7eb"};font-size:10px;font-weight:800">${label}</span>`)
+    .join("");
+}
+
+function nativeStage(content, options = {}) {
+  const accent = options.accent || "#c2a4ff";
+  const bg = options.bg || `radial-gradient(circle at 86% 12%,${accent}32,transparent 34%),linear-gradient(135deg,#07111f,#111827)`;
+  const color = options.color || "#fff";
+  const minHeight = options.minHeight || "150px";
+  return `<div style="width:100%;min-height:${minHeight};padding:16px;border-radius:22px;background:${bg};border:1px solid rgba(255,255,255,.09);color:${color};box-shadow:inset 0 1px 0 rgba(255,255,255,.05);display:flex;flex-direction:column;justify-content:${options.justify || "space-between"};gap:12px;overflow:hidden">${content}</div>`;
+}
+
+function renderDeepProductPreview(kind, title, labels = [], accent = "#c2a4ff", variant = 0) {
+  if (variant < 3) return "";
+
+  const chips = uiChips(labels.slice(0, 4), accent);
+  const bars = uiLines(["82%", "64%", "48%"]);
+  const lightBars = uiLines(["82%", "62%"], "#cbd5e1");
+  const metric = labels[0] || "Live";
+  const secondary = labels[1] || "Route";
+  const third = labels[2] || "Next";
+
+  if (kind === "nav") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:92px 1fr 74px;gap:9px;align-items:center;padding:10px;border-radius:17px;background:#f8fafc;color:#020617"><strong style="font-size:13px">Orbit</strong><span style="height:30px;border-radius:999px;background:#e2e8f0;padding:8px 12px;font-size:10px;color:#64748b">${metric}</span><span style="height:30px;border-radius:999px;background:${accent}"></span></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">${labels.slice(0, 3).map((label, index) => `<span style="min-height:42px;border-radius:14px;background:${index === 1 ? accent : "rgba(255,255,255,.075)"};color:${index === 1 ? "#020617" : "#e5e7eb"};display:grid;place-items:center;font-size:10px;font-weight:900">${label}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:70px 1fr;gap:10px"><aside style="border-radius:18px;background:${accent};color:#020617;padding:11px;display:grid;align-content:space-between;font-size:10px;font-weight:900"><span>Menu</span><span>${metric}</span></aside><main style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:14px">${title}</strong><div style="margin-top:11px">${lightBars}</div></main></div><div style="height:30px;border-radius:999px;background:rgba(255,255,255,.075)"></div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><strong style="font-size:13px">${title}</strong><span style="width:42px;height:42px;border-radius:15px;background:${accent}"></span></div><div style="display:grid;grid-template-columns:1fr 74px;gap:10px"><div style="border-radius:18px;background:rgba(255,255,255,.07);padding:12px">${bars}</div><div style="border-radius:18px;background:#f8fafc;color:#020617;padding:11px;font-size:10px;font-weight:900">${metric}<br>${secondary}</div></div>`, { accent, minHeight: "176px" });
+  }
+
+  if (kind === "mega") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:76px 1fr;gap:10px"><aside style="border-radius:18px;background:${accent};color:#020617;padding:12px;display:grid;gap:8px;font-size:10px;font-weight:900">${labels.slice(0, 3).map((label) => `<span>${label}</span>`).join("")}</aside><main style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${[0, 1, 2, 3].map((index) => `<span style="border-radius:14px;background:${index === 2 ? "#f8fafc" : "rgba(255,255,255,.075)"};min-height:44px"></span>`).join("")}</main></div><div style="display:flex;align-items:center;justify-content:space-between"><strong style="font-size:13px">${title}</strong><span style="height:26px;width:86px;border-radius:999px;background:rgba(255,255,255,.08)"></span></div>`, { accent, minHeight: "186px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="padding:12px;border-radius:18px;background:#f8fafc;color:#020617"><strong style="font-size:14px">${title}</strong><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px">${labels.slice(0, 3).map((label, index) => `<span style="height:36px;border-radius:12px;background:${index === 0 ? accent : "#e2e8f0"};display:grid;place-items:center;font-size:10px;font-weight:900">${label}</span>`).join("")}</div></div><div style="display:grid;grid-template-columns:1.3fr .7fr;gap:9px"><span style="height:40px;border-radius:14px;background:rgba(255,255,255,.075)"></span><span style="height:40px;border-radius:14px;background:${accent}55"></span></div>`, { accent, minHeight: "186px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:1fr 94px;gap:10px"><div style="border-radius:18px;background:rgba(255,255,255,.07);padding:12px"><strong style="font-size:15px">${title}</strong><div style="margin-top:10px">${bars}</div></div><div style="display:grid;gap:8px">${labels.slice(0, 3).map((label, index) => `<span style="border-radius:13px;background:${index === 1 ? accent : "#f8fafc"};color:#020617;padding:9px;font-size:9px;font-weight:900">${label}</span>`).join("")}</div></div>`, { accent, minHeight: "186px" });
+  }
+
+  if (kind === "searchNav" || kind === "command") {
+    if (variant === 3) {
+      return nativeStage(`<div style="padding:12px;border-radius:18px;background:#f8fafc;color:#020617"><div style="height:34px;border-radius:999px;background:#e2e8f0;padding:10px 14px;font-size:10px;color:#64748b">Search ${metric.toLowerCase()}</div><div style="display:grid;gap:7px;margin-top:11px">${[metric, secondary, third].map((label, index) => `<span style="height:28px;border-radius:10px;background:${index === 0 ? accent : "#e2e8f0"};display:flex;align-items:center;padding:0 10px;font-size:10px;font-weight:900">${label}</span>`).join("")}</div></div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:68px 1fr;gap:10px"><aside style="border-radius:18px;background:rgba(255,255,255,.075);padding:10px;display:grid;gap:7px">${labels.slice(0, 4).map((label, index) => `<span style="height:22px;border-radius:999px;background:${index === 0 ? accent : "rgba(255,255,255,.08)"}"></span>`).join("")}</aside><main style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:13px">${title}</strong><div style="margin-top:10px">${lightBars}</div></main></div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><strong style="font-size:13px">${title}</strong><span style="padding:6px 8px;border-radius:10px;background:${accent};color:#020617;font-size:10px;font-weight:900">⌘K</span></div><div style="display:grid;gap:8px">${[0, 1, 2].map((index) => `<div style="display:grid;grid-template-columns:28px 1fr 42px;gap:8px;align-items:center;padding:8px;border-radius:13px;background:${index === 1 ? "rgba(255,255,255,.1)" : "rgba(255,255,255,.055)"}"><span style="height:24px;border-radius:8px;background:${index === 0 ? accent : "rgba(255,255,255,.12)"}"></span><span style="height:8px;border-radius:999px;background:rgba(255,255,255,.18)"></span><span style="height:18px;border-radius:999px;background:rgba(255,255,255,.1)"></span></div>`).join("")}</div>`, { accent, minHeight: "176px" });
+  }
+
+  if (kind === "announcement") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 92px;gap:10px;align-items:center"><div style="height:34px;border-radius:999px;background:${accent};color:#020617;padding:10px 14px;font-size:10px;font-weight:900">${metric} · ${secondary}</div><span style="height:34px;border-radius:999px;background:#f8fafc"></span></div><div style="display:flex;align-items:center;gap:8px;color:#94a3b8;font-size:10px">${labels.slice(0, 4).map((label, index) => `<span style="display:flex;align-items:center;gap:8px">${index ? "<b style='opacity:.38'>/</b>" : ""}${label}</span>`).join("")}</div><strong style="font-size:16px">${title}</strong>`, { accent, minHeight: "166px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:14px">${title}</strong><div style="height:8px;border-radius:999px;background:#e2e8f0;margin-top:12px;overflow:hidden"><span style="display:block;width:62%;height:100%;background:${accent}"></span></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${labels.slice(0, 3).map((label) => `<span style="height:30px;border-radius:999px;background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:10px;font-weight:800">${label}</span>`).join("")}</div>`, { accent, minHeight: "166px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:58px 1fr;gap:10px;align-items:center"><span style="height:58px;border-radius:18px;background:${accent};color:#020617;display:grid;place-items:center;font-size:11px;font-weight:900">${metric}</span><div><strong style="font-size:16px">${title}</strong><div style="margin-top:8px">${bars}</div></div></div><span style="height:30px;border-radius:999px;background:rgba(255,255,255,.075)"></span>`, { accent, minHeight: "166px" });
+  }
+
+  if (kind === "headlineGrid" || kind === "hero") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 86px;gap:14px;align-items:end"><div><strong style="display:block;font-size:31px;line-height:.94">${title}</strong><span style="display:block;margin-top:10px;color:#94a3b8;font-size:11px">Proof-led headline with real product context.</span></div><div style="border-radius:20px;background:${accent};color:#020617;padding:12px;display:grid;align-content:space-between;min-height:92px"><strong style="font-size:20px">01</strong><span style="font-size:10px;font-weight:900">${metric}</span></div></div><div style="display:flex;gap:8px">${chips}</div>`, { accent, minHeight: "196px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:70px 1fr;gap:14px"><span style="font-size:54px;line-height:.82;color:${accent};font-weight:900">“</span><div><strong style="display:block;font-size:28px;line-height:.96">${title}</strong><div style="margin-top:12px">${bars}</div></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${labels.slice(0, 3).map((label) => `<span style="height:34px;border-radius:999px;background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:10px;font-weight:800">${label}</span>`).join("")}</div>`, { accent, minHeight: "196px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:1.2fr .8fr;gap:12px;align-items:stretch"><div><span style="font-family:monospace;font-size:10px;color:${accent}">deploy / headline</span><strong style="display:block;margin-top:8px;font-size:27px;line-height:.98">${title}</strong></div><div style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px;display:grid;gap:8px">${lightBars}<span style="height:28px;border-radius:999px;background:${accent}"></span></div></div>`, { accent, minHeight: "196px" });
+  }
+
+  if (kind === "buyCta" || kind === "cta") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 100px;gap:12px"><div><strong style="display:block;font-size:22px;line-height:1.04">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Checkout-ready CTA with plan summary and trust route.</span></div><div style="border-radius:20px;background:#f8fafc;color:#020617;padding:12px;text-align:center"><span style="font-size:10px;color:#64748b">${metric}</span><strong style="display:block;font-size:26px">$29</strong></div></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">${["Trial", "Secure", secondary].map((label, index) => `<span style="height:36px;border-radius:999px;background:${index === 0 ? accent : "rgba(255,255,255,.08)"};color:${index === 0 ? "#020617" : "#e5e7eb"};display:grid;place-items:center;font-size:10px;font-weight:900">${label}</span>`).join("")}</div>`, { accent, minHeight: "186px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="padding:13px;border-radius:18px;background:#f8fafc;color:#020617"><strong style="font-size:16px">${title}</strong><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:12px">${["Free", metric, "Scale"].map((label, index) => `<span style="min-height:48px;border-radius:14px;background:${index === 1 ? accent : "#e2e8f0"};padding:9px;font-size:10px;font-weight:900">${label}<br><small>$${index === 0 ? "0" : index === 1 ? "29" : "99"}</small></span>`).join("")}</div></div>`, { accent, minHeight: "186px" });
+    }
+    return nativeStage(`<div style="border-radius:20px;background:linear-gradient(135deg,${accent}44,rgba(255,255,255,.07));padding:14px"><strong style="display:block;font-size:22px;line-height:1.05">${title}</strong><div style="margin-top:11px">${bars}</div></div><div style="display:flex;gap:8px;align-items:center"><span style="height:36px;flex:1;border-radius:999px;background:${accent}"></span><span style="height:36px;width:90px;border-radius:999px;background:#f8fafc"></span></div>`, { accent, minHeight: "186px" });
+  }
+
+  if (kind === "downloadCta") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:82px 1fr;gap:12px;align-items:center"><span style="height:82px;border-radius:22px;background:#f8fafc;color:#020617;display:grid;place-items:center;font-size:20px;font-weight:900">ZIP</span><div><strong style="display:block;font-size:21px;line-height:1.05">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Pack, docs and starter assets in one block.</span></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${labels.slice(0, 3).map((label) => `<span style="height:32px;border-radius:12px;background:${accent}22;border:1px solid ${accent}55;display:grid;place-items:center;font-size:10px;font-weight:800">${label}</span>`).join("")}</div>`, { accent, minHeight: "186px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="padding:12px;border-radius:18px;background:#020617;border:1px solid rgba(255,255,255,.1);font-family:monospace"><span style="color:${accent}">$ npm i toolkit</span><span style="display:block;margin-top:8px;color:#94a3b8">download ${metric.toLowerCase()}...</span></div><div><strong style="font-size:20px">${title}</strong><div style="margin-top:9px">${chips}</div></div>`, { accent, minHeight: "186px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><div style="border-radius:18px;background:${accent};color:#020617;padding:12px"><strong style="font-size:16px">${metric}</strong><span style="display:block;margin-top:28px;font-size:10px;font-weight:900">Download</span></div><div style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px">${lightBars}<span style="display:block;height:30px;border-radius:999px;background:${accent};margin-top:12px"></span></div></div><strong style="font-size:14px">${title}</strong>`, { accent, minHeight: "186px" });
+  }
+
+  if (kind === "newsletterForm" || kind === "modal" || kind === "panel") {
+    if (variant === 3) {
+      return nativeStage(`<div style="margin:auto;width:92%;padding:15px;border-radius:22px;background:#f8fafc;color:#020617;box-shadow:0 18px 50px rgba(0,0,0,.34)"><strong style="display:block;font-size:18px;line-height:1.05">${title}</strong><div style="display:grid;grid-template-columns:1fr 74px;gap:8px;margin-top:13px"><span style="height:34px;border-radius:999px;background:#e2e8f0"></span><span style="height:34px;border-radius:999px;background:${accent}"></span></div><div style="display:flex;gap:6px;margin-top:10px">${labels.slice(0, 3).map((label) => `<span style="font-size:9px;color:#64748b">${label}</span>`).join("")}</div></div>`, { accent, minHeight: "186px", justify: "center" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:86px 1fr;gap:10px"><aside style="border-radius:18px;background:${accent};color:#020617;padding:12px;font-size:10px;font-weight:900">${metric}<br>${secondary}</aside><main style="border-radius:18px;background:rgba(255,255,255,.075);padding:12px"><strong style="font-size:16px">${title}</strong><div style="display:grid;gap:7px;margin-top:10px"><span style="height:30px;border-radius:10px;background:#f8fafc"></span><span style="height:30px;border-radius:10px;background:rgba(255,255,255,.1)"></span></div></main></div>`, { accent, minHeight: "186px" });
+    }
+    return nativeStage(`<div><strong style="display:block;font-size:21px;line-height:1.05">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Form shell with confirmation-safe hierarchy.</span></div><div style="padding:10px;border-radius:18px;background:#f8fafc;color:#020617;display:grid;gap:8px"><span style="height:30px;border-radius:999px;background:#e2e8f0"></span><span style="height:30px;border-radius:999px;background:${accent}"></span></div>`, { accent, minHeight: "186px" });
+  }
+
+  if (kind === "creative404" || kind === "error" || kind === "industryError") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:96px 1fr;gap:14px;align-items:center"><strong style="font-size:58px;line-height:.82;color:${accent}">404</strong><div><strong style="display:block;font-size:22px;line-height:1.02">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Recovery routes stay visible.</span></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${["Search", "Support", metric, secondary].map((label, index) => `<span style="height:30px;border-radius:999px;background:${index === 0 ? accent : "rgba(255,255,255,.08)"};color:${index === 0 ? "#020617" : "#e5e7eb"};display:grid;place-items:center;font-size:10px;font-weight:900">${label}</span>`).join("")}</div>`, { accent, minHeight: "196px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="border-radius:20px;background:#f8fafc;color:#020617;padding:14px"><span style="font-family:monospace;font-size:10px;color:#64748b">route.not_found</span><strong style="display:block;margin-top:8px;font-size:20px">${title}</strong><div style="height:34px;border-radius:999px;background:#e2e8f0;margin-top:12px;padding:10px 13px;font-size:10px;color:#64748b">Search pages...</div></div><div style="height:34px;border-radius:999px;background:${accent}"></div>`, { accent, minHeight: "196px" });
+    }
+    return nativeStage(`<div style="display:grid;place-items:center;text-align:center;gap:8px"><span style="width:108px;height:70px;border-radius:28px;background:repeating-linear-gradient(135deg,${accent}66 0 12px,rgba(255,255,255,.08) 12px 24px);display:grid;place-items:center;font-size:24px;font-weight:900">404</span><strong style="font-size:19px">${title}</strong></div><div style="display:flex;justify-content:center;gap:8px">${chips}</div>`, { accent, minHeight: "196px", justify: "center" });
+  }
+
+  if (kind === "footer" || kind === "typeFooter" || kind === "cardFooter") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1.2fr .8fr;gap:14px"><div><strong style="display:block;font-size:30px;line-height:.88">${title}</strong><div style="margin-top:13px">${bars}</div></div><div style="display:grid;gap:8px">${labels.slice(0, 4).map((label) => `<span style="height:25px;border-radius:999px;background:rgba(255,255,255,.075);padding:7px 9px;font-size:9px;color:#94a3b8">${label}</span>`).join("")}</div></div><div style="height:1px;background:${accent}55"></div>`, { accent, minHeight: "186px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">${labels.slice(0, 3).map((label, index) => `<div style="min-height:58px;border-radius:18px;background:${index === 0 ? accent : "rgba(255,255,255,.075)"};color:${index === 0 ? "#020617" : "#e5e7eb"};padding:11px"><strong style="font-size:12px">${label}</strong></div>`).join("")}</div><div style="display:flex;justify-content:space-between;gap:10px;align-items:end"><strong style="font-size:16px">${title}</strong><span style="font-size:10px;color:#94a3b8">2026 / Toolkit</span></div>`, { accent, minHeight: "186px" });
+    }
+    return nativeStage(`<div style="padding:13px;border-radius:18px;background:#f8fafc;color:#020617"><strong style="font-size:18px">${title}</strong><div style="display:grid;grid-template-columns:1fr 74px;gap:8px;margin-top:12px"><span style="height:34px;border-radius:999px;background:#e2e8f0"></span><span style="height:34px;border-radius:999px;background:${accent}"></span></div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${[0, 1, 2, 3].map(() => `<span style="height:22px;border-radius:999px;background:rgba(255,255,255,.075)"></span>`).join("")}</div>`, { accent, minHeight: "186px" });
+  }
+
+  if (kind === "bento" || kind === "dashboardBento" || kind === "mediaBento") {
+    if (variant === 3) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1.25fr .75fr;grid-template-rows:72px 76px;gap:9px"><div style="grid-row:span 2;border-radius:20px;background:linear-gradient(135deg,${accent}55,rgba(255,255,255,.07));padding:13px"><strong style="font-size:17px">${title}</strong><div style="margin-top:12px">${bars}</div></div><span style="border-radius:18px;background:#f8fafc"></span><span style="border-radius:18px;background:${accent}"></span></div>`, { accent, minHeight: "196px" });
+    }
+    if (variant === 4) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:58px 78px;gap:9px"><div style="grid-column:span 2;border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:18px">${metric}</strong><span style="display:block;color:#64748b;font-size:10px">${title}</span></div><div style="border-radius:18px;background:${accent}"></div><div style="border-radius:18px;background:rgba(255,255,255,.075)"></div><div style="grid-column:span 2;border-radius:18px;background:linear-gradient(90deg,${accent}55,rgba(255,255,255,.07));padding:12px">${lightBars}</div></div>`, { accent, minHeight: "196px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:76px 1fr;gap:10px"><aside style="border-radius:20px;background:${accent};color:#020617;padding:12px;display:grid;align-content:space-between;font-size:10px;font-weight:900"><span>${metric}</span><span>${secondary}</span></aside><main style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${[0, 1, 2, 3].map((index) => `<span style="border-radius:16px;background:${index === 1 ? "#f8fafc" : "rgba(255,255,255,.075)"};min-height:52px"></span>`).join("")}</main></div><strong style="font-size:14px">${title}</strong>`, { accent, minHeight: "196px" });
+  }
+
+  return "";
+}
+
+function renderProductPreview(kind, title, labels = [], accent = "#c2a4ff") {
+  const rows = uiLines(["86%", "72%", "52%"]);
+  const chips = uiChips(labels, accent);
+  const row = (a, b, c = accent) => `<div style="display:grid;grid-template-columns:1.3fr .7fr .5fr;gap:8px;align-items:center;padding:9px 10px;border-radius:12px;background:rgba(255,255,255,.055)"><span style="height:8px;border-radius:999px;background:rgba(255,255,255,.16)"></span><span style="height:8px;border-radius:999px;background:rgba(255,255,255,.1)"></span><span style="height:18px;border-radius:999px;background:${c};opacity:.9"></span></div>`;
+  const variant = Array.from(title).reduce((sum, char) => sum + char.charCodeAt(0), 0) % 6;
+  const deepPreview = renderDeepProductPreview(kind, title, labels, accent, variant);
+  if (deepPreview) return deepPreview;
+
+  if (kind === "modal") {
+    return nativeStage(`<div style="height:26px;border-radius:12px;background:rgba(255,255,255,.08)"></div><div style="margin:auto;width:82%;padding:16px;border-radius:18px;background:#f8fafc;color:#020617;box-shadow:0 18px 42px rgba(0,0,0,.36)"><strong style="display:block;font-size:15px">${title}</strong><span style="display:block;margin-top:8px;color:#64748b;font-size:11px">Confirm the next step before continuing.</span><div style="display:flex;gap:8px;margin-top:14px"><span style="height:26px;flex:1;border-radius:999px;background:#e2e8f0"></span><span style="height:26px;flex:1;border-radius:999px;background:${accent}"></span></div></div>`, { accent });
+  }
+  if (kind === "drawer") {
+    return nativeStage(`<div style="display:grid;grid-template-columns:1fr 86px;gap:10px;min-height:138px"><div style="border-radius:16px;background:rgba(255,255,255,.05);padding:12px">${rows}</div><aside style="border-radius:16px;background:#f8fafc;color:#020617;padding:12px;display:grid;gap:8px"><strong style="font-size:12px">${title}</strong>${uiLines(["88%", "62%"], "#cbd5e1")}<span style="height:26px;border-radius:999px;background:${accent}"></span></aside></div>`, { accent });
+  }
+  if (kind === "command") {
+    return nativeStage(`<div style="padding:13px;border-radius:18px;background:#f8fafc;color:#020617;box-shadow:0 18px 40px rgba(0,0,0,.3)"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><strong style="font-size:13px">Search actions</strong><span style="padding:4px 7px;border-radius:8px;background:#e2e8f0;color:#334155;font-size:10px">Ctrl K</span></div><div style="display:grid;gap:7px;margin-top:12px"><span style="height:28px;border-radius:10px;background:#e2e8f0"></span><span style="height:28px;border-radius:10px;background:${accent}33"></span><span style="height:28px;border-radius:10px;background:#e2e8f0"></span></div></div>`, { accent });
+  }
+  if (kind === "table") {
+    return nativeStage(`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:14px">${title}</strong><span style="width:62px;height:24px;border-radius:999px;background:${accent}"></span></div><div style="display:grid;gap:8px">${row()}${row()}${row("#fff", "#fff", "#4ade80")}</div>`, { accent });
+  }
+  if (kind === "kpi") {
+    return nativeStage(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">${["$71.8k", "12.4%", "982"].map((metric, index) => `<div style="padding:12px;border-radius:16px;background:rgba(255,255,255,.07)"><span style="display:block;font-size:10px;color:#94a3b8">${labels[index] || "Metric"}</span><strong style="display:block;margin-top:6px;font-size:18px">${metric}</strong></div>`).join("")}</div><div style="height:42px;border-radius:16px;background:linear-gradient(90deg,${accent}55,rgba(255,255,255,.06))"></div>`, { accent });
+  }
+  if (kind === "empty") {
+    return nativeStage(`<div style="margin:auto;text-align:center;display:grid;justify-items:center;gap:10px"><span style="width:54px;height:54px;border-radius:18px;background:${accent}24;border:1px solid ${accent}55"></span><strong style="font-size:16px">${title}</strong><span style="max-width:190px;color:#94a3b8;font-size:11px">Add content, retry, or start from a guided template.</span><span style="height:28px;width:118px;border-radius:999px;background:${accent}"></span></div>`, { accent, justify: "center" });
+  }
+  if (kind === "panel") {
+    return nativeStage(`<div style="display:grid;grid-template-columns:92px 1fr;gap:10px;min-height:138px"><aside style="border-radius:16px;background:rgba(255,255,255,.07);padding:10px;display:grid;align-content:start;gap:8px">${uiChips(labels.slice(0, 3), accent)}</aside><div style="border-radius:16px;background:#f8fafc;color:#020617;padding:12px;display:grid;gap:10px"><strong style="font-size:13px">${title}</strong>${uiLines(["86%", "74%", "58%"], "#cbd5e1")}<span style="height:28px;border-radius:999px;background:#020617"></span></div></div>`, { accent });
+  }
+  if (kind === "nav") {
+    return nativeStage(`<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:16px;background:#f8fafc;color:#020617"><strong style="font-size:13px">Orbit</strong><div style="display:flex;gap:8px">${uiChips(labels.slice(0, 3), accent)}</div></div><div style="display:grid;grid-template-columns:68px 1fr;gap:10px;min-height:70px"><aside style="border-radius:14px;background:rgba(255,255,255,.06)"></aside><main style="border-radius:14px;background:rgba(255,255,255,.04);padding:10px">${uiLines(["70%", "54%"])}</main></div>`, { accent });
+  }
+  if (kind === "hero") {
+    return nativeStage(`<span style="font-size:10px;text-transform:uppercase;letter-spacing:.16em;color:${accent}">Launch system</span><strong style="font-size:28px;line-height:1.02;max-width:260px">${title}</strong><span style="color:#94a3b8;font-size:11px;max-width:230px">A copy-ready headline block with product context and action density.</span><div style="display:flex;gap:8px">${chips}</div>`, { accent, minHeight: "170px" });
+  }
+  if (kind === "cta") {
+    return nativeStage(`<div><strong style="display:block;font-size:21px;line-height:1.05">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Conversion section with primary and secondary paths.</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="height:34px;min-width:120px;border-radius:999px;background:${accent}"></span><span style="height:34px;min-width:92px;border-radius:999px;background:rgba(255,255,255,.1)"></span></div>`, { accent });
+  }
+  if (kind === "error") {
+    return nativeStage(`<div style="display:flex;justify-content:space-between;align-items:start;gap:12px"><strong style="font-size:54px;line-height:.9;color:${accent}">404</strong><span style="width:58px;height:58px;border-radius:50%;background:rgba(255,255,255,.08);border:1px dashed ${accent}66"></span></div><div><strong style="font-size:17px">${title}</strong><span style="display:block;margin-top:7px;color:#94a3b8;font-size:11px">Recover with search, support, or a stable route.</span></div><div style="display:flex;gap:8px">${chips}</div>`, { accent });
+  }
+  if (kind === "footer") {
+    return nativeStage(`<div style="display:grid;grid-template-columns:1.2fr repeat(3,.7fr);gap:12px"><div><strong style="font-size:18px">${title}</strong><div style="margin-top:10px">${uiLines(["84%", "58%"])}</div></div>${[0, 1, 2].map(() => `<div style="display:grid;gap:7px">${uiLines(["72%", "58%", "44%"])}</div>`).join("")}</div><div style="height:1px;background:rgba(255,255,255,.1)"></div><div style="display:flex;justify-content:space-between;gap:10px;color:#94a3b8;font-size:10px"><span>2026 Toolkit</span><span>${labels[0] || "Docs"} / ${labels[1] || "Status"}</span></div>`, { accent });
+  }
+  if (kind === "bento") {
+    return nativeStage(`<div style="display:grid;grid-template-columns:1.25fr .75fr;grid-template-rows:82px 64px;gap:10px"><div style="grid-row:span 2;border-radius:18px;background:linear-gradient(135deg,${accent}44,rgba(255,255,255,.07));padding:13px"><strong style="font-size:17px">${title}</strong><div style="margin-top:12px">${uiLines(["76%", "54%"])}</div></div><div style="border-radius:18px;background:rgba(255,255,255,.07);padding:12px">${uiLines(["66%", "42%"])}</div><div style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:20px">${labels[0] || "98%"}</strong><span style="display:block;color:#64748b;font-size:10px">${labels[1] || "Signal"}</span></div></div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "mega") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:86px 1fr;gap:10px"><aside style="border-radius:16px;background:#f8fafc;color:#020617;padding:11px;display:grid;gap:7px"><strong style="font-size:12px">Menu</strong>${labels.slice(0, 3).map((label) => `<span style="font-size:10px;color:#64748b">${label}</span>`).join("")}</aside><div style="border-radius:18px;background:rgba(255,255,255,.06);padding:12px;display:grid;grid-template-columns:1fr 1fr;gap:9px">${[0, 1, 2, 3].map((index) => `<span style="border-radius:13px;background:${index === 0 ? accent : "rgba(255,255,255,.07)"};min-height:38px"></span>`).join("")}</div></div><strong style="font-size:13px">${title}</strong>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:16px;background:#f8fafc;color:#020617"><strong style="font-size:13px">Suite</strong><span style="height:24px;width:80px;border-radius:999px;background:${accent}"></span></div><div style="display:grid;grid-template-columns:1.35fr .65fr;gap:10px"><div style="border-radius:18px;background:rgba(255,255,255,.06);padding:12px">${uiLines(["82%", "66%", "44%"])}</div><div style="border-radius:18px;background:${accent};color:#020617;padding:12px"><strong style="font-size:12px">${labels[0] || "Route"}</strong></div></div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:16px;background:#f8fafc;color:#020617"><strong style="font-size:13px">Northstar</strong><div style="display:flex;gap:7px">${uiChips(labels.slice(0, 3), accent)}</div></div><div style="display:grid;grid-template-columns:1fr 1fr .85fr;gap:9px;padding:12px;border-radius:18px;background:rgba(255,255,255,.06)">${[0, 1].map((index) => `<div style="display:grid;gap:8px"><strong style="font-size:11px;color:${accent}">${labels[index] || "Group"}</strong>${uiLines(["88%", "66%", "48%"])}</div>`).join("")}<div style="border-radius:14px;background:${accent};color:#020617;padding:11px"><strong style="font-size:12px">${title}</strong><span style="display:block;margin-top:7px;font-size:10px;opacity:.72">Featured route</span></div></div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "searchNav") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 44px;gap:9px"><div style="height:38px;border-radius:13px;background:#f8fafc;color:#020617;padding:11px 13px;font-size:10px">/${labels[0] || "search"}</div><span style="border-radius:13px;background:${accent}"></span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:9px">${labels.slice(1, 5).map((label, index) => `<span style="height:35px;border-radius:12px;background:${index === 0 ? accent : "rgba(255,255,255,.07)"};color:${index === 0 ? "#020617" : "#e5e7eb"};display:grid;place-items:center;font-size:10px;font-weight:800">${label}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:72px 1fr;gap:10px"><aside style="border-radius:18px;background:${accent};color:#020617;padding:10px;display:grid;gap:6px;font-size:10px;font-weight:900">${labels.slice(1, 4).join("<br>")}</aside><main style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:13px">${title}</strong><div style="margin-top:10px">${uiLines(["84%", "62%"], "#cbd5e1")}</div></main></div><span style="height:32px;border-radius:999px;background:rgba(255,255,255,.08)"></span>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:80px 1fr 54px;gap:9px;align-items:center"><strong style="font-size:13px">Atlas</strong><div style="height:34px;border-radius:999px;background:#f8fafc;color:#020617;padding:9px 13px;font-size:11px;display:flex;align-items:center;gap:8px"><span style="width:9px;height:9px;border:2px solid #64748b;border-radius:50%"></span>${labels[0] || "Search"}</div><span style="height:34px;border-radius:999px;background:${accent}"></span></div><div style="display:grid;grid-template-columns:82px 1fr;gap:10px"><aside style="border-radius:16px;background:rgba(255,255,255,.07);padding:10px;display:grid;gap:7px">${uiChips(labels.slice(1, 4), accent)}</aside><main style="border-radius:16px;background:rgba(255,255,255,.045);padding:12px">${uiLines(["80%", "62%", "42%"])}</main></div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "announcement") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 78px;gap:10px;align-items:center"><div style="padding:11px 13px;border-radius:16px;background:${accent};color:#020617;font-size:10px;font-weight:900">${labels[0] || "Update"}</div><span style="height:38px;border-radius:16px;background:#f8fafc"></span></div><div style="border-radius:18px;background:rgba(255,255,255,.07);padding:12px"><strong style="font-size:14px">${title}</strong><div style="margin-top:10px">${uiLines(["74%", "52%"])}</div></div>`, { accent, minHeight: "166px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="height:30px;border-radius:999px;background:rgba(255,255,255,.08);display:flex;align-items:center;padding:0 10px;gap:8px"><span style="width:8px;height:8px;border-radius:50%;background:${accent}"></span><strong style="font-size:10px">${labels[0] || "Live"}</strong></div><div style="display:flex;align-items:center;justify-content:space-between;padding:12px;border-radius:16px;background:#f8fafc;color:#020617"><strong style="font-size:13px">${title}</strong><span style="width:48px;height:24px;border-radius:999px;background:${accent}"></span></div><div style="display:flex;gap:8px">${uiChips(labels.slice(1, 4), accent)}</div>`, { accent, minHeight: "166px" });
+    }
+    return nativeStage(`<div style="padding:8px 12px;border-radius:999px;background:${accent};color:#020617;font-size:10px;font-weight:900;text-align:center">${labels[0] || "New update"} - ${labels[1] || "Read more"}</div><div style="display:flex;align-items:center;justify-content:space-between;padding:11px 12px;border-radius:16px;background:#f8fafc;color:#020617"><strong style="font-size:13px">Waypoint</strong><div style="display:flex;gap:8px">${uiLines(["46px", "38px", "54px"], "#cbd5e1")}</div><span style="width:58px;height:26px;border-radius:999px;background:#020617"></span></div><div style="display:flex;gap:8px;color:#94a3b8;font-size:10px">${labels.slice(2, 5).map((label) => `<span>${label}</span>`).join("")}</div>`, { accent, minHeight: "166px" });
+  }
+  if (kind === "headlineGrid") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;gap:12px;text-align:center;justify-items:center"><strong style="display:block;font-size:32px;line-height:.94;letter-spacing:0;max-width:300px">${title}</strong><div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">${uiChips(labels.slice(0, 3), accent)}</div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${["01", "02", "03"].map((step, index) => `<span style="height:42px;border-radius:16px;background:${index === 1 ? accent : "rgba(255,255,255,.075)"};color:${index === 1 ? "#020617" : "#e5e7eb"};display:grid;place-items:center;font-size:11px;font-weight:900">${step}</span>`).join("")}</div>`, { accent, minHeight: "186px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:74px 1fr;gap:14px;align-items:start"><span style="font-size:42px;line-height:.9;color:${accent};font-weight:900">H1</span><div><strong style="display:block;font-size:27px;line-height:.98">${title}</strong><span style="display:block;margin-top:9px;color:#94a3b8;font-size:11px">Editorial headline frame with compact proof rail.</span></div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px"><span style="height:36px;border-radius:999px;background:${accent}"></span><span style="height:36px;border-radius:999px;background:rgba(255,255,255,.08)"></span></div>`, { accent, minHeight: "186px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:1.15fr .85fr;gap:14px;align-items:end"><div><strong style="display:block;font-size:30px;line-height:.96;letter-spacing:0;max-width:260px">${title}</strong><span style="display:block;margin-top:10px;color:#94a3b8;font-size:11px;line-height:1.55">Original headline layout with proof, action and category rhythm.</span></div><div style="display:grid;gap:8px">${uiChips(labels.slice(0, 3), accent)}<span style="height:54px;border-radius:18px;background:linear-gradient(135deg,${accent}55,rgba(255,255,255,.08))"></span></div></div>`, { accent, minHeight: "186px" });
+  }
+  if (kind === "buyCta") {
+    if (variant === 1) {
+      return nativeStage(`<div style="padding:13px;border-radius:18px;background:#f8fafc;color:#020617;display:flex;align-items:center;justify-content:space-between;gap:12px"><div><strong style="font-size:16px">${title}</strong><span style="display:block;margin-top:5px;color:#64748b;font-size:10px">${labels[0] || "Offer"} included</span></div><strong style="font-size:27px">$49</strong></div><div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">${labels.slice(0, 3).map((label, index) => `<span style="height:42px;border-radius:15px;background:${index === 0 ? accent : "rgba(255,255,255,.075)"};color:${index === 0 ? "#020617" : "#e5e7eb"};display:grid;place-items:center;font-size:10px;font-weight:900">${label}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div><strong style="display:block;font-size:22px;line-height:1.04">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Plan selector with highlighted conversion path.</span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${["Free", labels[0] || "Pro", "Scale"].map((label, index) => `<span style="min-height:58px;border-radius:17px;background:${index === 1 ? accent : "rgba(255,255,255,.075)"};color:${index === 1 ? "#020617" : "#e5e7eb"};padding:10px;display:grid;align-content:space-between;font-size:10px;font-weight:900"><b>${label}</b><small style="opacity:.65">$${index === 0 ? "0" : index === 1 ? "29" : "99"}</small></span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:1fr 92px;gap:12px;align-items:stretch"><div><strong style="display:block;font-size:22px;line-height:1.04">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Purchase-ready block with price, proof and secondary route.</span></div><div style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px;display:grid;align-content:center;text-align:center"><span style="font-size:10px;color:#64748b">${labels[0] || "Plan"}</span><strong style="font-size:23px">$29</strong></div></div><div style="display:flex;gap:8px;flex-wrap:wrap"><span style="height:34px;min-width:124px;border-radius:999px;background:${accent}"></span><span style="height:34px;min-width:94px;border-radius:999px;background:rgba(255,255,255,.1)"></span></div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "downloadCta") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:76px 1fr;gap:12px;align-items:center"><span style="height:76px;border-radius:20px;background:${accent};display:grid;place-items:center;color:#020617;font-size:22px;font-weight:900">ZIP</span><div><strong style="display:block;font-size:21px;line-height:1.05">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Packaged resource with platform and file signals.</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${uiChips(labels.slice(0, 3), accent)}</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div><strong style="display:block;font-size:20px;line-height:1.06">${title}</strong><span style="display:block;margin-top:7px;color:#94a3b8;font-size:11px">Developer-style download block with package rows.</span></div><div style="display:grid;gap:7px">${labels.slice(0, 3).map((label, index) => `<span style="height:28px;border-radius:10px;background:${index === 0 ? accent : "rgba(255,255,255,.075)"};color:${index === 0 ? "#020617" : "#e5e7eb"};display:flex;align-items:center;padding:0 10px;font-family:monospace;font-size:10px;font-weight:800">/${label.toLowerCase()}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><div><strong style="display:block;font-size:21px;line-height:1.06">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">${labels[0] || "Template"} package ready for copy.</span></div><span style="width:58px;height:58px;border-radius:18px;background:${accent};box-shadow:0 16px 34px ${accent}33"></span></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${labels.slice(0, 3).map((label) => `<span style="height:32px;border-radius:12px;background:rgba(255,255,255,.075);display:grid;place-items:center;font-size:10px;font-weight:800">${label}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "newsletterForm") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 70px;gap:12px;align-items:center"><div><strong style="display:block;font-size:22px;line-height:1.05">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Inline capture with compact trust chips.</span></div><span style="height:70px;border-radius:22px;background:linear-gradient(135deg,${accent},rgba(255,255,255,.08))"></span></div><div style="height:38px;border-radius:13px;background:#f8fafc;color:#64748b;padding:12px 14px;font-size:10px">work@company.com</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="padding:14px;border-radius:18px;background:#f8fafc;color:#020617"><strong style="display:block;font-size:18px;line-height:1.05">${title}</strong><div style="display:grid;grid-template-columns:1fr 74px;gap:8px;margin-top:12px"><span style="height:34px;border-radius:999px;background:#e2e8f0"></span><span style="height:34px;border-radius:999px;background:${accent}"></span></div></div><div style="display:flex;gap:8px">${uiChips(labels.slice(0, 3), accent)}</div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div><strong style="display:block;font-size:22px;line-height:1.05">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Capture form with benefit copy and low-friction submit path.</span></div><div style="display:grid;grid-template-columns:1fr 86px;gap:8px"><span style="height:36px;border-radius:999px;background:#f8fafc;color:#64748b;padding:11px 14px;font-size:10px">email@studio.io</span><span style="height:36px;border-radius:999px;background:${accent}"></span></div><div style="display:flex;gap:8px">${uiChips(labels.slice(0, 3), accent)}</div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "creative404") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;place-items:center;text-align:center;gap:8px"><span style="width:96px;height:96px;border-radius:50%;border:16px solid ${accent};display:grid;place-items:center;color:#fff;font-size:22px;font-weight:900;box-shadow:0 0 0 12px ${accent}18">404</span><strong style="font-size:18px">${title}</strong></div><div style="display:flex;gap:8px;justify-content:center">${chips}</div>`, { accent, minHeight: "190px", justify: "center" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 88px;gap:12px;align-items:stretch"><div><strong style="display:block;font-size:23px;line-height:1">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">Search-led recovery with clear next paths.</span></div><strong style="font-size:46px;color:${accent};line-height:.9;text-align:right">404</strong></div><div style="height:36px;border-radius:999px;background:#f8fafc;color:#64748b;padding:11px 14px;font-size:10px">Search for a page</div>`, { accent, minHeight: "190px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center"><strong style="font-size:62px;line-height:.85;color:${accent}">404</strong><div><strong style="display:block;font-size:20px;line-height:1.05">${title}</strong><span style="display:block;margin-top:8px;color:#94a3b8;font-size:11px">A memorable dead-end with useful next routes.</span></div></div><div style="height:52px;border-radius:18px;background:repeating-linear-gradient(135deg,${accent}55 0 10px,rgba(255,255,255,.06) 10px 20px)"></div><div style="display:flex;gap:8px">${chips}</div>`, { accent, minHeight: "190px" });
+  }
+  if (kind === "industryError") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:70px 1fr;gap:12px;align-items:center"><span style="height:70px;border-radius:22px;background:${accent};color:#020617;display:grid;place-items:center;font-size:18px;font-weight:900">${labels[0] || "404"}</span><div><strong style="font-size:20px;line-height:1.05">${title}</strong><span style="display:block;margin-top:7px;color:#94a3b8;font-size:11px">Context-aware recovery surface.</span></div></div><div style="display:flex;gap:8px;flex-wrap:wrap">${uiChips(labels.slice(0, 3), accent)}</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div><span style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:${accent}">${labels[0] || "Industry"}</span><strong style="display:block;margin-top:7px;font-size:21px;line-height:1.05">${title}</strong></div><div style="display:grid;gap:7px">${["Go home", "Open support", "Search", "Status"].map((label, index) => `<span style="height:28px;border-radius:999px;background:${index === 0 ? accent : "rgba(255,255,255,.07)"};color:${index === 0 ? "#020617" : "#e5e7eb"};display:flex;align-items:center;padding:0 11px;font-size:10px;font-weight:800">${label}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:flex;justify-content:space-between;gap:12px;align-items:start"><div><span style="font-size:10px;text-transform:uppercase;letter-spacing:.14em;color:${accent}">${labels[0] || "Industry"}</span><strong style="display:block;margin-top:7px;font-size:20px;line-height:1.05">${title}</strong></div><span style="width:52px;height:52px;border-radius:17px;background:${accent}26;border:1px solid ${accent}55"></span></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">${["Primary route", "Support", "Search", "Status"].map((label, index) => `<span style="height:30px;border-radius:12px;background:${index === 0 ? accent : "rgba(255,255,255,.07)"};color:${index === 0 ? "#020617" : "#e5e7eb"};display:grid;place-items:center;font-size:10px;font-weight:800">${label}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "typeFooter") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:flex;align-items:end;justify-content:space-between;gap:14px"><strong style="font-size:38px;line-height:.82;letter-spacing:0">${title}</strong><span style="writing-mode:vertical-rl;color:${accent};font-size:10px;text-transform:uppercase;letter-spacing:.16em">${labels[0] || "Footer"}</span></div><div style="height:1px;background:${accent}55"></div><div style="display:flex;justify-content:space-between;gap:8px;color:#94a3b8;font-size:10px">${labels.slice(0, 4).map((label) => `<span>${label}</span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px"><div><strong style="font-size:28px;line-height:.9">${title}</strong></div><div style="display:grid;gap:7px">${labels.slice(0, 4).map((label) => `<span style="height:22px;border-radius:999px;background:rgba(255,255,255,.075);padding:6px 9px;font-size:9px;color:#94a3b8">${label}</span>`).join("")}</div></div><div style="height:38px;border-radius:16px;background:linear-gradient(90deg,${accent}55,rgba(255,255,255,.05))"></div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div><strong style="display:block;font-size:34px;line-height:.88;letter-spacing:0">${title}</strong><div style="margin-top:12px">${uiLines(["86%", "58%"])}</div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:9px">${labels.slice(0, 4).map((label) => `<span style="font-size:10px;color:#94a3b8">${label}</span>`).join("")}</div><div style="height:1px;background:rgba(255,255,255,.12)"></div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "cardFooter") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 86px;gap:10px"><div style="border-radius:18px;background:#f8fafc;color:#020617;padding:13px"><strong style="font-size:15px">${title}</strong><span style="display:block;margin-top:18px;font-size:10px;color:#64748b">${labels[0] || "Footer"}</span></div><div style="border-radius:18px;background:${accent};color:#020617;padding:12px;display:grid;place-items:center;font-size:11px;font-weight:900">${labels[1] || "CTA"}</div></div><div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">${[0, 1, 2, 3].map(() => `<span style="height:22px;border-radius:999px;background:rgba(255,255,255,.075)"></span>`).join("")}</div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">${labels.slice(0, 3).map((label, index) => `<div style="min-height:62px;border-radius:18px;background:${index === 0 ? accent : "rgba(255,255,255,.075)"};color:${index === 0 ? "#020617" : "#e5e7eb"};padding:11px"><strong style="font-size:12px">${label}</strong></div>`).join("")}</div><div><strong style="font-size:15px">${title}</strong><div style="margin-top:8px">${uiLines(["80%", "54%"])}</div></div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">${[0, 1].map((index) => `<div style="border-radius:18px;background:${index === 0 ? accent : "rgba(255,255,255,.075)"};color:${index === 0 ? "#020617" : "#e5e7eb"};padding:13px"><strong style="font-size:14px">${labels[index] || "Card"}</strong><span style="display:block;margin-top:18px;font-size:10px;opacity:.7">Footer action</span></div>`).join("")}</div><div style="display:grid;grid-template-columns:1.2fr repeat(3,.65fr);gap:10px;align-items:end">${[0, 1, 2, 3].map(() => `<div>${uiLines(["82%", "64%"])}</div>`).join("")}</div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "dashboardBento") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:.75fr 1.25fr;grid-template-rows:58px 84px;gap:9px"><div style="border-radius:18px;background:${accent};color:#020617;padding:12px"><strong style="font-size:16px">${labels[0] || "KPI"}</strong></div><div style="border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:14px">${title}</strong><span style="display:block;margin-top:7px;color:#64748b;font-size:10px">Overview</span></div><div style="grid-column:span 2;border-radius:18px;background:rgba(255,255,255,.07);padding:12px">${uiLines(["80%", "62%", "44%"])}</div></div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1fr 1fr;gap:9px"><div style="min-height:92px;border-radius:20px;background:linear-gradient(135deg,${accent}55,rgba(255,255,255,.08));padding:13px"><strong style="font-size:15px">${title}</strong></div><div style="display:grid;gap:9px"><span style="border-radius:16px;background:#f8fafc;color:#020617;padding:11px;font-size:18px;font-weight:900">${labels[0] || "98%"}</span><span style="border-radius:16px;background:${accent};color:#020617;padding:11px;font-size:12px;font-weight:900">${labels[1] || "Live"}</span></div></div><div style="height:32px;border-radius:14px;background:rgba(255,255,255,.075)"></div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:1fr 1fr 1fr;grid-template-rows:62px 78px;gap:9px"><div style="grid-column:span 2;border-radius:18px;background:#f8fafc;color:#020617;padding:12px"><strong style="font-size:18px">${labels[0] || "82%"}</strong><span style="display:block;color:#64748b;font-size:10px">Live metric</span></div><div style="border-radius:18px;background:${accent};color:#020617;padding:12px"><strong style="font-size:14px">${labels[1] || "Queue"}</strong></div><div style="border-radius:18px;background:rgba(255,255,255,.07);padding:12px">${uiLines(["70%", "44%"])}</div><div style="grid-column:span 2;border-radius:18px;background:linear-gradient(90deg,${accent}55,rgba(255,255,255,.07));padding:12px"><strong style="font-size:13px">${title}</strong></div></div>`, { accent, minHeight: "176px" });
+  }
+  if (kind === "mediaBento") {
+    if (variant === 1) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:1.2fr .8fr;gap:10px"><div style="min-height:116px;border-radius:20px;background:linear-gradient(145deg,${accent}66,rgba(255,255,255,.07));padding:14px"><strong style="font-size:17px">${title}</strong><div style="margin-top:12px">${uiLines(["74%", "48%"])}</div></div><div style="display:grid;gap:10px"><span style="border-radius:16px;background:#f8fafc"></span><span style="border-radius:16px;background:${accent}"></span></div></div>`, { accent, minHeight: "176px" });
+    }
+    if (variant === 2) {
+      return nativeStage(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px"><span style="height:70px;border-radius:18px;background:${accent}"></span><span style="height:70px;border-radius:18px;background:#f8fafc"></span><span style="height:70px;border-radius:18px;background:rgba(255,255,255,.075)"></span></div><div><strong style="font-size:18px">${title}</strong><span style="display:block;margin-top:7px;color:#94a3b8;font-size:11px">${labels[0] || "Media"} composition with modular cards.</span></div>`, { accent, minHeight: "176px" });
+    }
+    return nativeStage(`<div style="display:grid;grid-template-columns:.8fr 1.2fr;grid-template-rows:74px 74px;gap:10px"><div style="grid-row:span 2;border-radius:20px;background:linear-gradient(160deg,${accent},#111827);padding:13px;color:#020617"><strong style="font-size:15px">${labels[0] || "Media"}</strong></div><div style="border-radius:18px;background:rgba(255,255,255,.075);padding:13px"><strong style="font-size:15px">${title}</strong><div style="margin-top:10px">${uiLines(["78%", "54%"])}</div></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><span style="border-radius:16px;background:#f8fafc"></span><span style="border-radius:16px;background:${accent}55"></span></div></div>`, { accent, minHeight: "176px" });
+  }
+
+  return nativeStage(`<strong style="font-size:18px">${title}</strong><div style="display:grid;gap:8px">${rows}</div><div style="display:flex;gap:8px">${chips}</div>`, { accent });
+}
+
+function nativeCard(config, defaults = {}) {
+  const resolved = { accent: "#c2a4ff", labels: [], source: "Native", previewMode: "stack", ...defaults, ...config };
+  const preview = resolved.preview || renderProductPreview(resolved.kind, resolved.previewTitle || resolved.title, resolved.labels, resolved.accent);
+  return {
+    ...resolved,
+    preview,
+    html: resolved.html || preview,
+  };
+}
+
+function nativeCards(items, defaults = {}) {
+  return items.map((item, index) => nativeCard({ priority: 20 + index, ...item }, defaults));
+}
+
 function addSeraCatalog() {
   addToolkitCards("#buttons .btn-g", [
     {
@@ -1205,6 +1700,632 @@ function addSeraCatalog() {
   promoteCards("#textfx .tx-g", (card) => card.querySelector(".kit-source")?.textContent?.trim() === "Sera UI");
   promoteCards("#loading .load-g", (card) => card.querySelector(".kit-source")?.textContent?.trim() === "Sera UI");
   promoteCards("#components .cp-g", (card) => card.querySelector(".kit-source")?.textContent?.trim() === "Sera UI");
+}
+
+function expandSeraCatalog() {
+  const seraDefaults = { source: "Sera UI", catalogSource: "sera-ui", family: "sera", qaStatus: "keep" };
+
+  addComponentCards("#sera-navigation .cp-g", nativeCards([
+    { title: "Sidebar Rail", description: "Compact vertical app rail with active state and content shell.", kind: "nav", labels: ["Home", "Data", "Team"], accent: "#38bdf8" },
+    { title: "Step Tabs", description: "Process navigation for onboarding, checkout and setup flows.", kind: "nav", labels: ["Plan", "Build", "Ship"], accent: "#4ade80" },
+    { title: "Topbar Switcher", description: "Workspace switcher with route groups and compact action slot.", kind: "nav", labels: ["Workspace", "Docs", "API"], accent: "#fb7185" },
+  ], seraDefaults));
+
+  addComponentCards("#sera-cards .cp-g", nativeCards([
+    { title: "Profile Summary Card", description: "Identity card with status, role and compact action row.", kind: "panel", labels: ["Profile", "Role", "Team"], accent: "#38bdf8" },
+    { title: "Billing Snapshot", description: "Invoice and plan state panel for account pages.", kind: "kpi", labels: ["MRR", "Seats", "Usage"], accent: "#4ade80" },
+    { title: "Activity Feed Card", description: "Recent activity stack with readable metadata and state chips.", kind: "table", labels: ["Event", "User", "State"], accent: "#facc15" },
+  ], seraDefaults));
+
+  addComponentCards("#sera-sections .cp-g", nativeCards([
+    { title: "Pricing Hero", description: "Plan-focused hero with price anchor and conversion chips.", kind: "hero", labels: ["Start", "Compare"], accent: "#38bdf8" },
+    { title: "Launch Header", description: "Announcement header for release pages and changelog launches.", kind: "hero", labels: ["Read", "Demo"], accent: "#fb7185" },
+    { title: "Testimonial Strip", description: "Wide social-proof section with quote, metric and CTA.", kind: "cta", labels: ["Stories", "Proof"], accent: "#4ade80" },
+    { title: "Content Split Hero", description: "Split hero composition with narrative left and product proof right.", kind: "bento", labels: ["96%", "Proof"], accent: "#c2a4ff" },
+  ], seraDefaults));
+}
+
+function addProductCatalog() {
+  const productDefaults = { source: "Native Product UI", catalogSource: "native-product-ui", family: "product-ui", qaStatus: "keep" };
+
+  addComponentCards("#dialogs-overlays .cp-g", nativeCards([
+    { title: "Centered Modal", description: "Focused modal with title, body and dual action footer.", kind: "modal", labels: ["Cancel", "Confirm"], accent: "#c2a4ff" },
+    { title: "Command Overlay", description: "Keyboard-first overlay for search, routes and actions.", kind: "command", labels: ["Search", "Run"], accent: "#38bdf8" },
+    { title: "Activity Drawer", description: "Right-side drawer for audit trails and compact detail views.", kind: "drawer", labels: ["Activity", "Audit"], accent: "#4ade80" },
+    { title: "Confirm Dialog", description: "Destructive confirmation state with clear primary action.", kind: "modal", labels: ["Keep", "Delete"], accent: "#fb7185" },
+    { title: "Stacked Alerts", description: "Layered status notifications for async product feedback.", kind: "table", labels: ["Info", "Warn", "Done"], accent: "#facc15" },
+    { title: "Profile Popover", description: "Small account overlay with status and quick actions.", kind: "panel", labels: ["Account", "Billing"], accent: "#a7f3d0" },
+    { title: "Slide-over Sheet", description: "Tall sheet layout for checkout, filters and settings.", kind: "drawer", labels: ["Filters", "Apply"], accent: "#f0abfc" },
+    { title: "Tour Spotlight", description: "Guided overlay card for onboarding highlights.", kind: "modal", labels: ["Skip", "Next"], accent: "#93c5fd" },
+  ], productDefaults));
+
+  addComponentCards("#tables-data .cp-g", nativeCards([
+    { title: "Dense Admin Table", description: "Compact table shell with visible status column.", kind: "table", labels: ["Name", "Owner", "State"], accent: "#38bdf8" },
+    { title: "KPI Summary Grid", description: "Three-metric dashboard band with trend surface.", kind: "kpi", labels: ["MRR", "Churn", "Leads"], accent: "#4ade80" },
+    { title: "List Detail Split", description: "List and detail composition for admin workflows.", kind: "panel", labels: ["List", "Detail"], accent: "#c2a4ff" },
+    { title: "Audit Log Table", description: "Operational table with actor, action and severity affordance.", kind: "table", labels: ["Actor", "Action", "Level"], accent: "#facc15" },
+    { title: "Revenue Breakdown", description: "Compact financial view with row rhythm and summary chip.", kind: "kpi", labels: ["ARR", "ARPA", "NRR"], accent: "#a7f3d0" },
+    { title: "Filterable Table Shell", description: "Table scaffold with filter rail and action control.", kind: "table", labels: ["Filter", "Export"], accent: "#fb7185" },
+    { title: "Usage Comparison", description: "Comparison grid for plan limits, usage and quotas.", kind: "table", labels: ["Limit", "Used", "Left"], accent: "#93c5fd" },
+    { title: "Timeline Data Rail", description: "Timeline-like data rail for incidents and status logs.", kind: "panel", labels: ["Now", "Queued"], accent: "#f0abfc" },
+  ], productDefaults));
+
+  addComponentCards("#empty-states .cp-g", nativeCards([
+    { title: "Project Empty State", description: "Friendly workspace zero-state with primary creation path.", kind: "empty", labels: ["Create", "Import"], accent: "#c2a4ff" },
+    { title: "Search No Results", description: "Search fallback with retry and filter reset actions.", kind: "empty", labels: ["Reset", "Help"], accent: "#38bdf8" },
+    { title: "Upload Success", description: "Positive feedback block for completed file workflows.", kind: "empty", labels: ["View", "Share"], accent: "#4ade80" },
+    { title: "Error Recovery Block", description: "Inline error state with strong recovery action.", kind: "error", labels: ["Retry", "Support"], accent: "#fb7185" },
+    { title: "Onboarding Checklist", description: "Starter checklist for activation and setup flows.", kind: "panel", labels: ["Invite", "Import", "Ship"], accent: "#facc15" },
+    { title: "Offline Notice", description: "Connection-loss state with safe retry messaging.", kind: "error", labels: ["Retry", "Status"], accent: "#93c5fd" },
+    { title: "Processing Placeholder", description: "In-progress state for generation or upload queues.", kind: "empty", labels: ["Queued", "Syncing"], accent: "#f0abfc" },
+    { title: "Upgrade Prompt", description: "Limit reached state with pricing-aware action path.", kind: "cta", labels: ["Upgrade", "Compare"], accent: "#a7f3d0" },
+  ], productDefaults));
+
+  addComponentCards("#panels-settings .cp-g", nativeCards([
+    { title: "Account Settings Panel", description: "Two-column account settings shell with side rail.", kind: "panel", labels: ["Profile", "Team"], accent: "#c2a4ff" },
+    { title: "Security Sessions", description: "Security panel with session rows and status controls.", kind: "table", labels: ["Device", "IP", "State"], accent: "#38bdf8" },
+    { title: "Notification Matrix", description: "Preference grid for email, push and digest controls.", kind: "table", labels: ["Email", "Push", "Digest"], accent: "#4ade80" },
+    { title: "Inspector Panel", description: "Right rail inspector with properties and action footer.", kind: "drawer", labels: ["Props", "Save"], accent: "#facc15" },
+    { title: "Split Pane Editor", description: "Editor shell with navigation, canvas and inspector.", kind: "panel", labels: ["Layers", "Style"], accent: "#fb7185" },
+    { title: "Profile Security Block", description: "Profile and security controls grouped for account pages.", kind: "panel", labels: ["User", "2FA"], accent: "#93c5fd" },
+    { title: "Billing Preferences", description: "Billing settings view with plan and invoice summaries.", kind: "kpi", labels: ["Plan", "Seats", "Usage"], accent: "#a7f3d0" },
+    { title: "API Keys Manager", description: "Developer settings panel with token rows and revoke action.", kind: "table", labels: ["Key", "Scope", "Last used"], accent: "#f0abfc" },
+  ], productDefaults));
+}
+
+function addInspirationCatalog() {
+  const inspiredDefaults = { source: "Gallery-inspired native", catalogSource: "gallery-inspired-native", family: "inspiration", qaStatus: "keep" };
+
+  addComponentCards("#navigation-patterns .cp-g", nativeCards([
+    { title: "Sticky Product Navbar", description: "Fixed product nav with logo, links and primary action.", kind: "nav", labels: ["Product", "Pricing", "Docs"], accent: "#c2a4ff" },
+    { title: "Mega Menu Preview", description: "Organized flyout with grouped links and feature slot.", kind: "drawer", labels: ["Platform", "Solutions"], accent: "#38bdf8" },
+    { title: "Sidebar App Menu", description: "Vertical navigation for admin and app shells.", kind: "nav", labels: ["Home", "Reports", "Team"], accent: "#4ade80" },
+    { title: "Search-first Header", description: "Header where search is the main navigation object.", kind: "command", labels: ["Search", "Open"], accent: "#facc15" },
+    { title: "Announcement Bar", description: "Slim promo rail paired with a compact navbar.", kind: "cta", labels: ["Update", "Read"], accent: "#fb7185" },
+    { title: "Fullscreen Menu", description: "Large-screen menu stage for editorial and portfolio sites.", kind: "hero", labels: ["Work", "About"], accent: "#93c5fd" },
+    { title: "Breadcrumb Path", description: "Secondary navigation for docs and deep product pages.", kind: "nav", labels: ["Docs", "UI", "Nav"], accent: "#a7f3d0" },
+    { title: "Progress Tabs", description: "Step navigation with readable progress state.", kind: "nav", labels: ["Draft", "Review", "Ship"], accent: "#f0abfc" },
+  ], inspiredDefaults));
+
+  addComponentCards("#hero-headlines .cp-g", nativeCards([
+    { title: "AI agents handle sensitive data safely", description: "SaaS-style H1 with trust-first claim and action row.", kind: "hero", labels: ["Start", "Docs"], accent: "#38bdf8" },
+    { title: "Build and deploy on a calmer cloud", description: "Developer headline with compact product proof.", kind: "hero", labels: ["Deploy", "Preview"], accent: "#c2a4ff" },
+    { title: "Capture. Polish. Done.", description: "Short punchy headline for creator tools.", kind: "hero", labels: ["Record", "Share"], accent: "#fb7185" },
+    { title: "Talk to your money", description: "Consumer-fintech headline pattern with clear action density.", kind: "hero", labels: ["Ask", "Track"], accent: "#4ade80" },
+    { title: "Your day, planned around energy", description: "Wellness/productivity headline with softer support copy.", kind: "hero", labels: ["Plan", "Focus"], accent: "#facc15" },
+    { title: "Digital contracts in minutes", description: "Transactional headline with direct value and CTA.", kind: "cta", labels: ["Create", "Send"], accent: "#93c5fd" },
+    { title: "The operating layer for private teams", description: "B2B platform headline with product confidence.", kind: "bento", labels: ["98%", "Secure"], accent: "#a7f3d0" },
+    { title: "Never miss a competitor move", description: "Monitoring headline with alert-forward framing.", kind: "hero", labels: ["Monitor", "Alert"], accent: "#f0abfc" },
+  ], inspiredDefaults));
+
+  addComponentCards("#cta-blocks .cp-g", nativeCards([
+    { title: "Primary Button Cluster", description: "Hero CTA group with strong primary and subtle secondary.", kind: "cta", labels: ["Start", "Demo"], accent: "#c2a4ff" },
+    { title: "Call-to-Buy Strip", description: "Commercial CTA block for checkout and plan pages.", kind: "cta", labels: ["Buy", "Compare"], accent: "#4ade80" },
+    { title: "Download CTA", description: "Download-focused CTA with file and platform signals.", kind: "cta", labels: ["Mac", "Windows"], accent: "#38bdf8" },
+    { title: "Newsletter CTA", description: "Email capture block with compact trust copy.", kind: "command", labels: ["Email", "Join"], accent: "#facc15" },
+    { title: "Modal CTA", description: "Small pop-up conversion block with clear accept/decline.", kind: "modal", labels: ["No thanks", "Get it"], accent: "#fb7185" },
+    { title: "Pricing CTA", description: "Plan-card CTA with price anchor and action footer.", kind: "kpi", labels: ["Pro", "Seats"], accent: "#a7f3d0" },
+    { title: "Free Template CTA", description: "Resource CTA for lead magnets and starter kits.", kind: "empty", labels: ["Copy", "Use"], accent: "#93c5fd" },
+    { title: "Inline Upgrade CTA", description: "Small app-surface CTA for feature limits.", kind: "cta", labels: ["Upgrade", "Later"], accent: "#f0abfc" },
+  ], inspiredDefaults));
+
+  addComponentCards("#error-pages .cp-g", nativeCards([
+    { title: "Minimal 404", description: "Large-number page with one primary recovery action.", kind: "error", labels: ["Home", "Search"], accent: "#c2a4ff" },
+    { title: "Typographic Error", description: "Text-led 404 with bold hierarchy and compact links.", kind: "error", labels: ["Docs", "Status"], accent: "#facc15" },
+    { title: "Playful Recovery", description: "Friendly lost-page state with light product personality.", kind: "empty", labels: ["Back", "Explore"], accent: "#fb7185" },
+    { title: "SaaS Route Missing", description: "Product route fallback with workspace-safe options.", kind: "error", labels: ["Dashboard", "Support"], accent: "#38bdf8" },
+    { title: "Search Fallback", description: "404 state that makes search the next best action.", kind: "command", labels: ["Search", "Docs"], accent: "#4ade80" },
+    { title: "Support Fallback", description: "Error page with support, status and retry routes.", kind: "error", labels: ["Retry", "Contact"], accent: "#93c5fd" },
+    { title: "Permission Missing", description: "Access error state for account or org permissions.", kind: "panel", labels: ["Request", "Switch"], accent: "#a7f3d0" },
+    { title: "Maintenance Page", description: "Temporary outage page with status and update action.", kind: "error", labels: ["Status", "Notify"], accent: "#f0abfc" },
+  ], inspiredDefaults));
+
+  addComponentCards("#footer-systems .cp-g", nativeCards([
+    { title: "Typographic Footer", description: "Large-type closing footer with minimal link groups.", kind: "footer", labels: ["Studio", "Work"], accent: "#c2a4ff" },
+    { title: "Sitemap Footer", description: "Dense multi-column sitemap for product libraries.", kind: "footer", labels: ["Docs", "API"], accent: "#38bdf8" },
+    { title: "Newsletter Footer", description: "Footer with subscription form and navigation links.", kind: "footer", labels: ["Subscribe", "Weekly"], accent: "#facc15" },
+    { title: "App Footer", description: "Compact app footer with status, legal and version metadata.", kind: "footer", labels: ["Status", "v4"], accent: "#4ade80" },
+    { title: "Social Footer", description: "Brand footer with social/action row and link groups.", kind: "footer", labels: ["X", "GitHub"], accent: "#fb7185" },
+    { title: "Grid Footer", description: "Organized grid footer with brand block and columns.", kind: "footer", labels: ["Grid", "Links"], accent: "#93c5fd" },
+    { title: "Legal Footer", description: "Compliance-friendly footer with policies and contact.", kind: "footer", labels: ["Privacy", "Terms"], accent: "#a7f3d0" },
+    { title: "Product Footer CTA", description: "Closing footer that keeps a conversion path visible.", kind: "cta", labels: ["Start", "Contact"], accent: "#f0abfc" },
+  ], inspiredDefaults));
+
+  addComponentCards("#bento-systems .cp-g", nativeCards([
+    { title: "Feature Bento", description: "Asymmetric feature grid with primary and secondary cells.", kind: "bento", labels: ["98%", "Uptime"], accent: "#c2a4ff" },
+    { title: "Dashboard Bento", description: "Product dashboard bento with metrics and surface hierarchy.", kind: "bento", labels: ["71k", "MRR"], accent: "#38bdf8" },
+    { title: "Stats Bento", description: "Metrics-first bento for proof sections and reports.", kind: "bento", labels: ["12%", "Growth"], accent: "#4ade80" },
+    { title: "Media Bento", description: "Mixed media/content bento for launches and portfolios.", kind: "bento", labels: ["4K", "Media"], accent: "#fb7185" },
+    { title: "Pricing Bento", description: "Plan and comparison cells arranged for conversion.", kind: "bento", labels: ["$24", "Pro"], accent: "#facc15" },
+    { title: "Mobile-safe Bento", description: "Bento geometry that collapses cleanly on narrow screens.", kind: "bento", labels: ["1 col", "Safe"], accent: "#93c5fd" },
+    { title: "Launch Bento", description: "Release summary grid with feature, proof and action cells.", kind: "bento", labels: ["New", "Ship"], accent: "#a7f3d0" },
+    { title: "Comparison Bento", description: "Before/after bento for product positioning sections.", kind: "bento", labels: ["Before", "After"], accent: "#f0abfc" },
+  ], inspiredDefaults));
+}
+
+function addDeepInspirationCatalog() {
+  const inspiredDefaults = { source: "Gallery-inspired native", catalogSource: "gallery-inspired-native", family: "inspiration", qaStatus: "keep", priority: 36 };
+
+  addComponentCards("#navigation-patterns .cp-g", nativeCards([
+    { title: "Floating Pill Nav", description: "Centered floating navigation for premium marketing pages.", kind: "nav", labels: ["Features", "Work", "Book"], accent: "#e9d5ff" },
+    { title: "Commerce Category Nav", description: "Ecommerce category strip with offer and search affordance.", kind: "nav", labels: ["New", "Women", "Sale"], accent: "#fdba74" },
+    { title: "Agency Case Nav", description: "Portfolio nav with project filters and contact action.", kind: "nav", labels: ["Work", "Studio", "Contact"], accent: "#f9a8d4" },
+    { title: "Docs Side Index", description: "Documentation side index with active section and action footer.", kind: "panel", labels: ["Intro", "API", "CLI"], accent: "#bfdbfe" },
+  ], inspiredDefaults));
+
+  addComponentCards("#hero-headlines .cp-g", nativeCards([
+    { title: "Turn scattered calls into a sales system", description: "B2B operations headline for workflow products.", kind: "hero", labels: ["Route", "Close"], accent: "#fdba74" },
+    { title: "Design subscriptions people actually read", description: "Creator/newsletter headline with editorial tone.", kind: "hero", labels: ["Write", "Grow"], accent: "#f9a8d4" },
+    { title: "Your backlog, ranked by impact", description: "Product management headline with clear job-to-be-done.", kind: "hero", labels: ["Score", "Plan"], accent: "#bfdbfe" },
+    { title: "A calmer checkout for complex carts", description: "Commerce headline for transaction-heavy flows.", kind: "hero", labels: ["Review", "Pay"], accent: "#e9d5ff" },
+  ], inspiredDefaults));
+
+  addComponentCards("#cta-blocks .cp-g", nativeCards([
+    { title: "Early Access CTA", description: "Invite-only signup block with restrained scarcity.", kind: "cta", labels: ["Join waitlist", "Preview"], accent: "#fdba74" },
+    { title: "Consultation CTA", description: "Service CTA with calendar and qualification paths.", kind: "cta", labels: ["Book", "Brief"], accent: "#bfdbfe" },
+    { title: "Trial Extension CTA", description: "In-app retention CTA for accounts near expiry.", kind: "panel", labels: ["Extend", "Upgrade"], accent: "#f9a8d4" },
+    { title: "App Store CTA", description: "Dual-platform CTA for mobile products and downloads.", kind: "cta", labels: ["iOS", "Android"], accent: "#e9d5ff" },
+  ], inspiredDefaults));
+
+  addComponentCards("#error-pages .cp-g", nativeCards([
+    { title: "Checkout Failed", description: "Payment failure page with retry and billing support.", kind: "error", labels: ["Retry", "Billing"], accent: "#fdba74" },
+    { title: "Invite Expired", description: "Team invite error with request-new-link action.", kind: "error", labels: ["Request", "Login"], accent: "#bfdbfe" },
+    { title: "Empty Workspace", description: "Workspace-not-found state that routes users safely.", kind: "empty", labels: ["Switch", "Create"], accent: "#e9d5ff" },
+    { title: "Rate Limit Page", description: "Developer-friendly limit page with docs and retry state.", kind: "panel", labels: ["Docs", "Retry"], accent: "#f9a8d4" },
+  ], inspiredDefaults));
+
+  addComponentCards("#footer-systems .cp-g", nativeCards([
+    { title: "Agency Footer", description: "Studio footer with case links, address and inquiry CTA.", kind: "footer", labels: ["Cases", "Inquire"], accent: "#f9a8d4" },
+    { title: "Developer Footer", description: "Docs-first footer with SDK, API and changelog groups.", kind: "footer", labels: ["SDK", "API"], accent: "#bfdbfe" },
+    { title: "Marketplace Footer", description: "Commerce footer with category groups and promo strip.", kind: "footer", labels: ["Shop", "Returns"], accent: "#fdba74" },
+    { title: "Minimal Product Footer", description: "Lean footer for single-product landing pages.", kind: "footer", labels: ["Privacy", "Contact"], accent: "#e9d5ff" },
+  ], inspiredDefaults));
+
+  addComponentCards("#bento-systems .cp-g", nativeCards([
+    { title: "Founder Story Bento", description: "Narrative bento with quote, proof and product cells.", kind: "bento", labels: ["Story", "Proof"], accent: "#f9a8d4" },
+    { title: "AI Workflow Bento", description: "Workflow bento with prompt, output and automation states.", kind: "bento", labels: ["AI", "Flow"], accent: "#bfdbfe" },
+    { title: "Commerce Funnel Bento", description: "Funnel bento with cart, revenue and recovery cells.", kind: "bento", labels: ["Cart", "Lift"], accent: "#fdba74" },
+    { title: "Security Proof Bento", description: "Trust bento with audit, encryption and access cells.", kind: "bento", labels: ["SOC2", "2FA"], accent: "#e9d5ff" },
+  ], inspiredDefaults));
+}
+
+function addExpandedCategoryCatalog() {
+  const inspiredDefaults = { source: "Gallery-inspired native", catalogSource: "gallery-inspired-native", family: "inspiration", qaStatus: "keep" };
+
+  addComponentCards("#pricing-sections .cp-g", nativeCards([
+    { title: "Three Plan Pricing", description: "Classic three-column plan section with highlighted middle tier.", kind: "kpi", labels: ["Basic", "Pro", "Scale"], accent: "#c2a4ff" },
+    { title: "Usage Pricing Band", description: "Usage-based pricing block with quota and overage signals.", kind: "table", labels: ["Usage", "Quota", "Overage"], accent: "#38bdf8" },
+    { title: "Enterprise Quote CTA", description: "Enterprise pricing card with contact and proof paths.", kind: "cta", labels: ["Contact", "Security"], accent: "#4ade80" },
+    { title: "Freemium Upgrade", description: "In-app upgrade block for accounts hitting limits.", kind: "panel", labels: ["Free", "Pro"], accent: "#facc15" },
+    { title: "Comparison Pricing", description: "Compact comparison grid for plan decision pages.", kind: "table", labels: ["Starter", "Pro", "Max"], accent: "#fb7185" },
+    { title: "Annual Toggle Pricing", description: "Pricing section with monthly/annual toggle anatomy.", kind: "nav", labels: ["Monthly", "Annual"], accent: "#93c5fd" },
+    { title: "Seat Calculator", description: "Plan calculator preview with seats, usage and total.", kind: "panel", labels: ["Seats", "Total"], accent: "#a7f3d0" },
+    { title: "Launch Offer Strip", description: "Limited offer pricing strip for campaign pages.", kind: "cta", labels: ["Save 30%", "Start"], accent: "#f0abfc" },
+    { title: "Creator Pricing", description: "Simple creator plan card with community and analytics tiers.", kind: "kpi", labels: ["Creator", "Studio"], accent: "#fdba74" },
+    { title: "API Pricing Table", description: "Developer pricing table with requests, latency and support rows.", kind: "table", labels: ["Requests", "SLA", "Support"], accent: "#bfdbfe" },
+    { title: "Nonprofit Pricing", description: "Mission-friendly pricing section with verification action.", kind: "cta", labels: ["Verify", "Apply"], accent: "#e9d5ff" },
+    { title: "Agency Retainer Card", description: "Service pricing card for retainers and implementation packages.", kind: "panel", labels: ["Audit", "Build"], accent: "#f9a8d4" },
+  ], inspiredDefaults));
+
+  addComponentCards("#form-patterns .cp-g", nativeCards([
+    { title: "Lead Capture Form", description: "Short marketing form with email and primary CTA.", kind: "command", labels: ["Email", "Join"], accent: "#c2a4ff" },
+    { title: "Checkout Form", description: "Payment-style form with summary and action footer.", kind: "panel", labels: ["Card", "Pay"], accent: "#38bdf8" },
+    { title: "Onboarding Form", description: "Multi-step setup form with progress tabs.", kind: "nav", labels: ["Profile", "Team", "Done"], accent: "#4ade80" },
+    { title: "Contact Sales Form", description: "B2B inquiry form with company and budget fields.", kind: "panel", labels: ["Company", "Budget"], accent: "#facc15" },
+    { title: "Search Form Hero", description: "Hero search block with query input and filters.", kind: "command", labels: ["Search", "Filter"], accent: "#fb7185" },
+    { title: "Newsletter Inline Form", description: "Compact inline form for editorial pages.", kind: "cta", labels: ["Email", "Subscribe"], accent: "#93c5fd" },
+    { title: "Feedback Form", description: "Lightweight product feedback card with sentiment choices.", kind: "panel", labels: ["Good", "Issue"], accent: "#a7f3d0" },
+    { title: "Upload Form", description: "Upload/dropzone form with processing-ready footer.", kind: "empty", labels: ["Drop", "Browse"], accent: "#f0abfc" },
+    { title: "Invite Team Form", description: "Team invitation form with role selector preview.", kind: "panel", labels: ["Email", "Role"], accent: "#fdba74" },
+    { title: "Waitlist Form", description: "Scarcity-aware waitlist form with referral signal.", kind: "cta", labels: ["Join", "Refer"], accent: "#bfdbfe" },
+    { title: "Password Reset Form", description: "Account recovery form with clear safe action.", kind: "modal", labels: ["Send", "Back"], accent: "#e9d5ff" },
+    { title: "Survey Form", description: "Multi-choice survey card with progress and submit row.", kind: "table", labels: ["Q1", "Q2", "Submit"], accent: "#f9a8d4" },
+  ], inspiredDefaults));
+
+  addComponentCards("#feature-sections .cp-g", nativeCards([
+    { title: "Alternating Feature Row", description: "Two-column feature row with text and proof surface.", kind: "bento", labels: ["Feature", "Proof"], accent: "#c2a4ff" },
+    { title: "Process Steps Strip", description: "Three-step process section for onboarding and workflows.", kind: "nav", labels: ["Capture", "Refine", "Ship"], accent: "#38bdf8" },
+    { title: "Feature Comparison", description: "Before/after feature section with visual contrast.", kind: "bento", labels: ["Before", "After"], accent: "#4ade80" },
+    { title: "Integration Feature", description: "Integration-focused feature row with app tiles.", kind: "table", labels: ["Slack", "GitHub", "API"], accent: "#facc15" },
+    { title: "Security Feature", description: "Trust feature block with audit and access states.", kind: "panel", labels: ["Audit", "Access"], accent: "#fb7185" },
+    { title: "Analytics Feature", description: "Dashboard feature section with KPI and graph preview.", kind: "kpi", labels: ["MRR", "Usage"], accent: "#93c5fd" },
+    { title: "Automation Feature", description: "Automation feature row with trigger/action anatomy.", kind: "nav", labels: ["Trigger", "Action", "Done"], accent: "#a7f3d0" },
+    { title: "Collaboration Feature", description: "Team feature block with member and activity previews.", kind: "panel", labels: ["Team", "Comments"], accent: "#f0abfc" },
+    { title: "Mobile Feature", description: "Mobile-first feature block with app preview framing.", kind: "bento", labels: ["iOS", "Push"], accent: "#fdba74" },
+    { title: "AI Feature Section", description: "AI product feature with prompt, output and feedback cells.", kind: "bento", labels: ["Prompt", "Output"], accent: "#bfdbfe" },
+    { title: "Compliance Feature", description: "Compliance feature row with policy and approval states.", kind: "table", labels: ["Policy", "Review", "Pass"], accent: "#e9d5ff" },
+    { title: "Performance Feature", description: "Speed-focused feature section with metric proof.", kind: "kpi", labels: ["Latency", "Errors"], accent: "#f9a8d4" },
+  ], inspiredDefaults));
+
+  addComponentCards("#social-proof .cp-g", nativeCards([
+    { title: "Logo Cloud", description: "Dense logo-cloud trust band with product-safe spacing.", kind: "footer", labels: ["Teams", "Trust"], accent: "#c2a4ff" },
+    { title: "Single Testimonial", description: "Large testimonial card with quote and attribution anatomy.", kind: "panel", labels: ["Quote", "Role"], accent: "#38bdf8" },
+    { title: "Review Grid", description: "Three-review grid for landing and product pages.", kind: "table", labels: ["5.0", "4.9", "5.0"], accent: "#4ade80" },
+    { title: "Metric Proof Band", description: "Social proof band with adoption and performance metrics.", kind: "kpi", labels: ["Users", "Teams", "NPS"], accent: "#facc15" },
+    { title: "Case Study Strip", description: "Case-study teaser with customer, result and action.", kind: "cta", labels: ["Read", "Result"], accent: "#fb7185" },
+    { title: "Founder Quote", description: "Editorial quote block for founder or customer story pages.", kind: "hero", labels: ["Story", "Proof"], accent: "#93c5fd" },
+    { title: "Trust Badges", description: "Compliance and security badge row with readable labels.", kind: "nav", labels: ["SOC2", "GDPR", "ISO"], accent: "#a7f3d0" },
+    { title: "Community Proof", description: "Community count block with avatars and action path.", kind: "empty", labels: ["Join", "Discuss"], accent: "#f0abfc" },
+    { title: "Press Mentions", description: "Press mention footer band with publication columns.", kind: "footer", labels: ["Press", "Awards"], accent: "#fdba74" },
+    { title: "Before After Quote", description: "Comparison proof block anchored by a customer quote.", kind: "bento", labels: ["Before", "After"], accent: "#bfdbfe" },
+    { title: "Usage Proof", description: "Usage metrics and trend proof for analytics-led pages.", kind: "kpi", labels: ["Runs", "Saved"], accent: "#e9d5ff" },
+    { title: "Wall of Love", description: "Compact testimonial wall with mixed quote lengths.", kind: "table", labels: ["A+", "Loved", "Fast"], accent: "#f9a8d4" },
+  ], inspiredDefaults));
+}
+
+function addSourceDeepCatalog() {
+  const sourceSections = [
+    {
+      selector: "#nav-static-sticky .cp-g",
+      defaults: { source: "Navbar taxonomy", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Fixed SaaS Header", "Sticky product header with doc links, plan link and primary action.", "nav", ["Product", "Docs", "Start"], "#c2a4ff"],
+        ["Compact Product Bar", "Low-height navigation bar for dense product marketing pages.", "nav", ["Overview", "Use cases", "Demo"], "#38bdf8"],
+        ["Sticky Pricing Rail", "Header that keeps pricing and trial paths visible while scrolling.", "announcement", ["Annual offer", "Compare", "Start"], "#4ade80"],
+        ["Transparent Launch Nav", "Overlay-style launch nav that works above visual hero content.", "nav", ["Launch", "Roadmap", "Waitlist"], "#facc15"],
+        ["Utility Top Nav", "Support, status and account routes separated from primary nav.", "announcement", ["Status live", "Support", "Login"], "#fb7185"],
+        ["Split Action Header", "Balanced nav with product links left and conversion actions right.", "nav", ["Platform", "Pricing", "Book"], "#93c5fd"],
+        ["Minimal Portfolio Nav", "Sparse sticky portfolio navigation with work, profile and inquiry links.", "nav", ["Work", "Profile", "Inquire"], "#a7f3d0"],
+        ["App Shell Header", "In-app header with workspace switcher, command affordance and user action.", "searchNav", ["Search app", "Workspace", "Account"], "#f0abfc"],
+        ["Mobile Sticky Bottom Nav", "Bottom-positioned mobile navigation shell with four durable routes.", "nav", ["Home", "Search", "Saved"], "#fdba74"],
+        ["Scroll Progress Nav", "Sticky header with progress indicator for long editorial pages.", "announcement", ["Reading", "Progress", "Share"], "#bfdbfe"],
+        ["Marketplace Category Bar", "Horizontal category navigation for shops, templates and resource hubs.", "nav", ["New", "Popular", "Sale"], "#e9d5ff"],
+        ["Developer Docs Header", "Docs-first header with search, version switch and quickstart route.", "searchNav", ["Search docs", "v4", "API"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#nav-dropdown-mega .cp-g",
+      defaults: { source: "Navbar taxonomy", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Platform Mega Menu", "Grouped platform menu with featured product route and supporting links.", "mega", ["Platform", "Workflow", "Security"], "#c2a4ff"],
+        ["Solutions Flyout", "Role-based flyout for teams, industries and use-case navigation.", "mega", ["Teams", "Industry", "Use cases"], "#38bdf8"],
+        ["Resource Dropdown", "Editorial dropdown with guides, docs, webinars and support routes.", "mega", ["Guides", "Docs", "Events"], "#4ade80"],
+        ["Product Suite Mega", "Suite navigation for related products with a highlighted active family.", "mega", ["Suite", "Apps", "Integrations"], "#facc15"],
+        ["Industry Mega Menu", "Multi-column industry menu for B2B sites with proof route.", "mega", ["Finance", "Commerce", "Health"], "#fb7185"],
+        ["Docs Version Flyout", "Versioned docs dropdown with API, CLI and changelog clusters.", "mega", ["API", "CLI", "Changelog"], "#93c5fd"],
+        ["Account Switcher Menu", "Workspace/account flyout with profile, billing and team actions.", "mega", ["Team", "Billing", "Switch"], "#a7f3d0"],
+        ["Language Dropdown", "Localization menu with language options and region hints.", "mega", ["English", "Spanish", "French"], "#f0abfc"],
+        ["Commerce Department Menu", "Commerce mega menu with categories, offers and support routes.", "mega", ["Shop", "Offers", "Support"], "#fdba74"],
+        ["Pricing Feature Mega", "Pricing nav flyout that previews plan features before click-through.", "mega", ["Starter", "Pro", "Scale"], "#bfdbfe"],
+        ["Integrations Mega Panel", "Integration browser menu with app groups and developer shortcut.", "mega", ["CRM", "Data", "API"], "#e9d5ff"],
+        ["Developer API Flyout", "Developer flyout for SDKs, examples, status and API references.", "mega", ["SDKs", "Examples", "Status"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#nav-sidebar-search .cp-g",
+      defaults: { source: "Navbar taxonomy", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Search-first Header", "Header where search is the primary route for content-heavy products.", "searchNav", ["Search products", "Recent", "Saved"], "#c2a4ff"],
+        ["Command Palette Nav", "Keyboard-forward navigation for apps with many actions and routes.", "command", ["Command", "Routes", "Actions"], "#38bdf8"],
+        ["Admin Sidebar Search", "Admin sidebar with scoped search and persistent section groups.", "searchNav", ["Search admin", "Users", "Billing"], "#4ade80"],
+        ["Docs Search Rail", "Documentation side rail with local search and active topic state.", "searchNav", ["Search docs", "Guide", "API"], "#facc15"],
+        ["Filter Sidebar Menu", "Filter-heavy side navigation for marketplaces and catalogs.", "panel", ["Filters", "Sort", "Apply"], "#fb7185"],
+        ["Inbox Navigation Shell", "Mail-style sidebar with search, labels and account state.", "searchNav", ["Search inbox", "Labels", "Archive"], "#93c5fd"],
+        ["CRM Left Navigation", "CRM sidebar that combines pipelines, search and pinned records.", "panel", ["Deals", "People", "Tasks"], "#a7f3d0"],
+        ["Analytics Console Nav", "Analytics sidebar with dashboards, reports and export shortcuts.", "panel", ["Dashboards", "Reports", "Export"], "#f0abfc"],
+        ["Knowledge Base Search", "Support knowledge base header with categories and query focus.", "searchNav", ["Search help", "Billing", "Setup"], "#fdba74"],
+        ["Mobile Search Overlay", "Mobile search panel that replaces the navigation stack on demand.", "command", ["Search", "Recent", "Cancel"], "#bfdbfe"],
+        ["Role-based Sidebar", "Sidebar that changes emphasis by admin, editor or viewer role.", "panel", ["Admin", "Editor", "Viewer"], "#e9d5ff"],
+        ["Canvas Tool Navigation", "Tool-style vertical navigation for editors, canvases and builders.", "panel", ["Layers", "Assets", "Export"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#nav-announcement-breadcrumb .cp-g",
+      defaults: { source: "Navbar taxonomy", catalogSource: "navbar-gallery-taxonomy", sourcePillar: "navbar", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Release Announcement Bar", "Slim release strip paired with a stable product header.", "announcement", ["v4 shipped", "Read notes", "Docs"], "#c2a4ff"],
+        ["Promo Countdown Strip", "Campaign announcement bar with deadline and CTA hierarchy.", "announcement", ["48 hours", "Save", "Plans"], "#38bdf8"],
+        ["Maintenance Status Bar", "Status strip for scheduled maintenance and incident updates.", "announcement", ["Scheduled", "Status", "Notify"], "#4ade80"],
+        ["Beta Invite Banner", "Invite-only beta banner with secondary preview path.", "announcement", ["Private beta", "Request", "Preview"], "#facc15"],
+        ["Breadcrumb Docs Path", "Secondary route trail for deeply nested documentation pages.", "nav", ["Docs", "API", "Auth"], "#fb7185"],
+        ["Checkout Step Breadcrumb", "Transactional step trail for cart, details, payment and receipt.", "nav", ["Cart", "Details", "Pay"], "#93c5fd"],
+        ["Wizard Progress Nav", "Linear progress navigation for onboarding and setup flows.", "nav", ["Profile", "Team", "Launch"], "#a7f3d0"],
+        ["Compliance Trail", "Audit-friendly breadcrumb trail for policy and approval workflows.", "announcement", ["Policy", "Review", "Approve"], "#f0abfc"],
+        ["Account Path Trail", "Settings breadcrumb for workspace, account and billing pages.", "nav", ["Workspace", "Account", "Billing"], "#fdba74"],
+        ["Course Progress Header", "Learning header with current module and progress route.", "announcement", ["Module 3", "Continue", "Quiz"], "#bfdbfe"],
+        ["Changelog Notification Bar", "Product changelog strip with release type and details link.", "announcement", ["New release", "Changes", "Roadmap"], "#e9d5ff"],
+        ["Survey Progress Bar", "Questionnaire progress header with step and safe exit action.", "announcement", ["Step 4 of 8", "Save", "Exit"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#h1-ai-saas .cp-g",
+      defaults: { source: "H1 taxonomy", catalogSource: "h1-gallery-taxonomy", sourcePillar: "h1", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Make every workflow auditable", "Trust-first SaaS H1 for regulated operations teams.", "headlineGrid", ["Audit", "Trace"], "#c2a4ff"],
+        ["Your AI copilot for regulated teams", "AI platform headline with compliance and control emphasis.", "headlineGrid", ["Control", "Review"], "#38bdf8"],
+        ["Automations that explain their work", "Agentic workflow H1 focused on transparency and handoff.", "headlineGrid", ["Explain", "Approve"], "#4ade80"],
+        ["Turn support noise into product signal", "Support analytics headline with product feedback framing.", "headlineGrid", ["Triage", "Learn"], "#facc15"],
+        ["One dashboard for every launch risk", "Launch operations headline for status and readiness tools.", "headlineGrid", ["Track", "Ship"], "#fb7185"],
+        ["Ship internal tools before lunch", "Internal tooling H1 with speed and practicality.", "headlineGrid", ["Build", "Share"], "#93c5fd"],
+        ["Secure data rooms without the spreadsheet", "B2B collaboration headline for deal and diligence rooms.", "headlineGrid", ["Share", "Protect"], "#a7f3d0"],
+        ["Forecast capacity before it hurts", "Planning SaaS headline with operational consequence.", "headlineGrid", ["Predict", "Plan"], "#f0abfc"],
+        ["Cloud previews for serious product teams", "Developer platform headline for branch and preview workflows.", "headlineGrid", ["Preview", "Deploy"], "#fdba74"],
+        ["Reports that write themselves overnight", "Analytics headline with async productivity promise.", "headlineGrid", ["Analyze", "Send"], "#bfdbfe"],
+        ["Customer context at the moment of reply", "CX platform H1 with timing and relevance focus.", "headlineGrid", ["Context", "Reply"], "#e9d5ff"],
+        ["The calm operating layer for growth teams", "B2B operations headline with quiet-control positioning.", "headlineGrid", ["Plan", "Execute"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#h1-commerce-creator .cp-g",
+      defaults: { source: "H1 taxonomy", catalogSource: "h1-gallery-taxonomy", sourcePillar: "h1", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Sell the drop before it sells out", "Commerce launch headline with urgency and inventory focus.", "headlineGrid", ["Launch", "Sell"], "#c2a4ff"],
+        ["Turn one upload into every channel", "Creator distribution headline for multi-platform publishing.", "headlineGrid", ["Upload", "Distribute"], "#38bdf8"],
+        ["A checkout that remembers your customer", "Commerce H1 focused on returning buyers and smoother payment.", "headlineGrid", ["Cart", "Repeat"], "#4ade80"],
+        ["Memberships that feel worth renewing", "Subscription creator headline with retention as the value prop.", "headlineGrid", ["Join", "Renew"], "#facc15"],
+        ["Your catalog, styled in minutes", "Commerce builder headline for fast visual merchandising.", "headlineGrid", ["Style", "Publish"], "#fb7185"],
+        ["Download-ready assets for every campaign", "Resource product headline for asset kits and campaign teams.", "headlineGrid", ["Download", "Campaign"], "#93c5fd"],
+        ["Launch paid templates without the mess", "Template marketplace headline for creators selling assets.", "headlineGrid", ["Template", "Sell"], "#a7f3d0"],
+        ["Book clients from your best ideas", "Service creator headline for inquiry-led portfolio pages.", "headlineGrid", ["Pitch", "Book"], "#f0abfc"],
+        ["Create once, bundle everywhere", "Creator tooling H1 for reuse, packaging and publishing.", "headlineGrid", ["Create", "Bundle"], "#fdba74"],
+        ["Your studio storefront in one page", "Portfolio commerce headline for small teams and agencies.", "headlineGrid", ["Studio", "Store"], "#bfdbfe"],
+        ["Pricing pages for digital products", "Commercial headline for offers, plans and digital downloads.", "headlineGrid", ["Price", "Convert"], "#e9d5ff"],
+        ["Turn followers into subscribers", "Audience growth headline for newsletters and communities.", "headlineGrid", ["Audience", "Subscribe"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#h1-editorial-portfolio .cp-g",
+      defaults: { source: "H1 taxonomy", catalogSource: "h1-gallery-taxonomy", sourcePillar: "h1", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["A portfolio that reads like a case study", "Portfolio headline that emphasizes proof and narrative clarity.", "headlineGrid", ["Work", "Proof"], "#c2a4ff"],
+        ["Publish essays with product-grade polish", "Editorial tooling headline for longform publishing.", "headlineGrid", ["Write", "Publish"], "#38bdf8"],
+        ["Your archive, finally searchable", "Media archive headline with retrieval and organization value.", "headlineGrid", ["Archive", "Find"], "#4ade80"],
+        ["Editorial systems for independent studios", "Studio-facing headline for repeatable publishing design.", "headlineGrid", ["Studio", "System"], "#facc15"],
+        ["Case studies that move like stories", "Case-study headline with motion and narrative pacing.", "headlineGrid", ["Story", "Result"], "#fb7185"],
+        ["A launch page for every idea", "Editorial product headline for lightweight launch pages.", "headlineGrid", ["Idea", "Launch"], "#93c5fd"],
+        ["Bring scattered notes into a living index", "Knowledge headline for notes, research and connected writing.", "headlineGrid", ["Notes", "Index"], "#a7f3d0"],
+        ["Design work that explains itself", "Portfolio headline focused on context, process and outcomes.", "headlineGrid", ["Process", "Outcome"], "#f0abfc"],
+        ["Longform pages for visual teams", "Editorial headline for image-rich teams and studios.", "headlineGrid", ["Visual", "Longform"], "#fdba74"],
+        ["Make your studio impossible to skim", "Studio headline with strong large-type presentation.", "headlineGrid", ["Impact", "Depth"], "#bfdbfe"],
+        ["A personal site with serious rhythm", "Personal portfolio headline with editorial layout emphasis.", "headlineGrid", ["Personal", "Rhythm"], "#e9d5ff"],
+        ["Present research without a slide deck", "Research publishing headline for deep pages and explainers.", "headlineGrid", ["Research", "Explain"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#cta-purchase-subscription .cp-g",
+      defaults: { source: "CTA taxonomy", catalogSource: "cta-gallery-taxonomy", sourcePillar: "cta", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Start the Pro trial", "Trial CTA with price anchor and secondary comparison route.", "buyCta", ["Pro", "Compare"], "#c2a4ff"],
+        ["Upgrade your workspace", "In-app subscription CTA for team limits and premium features.", "buyCta", ["Team", "Upgrade"], "#38bdf8"],
+        ["Reserve annual pricing", "Subscription CTA that frames annual savings without noisy urgency.", "buyCta", ["Annual", "Save"], "#4ade80"],
+        ["Buy the launch bundle", "Commercial CTA for digital bundles and one-time purchases.", "buyCta", ["Bundle", "Buy"], "#facc15"],
+        ["Unlock usage credits", "Usage-based CTA for quota, credits and metered products.", "buyCta", ["Credits", "Usage"], "#fb7185"],
+        ["Book implementation", "Service purchase CTA with consultation and scoped package routes.", "buyCta", ["Book", "Scope"], "#93c5fd"],
+        ["Add collaborator seats", "Expansion CTA for per-seat billing and team growth.", "buyCta", ["Seats", "Invite"], "#a7f3d0"],
+        ["Move to managed scale", "Enterprise upgrade CTA with security and support emphasis.", "buyCta", ["Scale", "Security"], "#f0abfc"],
+        ["Renew the membership", "Subscription renewal CTA for communities and paid content.", "buyCta", ["Renew", "Member"], "#fdba74"],
+        ["Claim founder pricing", "Early customer CTA with restrained scarcity and clear offer.", "buyCta", ["Founder", "Claim"], "#bfdbfe"],
+        ["Switch from free plan", "Freemium upgrade CTA for product-led conversion surfaces.", "buyCta", ["Free", "Pro"], "#e9d5ff"],
+        ["Confirm secure checkout", "Checkout CTA with trust, summary and confirmation anatomy.", "buyCta", ["Secure", "Pay"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#cta-download-template .cp-g",
+      defaults: { source: "CTA taxonomy", catalogSource: "cta-gallery-taxonomy", sourcePillar: "cta", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Download the starter kit", "Resource CTA for onboarding kits and product samples.", "downloadCta", ["HTML", "CSS", "Docs"], "#c2a4ff"],
+        ["Get the pricing template", "Template CTA for pricing pages and plan comparisons.", "downloadCta", ["Plans", "Copy", "Grid"], "#38bdf8"],
+        ["Save the audit checklist", "Download CTA for compliance, QA and launch checklists.", "panel", ["PDF", "Checklist", "Audit"], "#4ade80"],
+        ["Copy the landing blocks", "Free-template CTA for reusable landing page sections.", "downloadCta", ["Hero", "CTA", "Footer"], "#facc15"],
+        ["Export the brand pack", "Asset-pack CTA for brand, palette and logo delivery surfaces.", "downloadCta", ["Palette", "Logo", "Fonts"], "#fb7185"],
+        ["Install the desktop app", "App download CTA with platform choices and benefit framing.", "cta", ["Mac", "Windows", "Linux"], "#93c5fd"],
+        ["Grab the social kit", "Campaign resource CTA for launch assets and social formats.", "downloadCta", ["Posts", "Stories", "Banners"], "#a7f3d0"],
+        ["Copy the Figma brief", "Design handoff CTA for brief templates and team workflows.", "downloadCta", ["Brief", "Scope", "Assets"], "#f0abfc"],
+        ["Download sample data", "Developer/product CTA for demos, sandboxes and examples.", "command", ["CSV", "JSON", "API"], "#fdba74"],
+        ["Use the invoice template", "Commercial template CTA for freelancers and small teams.", "cardFooter", ["Invoice", "Terms", "Brand"], "#bfdbfe"],
+        ["Start with a blank canvas", "Builder CTA for empty project templates and quickstarts.", "bento", ["Blank", "Grid", "Start"], "#e9d5ff"],
+        ["Export the launch plan", "Project planning CTA for timelines, briefs and release notes.", "downloadCta", ["Plan", "Notes", "Tasks"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#cta-form-newsletter-popup .cp-g",
+      defaults: { source: "CTA taxonomy", catalogSource: "cta-gallery-taxonomy", sourcePillar: "cta", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Join the weekly signal", "Newsletter CTA with concise benefit and email-first form.", "newsletterForm", ["Weekly", "No spam", "Design"], "#c2a4ff"],
+        ["Request early access", "Waitlist form CTA for private products and preview lists.", "newsletterForm", ["Email", "Invite", "Preview"], "#38bdf8"],
+        ["Get the buyer guide", "Lead form CTA with gated guide and segmented follow-up.", "newsletterForm", ["Guide", "Compare", "Send"], "#4ade80"],
+        ["Save my launch spot", "Event-style signup CTA with queue and confirmation framing.", "newsletterForm", ["Spot", "Queue", "Confirm"], "#facc15"],
+        ["Open the offer popup", "Modal CTA with clear accept, skip and offer framing.", "modal", ["Skip", "Claim"], "#fb7185"],
+        ["Subscribe from nav", "Navigation CTA for newsletter capture without leaving the header.", "announcement", ["Subscribe", "Weekly", "Archive"], "#93c5fd"],
+        ["Send me the demo", "B2B lead capture CTA that routes to a recorded demo.", "newsletterForm", ["Work email", "Demo", "Send"], "#a7f3d0"],
+        ["Reserve the workshop", "Workshop CTA with seat count and inquiry path.", "newsletterForm", ["Seats", "Date", "Reserve"], "#f0abfc"],
+        ["Start the calculator", "Interactive form CTA for calculators and estimators.", "panel", ["Inputs", "Estimate", "Email"], "#fdba74"],
+        ["Ask for migration help", "Support CTA for migration, onboarding and technical setup.", "newsletterForm", ["Stack", "Timeline", "Help"], "#bfdbfe"],
+        ["Send the brief", "Agency inquiry CTA with project, budget and timeline signals.", "newsletterForm", ["Brief", "Budget", "Send"], "#e9d5ff"],
+        ["Keep me updated", "Lightweight announcement CTA for changelogs and release feeds.", "announcement", ["Updates", "Email", "Notify"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#error-style-studies .cp-g",
+      defaults: { source: "404 taxonomy", catalogSource: "404s-design-taxonomy", sourcePillar: "404", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Minimal Lost Page", "Clean 404 with one message and one stable action.", "creative404", ["Home", "Search"], "#c2a4ff"],
+        ["Bold Type Error", "Large-type error page with strong contrast and compact links.", "creative404", ["Back", "Index"], "#38bdf8"],
+        ["Brutal Type 404", "Rigid typographic composition for stark product dead ends.", "creative404", ["Retry", "Routes"], "#4ade80"],
+        ["Colorful Recovery", "Bright error page with playful but useful route hierarchy.", "creative404", ["Explore", "Help"], "#facc15"],
+        ["Dark Product Error", "Dark SaaS error composition with status and dashboard routes.", "creative404", ["Status", "Dashboard"], "#fb7185"],
+        ["Editorial Not Found", "Publication-style 404 with search and archive emphasis.", "creative404", ["Archive", "Search"], "#93c5fd"],
+        ["Glitch Interface Error", "Technical error style with code-like visual rhythm.", "creative404", ["Reload", "Logs"], "#a7f3d0"],
+        ["Illustrative Placeholder", "Illustration-ready error layout without relying on external images.", "creative404", ["Home", "Guide"], "#f0abfc"],
+        ["Large Number Study", "Number-led 404 with supporting action cluster.", "creative404", ["404", "Support"], "#fdba74"],
+        ["Light Product 404", "Lightweight product 404 for clean SaaS and docs surfaces.", "industryError", ["SaaS", "Home"], "#bfdbfe"],
+        ["Retro Utility Error", "Retro-inspired error treatment using native color blocks.", "creative404", ["Menu", "Back"], "#e9d5ff"],
+        ["Typographic Dead End", "Type-forward 404 with strong headline and route recovery.", "creative404", ["Path", "Search"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#error-recovery-flows .cp-g",
+      defaults: { source: "404 taxonomy", catalogSource: "404s-design-taxonomy", sourcePillar: "404", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Search Recovery Page", "404 that makes search the primary route instead of a dead end.", "searchNav", ["Search site", "Popular", "Docs"], "#c2a4ff"],
+        ["Support Recovery Page", "Error page with support, status and contact escalation.", "industryError", ["Support", "Contact"], "#38bdf8"],
+        ["Retry Flow Error", "Recoverable error state with retry, status and safe back route.", "industryError", ["Retry", "Status"], "#4ade80"],
+        ["Permission Request Error", "Access error with request permission and switch workspace paths.", "panel", ["Request", "Switch"], "#facc15"],
+        ["Expired Link Flow", "Invite or token expiration screen with safe renewal path.", "industryError", ["Expired", "Renew"], "#fb7185"],
+        ["Payment Failure Flow", "Checkout failure page with retry and billing support actions.", "industryError", ["Payment", "Billing"], "#93c5fd"],
+        ["Missing Workspace Flow", "Workspace-not-found state with account switch and create route.", "panel", ["Switch", "Create"], "#a7f3d0"],
+        ["Offline Recovery Flow", "Offline page with retry, cached route and status message.", "industryError", ["Offline", "Retry"], "#f0abfc"],
+        ["Rate Limit Flow", "Developer-friendly limit page with wait, docs and contact options.", "panel", ["Limit", "Docs"], "#fdba74"],
+        ["Maintenance Recovery", "Scheduled outage page with timeline and notification action.", "industryError", ["Maintenance", "Notify"], "#bfdbfe"],
+        ["Form Error Recovery", "Form submission error with saved progress and retry action.", "modal", ["Saved", "Retry"], "#e9d5ff"],
+        ["Route Suggestion Flow", "404 with suggested paths based on likely destination.", "searchNav", ["Suggested", "Docs", "Pricing"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#error-industry-pages .cp-g",
+      defaults: { source: "404 taxonomy", catalogSource: "404s-design-taxonomy", sourcePillar: "404", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["SaaS Route Missing", "Product SaaS 404 with dashboard, docs and support routes.", "industryError", ["SaaS", "Dashboard"], "#c2a4ff"],
+        ["Commerce Item Missing", "Retail 404 for unavailable products and category recovery.", "industryError", ["Commerce", "Shop"], "#38bdf8"],
+        ["Media Article Missing", "Publishing 404 with archive, search and latest posts.", "industryError", ["Media", "Archive"], "#4ade80"],
+        ["Finance Page Missing", "Finance error page with secure login and support fallbacks.", "industryError", ["Finance", "Secure"], "#facc15"],
+        ["Nonprofit Resource Missing", "Mission-led 404 with donation, programs and contact routes.", "industryError", ["Nonprofit", "Programs"], "#fb7185"],
+        ["Portfolio Project Missing", "Portfolio 404 with work index, contact and archive links.", "industryError", ["Portfolio", "Work"], "#93c5fd"],
+        ["Agency Campaign Missing", "Agency-style missing campaign page with case-study fallback.", "industryError", ["Agency", "Cases"], "#a7f3d0"],
+        ["Education Lesson Missing", "Course 404 with module index and continue route.", "industryError", ["Course", "Continue"], "#f0abfc"],
+        ["Healthcare Portal Missing", "Care portal route error with safe account and support links.", "industryError", ["Portal", "Support"], "#fdba74"],
+        ["Travel Booking Missing", "Booking error with itinerary, search and support paths.", "industryError", ["Booking", "Search"], "#bfdbfe"],
+        ["Developer Package Missing", "Package/docs 404 with registry, versions and API fallback.", "industryError", ["Package", "Versions"], "#e9d5ff"],
+        ["Community Thread Missing", "Community route error with recent threads and member support.", "industryError", ["Community", "Recent"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#footer-type-systems .cp-g",
+      defaults: { source: "Footer taxonomy", catalogSource: "footer-design-taxonomy", sourcePillar: "footer", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Large Type Footer", "Oversized closing statement with sparse link architecture.", "typeFooter", ["Work", "About", "Contact", "Legal"], "#c2a4ff"],
+        ["Small Type Footer", "Dense small-type footer for products with many utility links.", "typeFooter", ["Docs", "API", "Status", "Terms"], "#38bdf8"],
+        ["Typographic Studio Footer", "Studio footer with type-led brand block and inquiry route.", "typeFooter", ["Studio", "Cases", "Careers", "Mail"], "#4ade80"],
+        ["Bold Closing Footer", "Strong end-of-page footer with direct conversion action.", "typeFooter", ["Start", "Plans", "Talk", "Docs"], "#facc15"],
+        ["Editorial Footer", "Publication footer with archive, topics and subscription routes.", "typeFooter", ["Archive", "Topics", "Subscribe", "RSS"], "#fb7185"],
+        ["Product Type Footer", "Product footer with value statement and app-level links.", "typeFooter", ["Product", "Security", "Pricing", "Login"], "#93c5fd"],
+        ["Portfolio Type Footer", "Personal portfolio footer with work categories and contact CTA.", "typeFooter", ["Work", "Writing", "Now", "Contact"], "#a7f3d0"],
+        ["Utility Legal Footer", "Legal-first footer for privacy, compliance and policies.", "footer", ["Privacy", "Terms"], "#f0abfc"],
+        ["Newsletter Type Footer", "Footer that uses type hierarchy to drive email capture.", "typeFooter", ["Letters", "Weekly", "Archive", "Join"], "#fdba74"],
+        ["Mono Product Footer", "Developer-style footer with monospace labels and system routes.", "typeFooter", ["CLI", "API", "SDK", "Status"], "#bfdbfe"],
+        ["Event Footer", "Event footer with date, venue, speakers and registration paths.", "typeFooter", ["Date", "Venue", "Speakers", "Tickets"], "#e9d5ff"],
+        ["Minimal Brand Footer", "Minimal type footer with brand statement and essential links.", "typeFooter", ["Brand", "Help", "Press", "Legal"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#footer-grid-cards .cp-g",
+      defaults: { source: "Footer taxonomy", catalogSource: "footer-design-taxonomy", sourcePillar: "footer", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Sitemap Grid Footer", "Multi-column sitemap footer for product libraries and docs.", "footer", ["Product", "Company"], "#c2a4ff"],
+        ["Card CTA Footer", "Footer with two promoted cards above structured link groups.", "cardFooter", ["Start", "Contact"], "#38bdf8"],
+        ["Newsletter Card Footer", "Card-based footer combining email capture and link sitemap.", "newsletterForm", ["Weekly", "Archive", "Join"], "#4ade80"],
+        ["App Metadata Footer", "App footer with status, version, legal and support metadata.", "footer", ["Status", "v4"], "#facc15"],
+        ["Pricing Card Footer", "Closing footer with pricing card and plan comparison route.", "cardFooter", ["Pro", "Compare"], "#fb7185"],
+        ["Docs Card Footer", "Footer card that surfaces docs, API and quickstart links.", "cardFooter", ["Docs", "API"], "#93c5fd"],
+        ["Marketplace Footer Grid", "Commerce footer with categories, support and policy groups.", "footer", ["Shop", "Returns"], "#a7f3d0"],
+        ["Agency Inquiry Footer", "Agency footer with project inquiry card and case links.", "cardFooter", ["Brief", "Cases"], "#f0abfc"],
+        ["Community Footer", "Community footer with events, members and discussion routes.", "footer", ["Events", "Members"], "#fdba74"],
+        ["Security Footer Grid", "Trust footer with compliance, status and security links.", "footer", ["SOC2", "Status"], "#bfdbfe"],
+        ["Download Footer Card", "Footer with app download card and platform links.", "cardFooter", ["Mac", "Windows"], "#e9d5ff"],
+        ["Customer Story Footer", "Footer that promotes stories, proof and contact routes.", "cardFooter", ["Stories", "Contact"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#footer-style-modes .cp-g",
+      defaults: { source: "Footer taxonomy", catalogSource: "footer-design-taxonomy", sourcePillar: "footer", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Bright Footer Mode", "Light, bright footer treatment with soft link hierarchy.", "footer", ["Light", "Links"], "#c2a4ff"],
+        ["Dark Footer Mode", "High-contrast dark footer for product and SaaS pages.", "footer", ["Dark", "Status"], "#38bdf8"],
+        ["Flat Footer Mode", "Flat footer with low elevation and clear link columns.", "footer", ["Flat", "Grid"], "#4ade80"],
+        ["Animated Footer Cue", "Motion-ready footer with native visual cue and action row.", "typeFooter", ["Motion", "Start", "Docs", "Talk"], "#facc15"],
+        ["Illustrative Footer Frame", "Footer layout prepared for illustration slots without external assets.", "cardFooter", ["Frame", "Links"], "#fb7185"],
+        ["Carded Footer Mode", "Card-forward footer with compact conversion and support panels.", "cardFooter", ["Support", "Start"], "#93c5fd"],
+        ["Bright Social Footer", "Social-forward bright footer with compact network and legal rows.", "footer", ["Social", "Legal"], "#a7f3d0"],
+        ["Dark App Footer", "App footer mode for dashboards and signed-in product shells.", "footer", ["App", "Version"], "#f0abfc"],
+        ["Editorial Footer Mode", "Magazine-style footer with archive and newsletter emphasis.", "typeFooter", ["Archive", "Issues", "RSS", "Join"], "#fdba74"],
+        ["Campaign Footer Mode", "Campaign footer with offer card and closing CTA.", "cardFooter", ["Offer", "Claim"], "#bfdbfe"],
+        ["Minimal Legal Mode", "Restrained footer for policies, compliance and contact routes.", "footer", ["Privacy", "Terms"], "#e9d5ff"],
+        ["Studio Dark Footer", "Dark studio footer with case links and inquiry path.", "typeFooter", ["Studio", "Cases", "Contact", "Now"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#bento-feature-landing .cp-g",
+      defaults: { source: "Bento taxonomy", catalogSource: "bentogrids-taxonomy", sourcePillar: "bento", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Feature Spotlight Bento", "Asymmetric bento for primary feature and proof cells.", "bento", ["98%", "Adoption"], "#c2a4ff"],
+        ["Product Story Bento", "Narrative bento for problem, workflow and result.", "mediaBento", ["Story", "Flow"], "#38bdf8"],
+        ["Benefits Grid Bento", "Landing bento that clusters benefits into readable modules.", "bento", ["Fast", "Clear"], "#4ade80"],
+        ["Comparison Landing Bento", "Before-after landing bento for positioning and conversion.", "mediaBento", ["Before", "After"], "#facc15"],
+        ["Launch Feature Bento", "Release bento with announcement, feature and CTA cells.", "bento", ["New", "Launch"], "#fb7185"],
+        ["Integration Bento", "Integration-led bento with app groups and API cell.", "mediaBento", ["Apps", "API"], "#93c5fd"],
+        ["Security Proof Bento", "Trust bento for encryption, audit and policy proof.", "bento", ["SOC2", "2FA"], "#a7f3d0"],
+        ["Workflow Bento", "Workflow bento that stages capture, process and ship cells.", "mediaBento", ["Capture", "Ship"], "#f0abfc"],
+        ["Mobile Feature Bento", "Mobile-safe landing bento for responsive feature pages.", "bento", ["Mobile", "Push"], "#fdba74"],
+        ["AI Prompt Bento", "AI product bento with prompt, output and feedback zones.", "mediaBento", ["Prompt", "Output"], "#bfdbfe"],
+        ["Proof First Bento", "Landing bento that foregrounds metrics and customer proof.", "bento", ["12%", "Growth"], "#e9d5ff"],
+        ["Pricing Feature Bento", "Bento grid that mixes plan, feature and upgrade cells.", "mediaBento", ["Plan", "Upgrade"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#bento-dashboard-grids .cp-g",
+      defaults: { source: "Bento taxonomy", catalogSource: "bentogrids-taxonomy", sourcePillar: "bento", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["KPI Dashboard Bento", "Metric-heavy bento for executive and product dashboards.", "dashboardBento", ["71k", "MRR"], "#c2a4ff"],
+        ["Operations Bento Grid", "Ops dashboard bento with queues, incidents and action cells.", "dashboardBento", ["Queue", "SLA"], "#38bdf8"],
+        ["Automation Bento", "Automation dashboard with trigger, action and result modules.", "dashboardBento", ["Trigger", "Done"], "#4ade80"],
+        ["Revenue Bento", "Revenue overview bento with trend, plan and segment cells.", "dashboardBento", ["ARR", "NRR"], "#facc15"],
+        ["Support Bento", "Support dashboard grid with tickets, sentiment and response time.", "dashboardBento", ["Tickets", "CSAT"], "#fb7185"],
+        ["Security Console Bento", "Security console bento for audit, risk and access states.", "dashboardBento", ["Risk", "Access"], "#93c5fd"],
+        ["Content Calendar Bento", "Editorial dashboard bento for schedule, queue and assets.", "dashboardBento", ["Calendar", "Queue"], "#a7f3d0"],
+        ["Sales Pipeline Bento", "CRM bento with deals, forecast and next actions.", "dashboardBento", ["Pipeline", "Forecast"], "#f0abfc"],
+        ["Product Analytics Bento", "Analytics bento for activation, usage and retention.", "dashboardBento", ["Activation", "Usage"], "#fdba74"],
+        ["Resource Planning Bento", "Planning dashboard bento for capacity and delivery risk.", "dashboardBento", ["Capacity", "Risk"], "#bfdbfe"],
+        ["Data Quality Bento", "Data platform bento for freshness, errors and validation.", "dashboardBento", ["Fresh", "Errors"], "#e9d5ff"],
+        ["Release Readiness Bento", "Launch dashboard bento for checks, blockers and approvals.", "dashboardBento", ["Checks", "Approve"], "#f9a8d4"],
+      ],
+    },
+    {
+      selector: "#bento-media-portfolio .cp-g",
+      defaults: { source: "Bento taxonomy", catalogSource: "bentogrids-taxonomy", sourcePillar: "bento", family: "inspiration", qaStatus: "keep" },
+      items: [
+        ["Portfolio Case Bento", "Portfolio bento with case study, role and outcome cells.", "mediaBento", ["Case", "Outcome"], "#c2a4ff"],
+        ["Creator Media Bento", "Creator page bento for video, links and newsletter capture.", "mediaBento", ["Video", "Join"], "#38bdf8"],
+        ["Editorial Issue Bento", "Editorial bento for issue cover, articles and archive paths.", "mediaBento", ["Issue", "Archive"], "#4ade80"],
+        ["Studio Services Bento", "Studio page bento with services, proof and inquiry cells.", "mediaBento", ["Services", "Brief"], "#facc15"],
+        ["Research Summary Bento", "Research bento for findings, chart slot and next steps.", "mediaBento", ["Finding", "Next"], "#fb7185"],
+        ["Event Recap Bento", "Event recap bento with sessions, media and attendee proof.", "mediaBento", ["Sessions", "Recap"], "#93c5fd"],
+        ["Personal Links Bento", "Personal page bento for links, work, writing and contact.", "mediaBento", ["Links", "Now"], "#a7f3d0"],
+        ["Campaign Media Bento", "Campaign bento with hero asset, CTA and proof modules.", "mediaBento", ["Campaign", "Proof"], "#f0abfc"],
+        ["Product Gallery Bento", "Product media bento for screenshots, specs and action cells.", "mediaBento", ["Gallery", "Specs"], "#fdba74"],
+        ["Press Kit Bento", "Press kit bento for assets, facts and contact routes.", "mediaBento", ["Press", "Assets"], "#bfdbfe"],
+        ["Course Landing Bento", "Course bento with curriculum, proof and enrollment route.", "mediaBento", ["Lessons", "Enroll"], "#e9d5ff"],
+        ["Case Archive Bento", "Archive bento for projects, filters and featured outcomes.", "mediaBento", ["Archive", "Featured"], "#f9a8d4"],
+      ],
+    },
+  ];
+
+  sourceSections.forEach(({ selector, defaults, items }) => {
+    const cards = items.map(([title, description, kind, labels, accent]) => ({
+      title,
+      description,
+      kind,
+      labels,
+      accent,
+    }));
+
+    addComponentCards(selector, nativeCards(cards, defaults));
+  });
+}
+
+function stabilizeCatalogComposition() {
+  const productDuplicates = new Set(["Pricing Mini", "Empty State", "Metric Delta", "Notification Stack"]);
+  removeCardsByTitle("#components .cp-g", (title) => productDuplicates.has(title));
+
+  ["#layouts .ly-g", "#easing .ez-g"].forEach((selector) => {
+    const grid = document.querySelector(selector);
+    if (!grid) return;
+    grid.classList.add("paginated", "catalog-grid");
+    Array.from(grid.children).forEach((card) => card.classList.add("page-item"));
+  });
+
+  promoteCards("#sera-navigation .cp-g", (card) => card.dataset.catalogSource === "sera-ui");
+  promoteCards("#sera-cards .cp-g", (card) => card.dataset.catalogSource === "sera-ui");
+  promoteCards("#sera-sections .cp-g", (card) => card.dataset.catalogSource === "sera-ui");
 }
 
 function configureCatalogPagination() {
@@ -1516,12 +2637,22 @@ document.addEventListener("DOMContentLoaded", () => {
   initCursor();
   initCopyButtons();
   initScrollEffects();
+  syncCatalogStructure();
+  initSectionMenu();
   enhanceCatalog();
   addMarketplaceDepth();
   pruneCatalogNoise();
   rebuildTypographyLibrary();
   deepenCatalog();
   addSeraCatalog();
+  expandSeraCatalog();
+  addProductCatalog();
+  addInspirationCatalog();
+  addDeepInspirationCatalog();
+  addExpandedCategoryCatalog();
+  addSourceDeepCatalog();
+  stabilizeCatalogComposition();
+  syncCatalogFooter();
   configureCatalogPagination();
   initPagination();
   initBackgroundAudio();
