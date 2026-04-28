@@ -54,15 +54,30 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .noi{position:fixed;inset:0;z-index:1;pointer-events:none;opacity:.025;background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:256px}
 
 /* nav */
-.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:16px 36px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(6,5,7,.4);border-bottom:1px solid transparent;transition:all .4s}
+.nav{position:fixed;top:0;left:0;right:0;z-index:140;padding:16px 36px;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(6,5,7,.4);border-bottom:1px solid transparent;transition:all .4s}
 .nav.sc{border-color:rgba(255,255,255,.04);padding:11px 36px;background:rgba(6,5,7,.75)}
 .nav-l{font-family:'ClashDisplay',sans-serif;font-size:15px;font-weight:600;letter-spacing:4px}
 .nav-l em{font-style:normal;background:linear-gradient(135deg,#c2a4ff,#fb8dff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.nav-r{display:flex;gap:24px}
-.nav-r a{font-size:11px;letter-spacing:1.5px;color:rgba(234,229,236,.35);transition:color .3s;text-transform:uppercase;position:relative}
-.nav-r a::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:#c2a4ff;transition:width .3s}
-.nav-r a:hover{color:#c2a4ff}.nav-r a:hover::after{width:100%}
-.prg{position:fixed;top:0;left:0;height:2px;z-index:101;background:linear-gradient(90deg,#c2a4ff,#fb8dff,#f96);width:0;will-change:width}
+.nav-r{display:flex;gap:12px;align-items:center;position:relative}
+.section-menu{position:relative}
+.section-menu summary{list-style:none;cursor:pointer;user-select:none}
+.section-menu summary::-webkit-details-marker{display:none}
+.section-menu-trigger{display:inline-flex;align-items:center;gap:9px;min-height:34px;padding:0 13px;border-radius:999px;border:1px solid rgba(194,164,255,.16);background:rgba(255,255,255,.035);color:rgba(234,229,236,.78);font-size:10px;font-weight:700;letter-spacing:1.05px;text-transform:uppercase;box-shadow:inset 0 1px 0 rgba(255,255,255,.05);transition:background .25s,border-color .25s,color .25s}
+.section-menu-trigger::before{content:'';width:6px;height:6px;border-radius:50%;background:#c2a4ff;box-shadow:0 0 14px rgba(194,164,255,.65)}
+.section-menu-trigger::after{content:'';width:7px;height:7px;border-right:1px solid currentColor;border-bottom:1px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.62;transition:transform .25s}
+.section-menu[open] .section-menu-trigger{background:rgba(194,164,255,.1);border-color:rgba(194,164,255,.3);color:#fff}
+.section-menu[open] .section-menu-trigger::after{transform:rotate(225deg) translate(-1px,-1px)}
+.section-menu-panel{position:fixed;top:62px;right:28px;width:min(1080px,calc(100vw - 56px));max-height:calc(100vh - 88px);box-sizing:border-box;overflow:auto;padding:18px;border-radius:20px;background:#08070c;border:1px solid rgba(255,255,255,.08);box-shadow:0 24px 80px rgba(0,0,0,.72),inset 0 1px 0 rgba(255,255,255,.04);backdrop-filter:blur(22px)}
+.section-menu-panel::before{content:'';position:absolute;inset:0;border-radius:inherit;background:radial-gradient(circle at 12% 0,rgba(194,164,255,.18),transparent 32%),radial-gradient(circle at 92% 16%,rgba(251,141,255,.11),transparent 26%);pointer-events:none}
+.section-menu-grid{position:relative;display:grid;grid-template-columns:repeat(auto-fit,minmax(176px,1fr));gap:12px}
+.section-menu-group{padding:12px;border-radius:16px;background:rgba(255,255,255,.026);border:1px solid rgba(255,255,255,.055);min-width:0}
+.section-menu-title{font-size:9px;font-weight:800;letter-spacing:1.45px;text-transform:uppercase;color:rgba(194,164,255,.72);margin-bottom:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.section-menu-links{display:grid;gap:5px}
+.section-menu-links a{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:25px;padding:5px 7px;border-radius:9px;color:rgba(234,229,236,.58);font-size:10px;line-height:1.25;text-transform:none;letter-spacing:0;transition:background .2s,color .2s}
+.section-menu-links a::after{content:attr(data-number);flex:0 0 auto;color:rgba(234,229,236,.22);font-size:8px;font-weight:800;letter-spacing:.08em}
+.section-menu-links a:hover{background:rgba(194,164,255,.1);color:#fff}
+.section-menu-note{position:relative;margin-top:12px;color:rgba(234,229,236,.38);font-size:10px;line-height:1.55}
+.prg{position:fixed;top:0;left:0;height:2px;z-index:141;background:linear-gradient(90deg,#c2a4ff,#fb8dff,#f96);width:0;will-change:width}
 
 /* layout */
 section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84px}.ctr{max-width:1400px;margin:0 auto}
@@ -340,9 +355,14 @@ section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84
 .lsk{display:flex;flex-direction:column;gap:4px;height:70px}.lsk>div{flex:1;background:rgba(194,164,255,.05);border-radius:5px;border:1px solid rgba(194,164,255,.06)}
 
 /* === BACKGROUND AUDIO === */
-.bg-audio-toggle{position:fixed;right:20px;bottom:20px;z-index:120;display:inline-flex;align-items:center;gap:10px;padding:11px 14px;border-radius:999px;background:rgba(6,5,7,.74);border:1px solid rgba(194,164,255,.18);color:#eae5ec;backdrop-filter:blur(18px);box-shadow:0 18px 38px -22px rgba(194,164,255,.65);cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .25s,background .25s,opacity .25s}
+.bg-audio-toggle{position:fixed;right:20px;bottom:20px;z-index:120;display:inline-flex;align-items:center;gap:0;min-width:38px;min-height:38px;justify-content:center;padding:10px;border-radius:999px;background:rgba(6,5,7,.74);border:1px solid rgba(194,164,255,.18);color:#eae5ec;backdrop-filter:blur(18px);box-shadow:0 18px 38px -22px rgba(194,164,255,.65);cursor:pointer;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;transition:transform .25s cubic-bezier(.16,1,.3,1),border-color .25s,background .25s,opacity .25s,min-width .25s}
 .bg-audio-toggle:hover{transform:translateY(-2px);border-color:rgba(194,164,255,.42);background:rgba(18,13,24,.86)}
 .bg-audio-toggle .sound-dot{width:8px;height:8px;border-radius:50%;background:rgba(234,229,236,.42);box-shadow:0 0 0 0 rgba(194,164,255,0)}
+.bg-audio-toggle .sound-label{max-width:0;opacity:0;overflow:hidden;white-space:nowrap;transition:max-width .25s,opacity .25s,margin-left .25s}
+.bg-audio-toggle:hover,
+.bg-audio-toggle:focus-visible{gap:10px;min-width:132px}
+.bg-audio-toggle:hover .sound-label,
+.bg-audio-toggle:focus-visible .sound-label{max-width:104px;opacity:1;margin-left:0}
 .bg-audio-toggle[data-state="playing"] .sound-dot{background:#c2a4ff;animation:bgAudioPulse 1.4s ease-in-out infinite}
 .bg-audio-toggle[data-state="blocked"]{border-color:rgba(251,141,255,.4);box-shadow:0 18px 45px -18px rgba(251,141,255,.55)}
 .bg-audio-toggle[data-state="blocked"] .sound-dot{background:#fb8dff;animation:bgAudioPulse 1s ease-in-out infinite}
@@ -356,17 +376,17 @@ section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84
 .ss-c img{width:100%;height:auto}.ss-m{padding:10px 14px;background:rgba(255,255,255,.015);font-size:10px;color:rgba(234,229,236,.3)}
 
 /* === EXTRA SECTIONS (tokens, easing, styles, palettes, spacing, radius) === */
-.ez-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
-.ez-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:14px;padding:20px;transition:border-color .3s;position:relative;overflow:hidden;min-height:154px}
+.ez-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+.ez-c{background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.012));border:1px solid rgba(255,255,255,.04);border-radius:18px;padding:22px;transition:border-color .3s,transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden;min-height:176px}
 .ez-c:hover{border-color:rgba(194,164,255,.15)}
 .ez-c .ez-n{font-size:12px;font-weight:600;margin-bottom:4px}
-.ez-c .ez-v{font-size:9px;color:rgba(194,164,255,.5);font-family:'Geist',monospace;margin-bottom:12px}
-.ez-b{height:58px;border-radius:18px;background:linear-gradient(180deg,rgba(15,23,42,.88),rgba(11,17,32,.58));border:1px solid rgba(194,164,255,.12);position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.05)}
-.ez-b::before{content:'';position:absolute;left:14px;right:14px;top:50%;height:2px;transform:translateY(-50%);background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(194,164,255,.24),rgba(255,255,255,.05))}
-.ez-b::after{content:'';position:absolute;inset:10px;border-radius:12px;border:1px dashed rgba(194,164,255,.08)}
-.ez-d{width:16px;height:16px;border-radius:50%;background:linear-gradient(135deg,#fff,#c2a4ff);position:absolute;top:50%;left:14px;transform:translateY(-50%);box-shadow:0 0 0 5px rgba(194,164,255,.12),0 10px 24px rgba(194,164,255,.26);animation:ezSlide 1.8s var(--ease,ease) infinite alternate}
+.ez-c .ez-v{font-size:10px;color:rgba(194,164,255,.58);font-family:'Geist',monospace;margin-bottom:14px;letter-spacing:.02em}
+.ez-b{height:74px;border-radius:20px;background:linear-gradient(180deg,rgba(15,23,42,.92),rgba(11,17,32,.64));border:1px solid rgba(194,164,255,.14);position:relative;overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.05),0 20px 40px -28px rgba(0,0,0,.55)}
+.ez-b::before{content:'';position:absolute;left:18px;right:18px;top:50%;height:3px;transform:translateY(-50%);background:linear-gradient(90deg,rgba(255,255,255,.04),rgba(194,164,255,.3),rgba(255,255,255,.04));border-radius:999px}
+.ez-b::after{content:'';position:absolute;inset:11px;border-radius:14px;border:1px dashed rgba(194,164,255,.1)}
+.ez-d{width:18px;height:18px;border-radius:50%;background:linear-gradient(135deg,#fff,#c2a4ff);position:absolute;top:50%;left:18px;transform:translateY(-50%);box-shadow:0 0 0 7px rgba(194,164,255,.12),0 16px 28px rgba(194,164,255,.24);animation:ezSlide 1.8s var(--ease,ease) infinite alternate}
 .ez-c:hover .ez-d{animation-duration:1.35s}
-@keyframes ezSlide{0%{left:14px}100%{left:calc(100% - 30px)}}
+@keyframes ezSlide{0%{left:18px}100%{left:calc(100% - 36px)}}
 
 .sty-g{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}
 .sty-c{background:rgba(255,255,255,.015);border:1px solid rgba(255,255,255,.035);border-radius:14px;padding:18px;transition:border-color .3s,transform .35s cubic-bezier(.16,1,.3,1);position:relative}
@@ -518,6 +538,38 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 .catalog-grid .kit-copy-meta{margin-top:14px;display:grid;gap:4px;min-width:0}
 .catalog-grid .ut-n{margin:0;overflow-wrap:anywhere}
 .catalog-grid .kit-meta{min-height:auto;line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+#buttons .ut-c .mini-preview,
+#loading .load-card > :first-child,
+#loading .ut-c .mini-preview,
+#textfx .tx-card,
+#textfx .ut-c .mini-preview,
+#hover .hf-d,
+#hover .ut-c .mini-preview,
+#glass .ut-c .mini-preview,
+#utils .ut-c .mini-preview{position:relative;overflow:hidden;isolation:isolate}
+#buttons .ut-c .mini-preview::before,
+#loading .load-card > :first-child::before,
+#loading .ut-c .mini-preview::before,
+#textfx .tx-card::before,
+#hover .hf-d::before,
+#glass .ut-c .mini-preview::before,
+#utils .ut-c .mini-preview::before{content:'';position:absolute;inset:12px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:linear-gradient(135deg,rgba(194,164,255,.08),rgba(255,255,255,.025));pointer-events:none;z-index:-1}
+#buttons .ut-c:nth-child(3n+1) .mini-preview::after{content:'';position:absolute;right:16px;top:16px;width:54px;height:38px;border-radius:14px;background:linear-gradient(135deg,#f8fafc,#cbd5e1);box-shadow:0 18px 40px rgba(0,0,0,.24)}
+#buttons .ut-c:nth-child(3n+2) .mini-preview::after{content:'';position:absolute;left:16px;bottom:16px;width:64%;height:9px;border-radius:999px;background:linear-gradient(90deg,#c2a4ff,rgba(194,164,255,.12))}
+#buttons .ut-c:nth-child(3n) .mini-preview::after{content:'';position:absolute;right:18px;bottom:18px;width:42px;height:42px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(194,164,255,.18)}
+#loading .load-card:nth-child(4n+1) > :first-child::after,
+#loading .ut-c:nth-child(4n+1) .mini-preview::after{content:'';position:absolute;left:18px;right:18px;bottom:16px;height:8px;border-radius:999px;background:linear-gradient(90deg,#c2a4ff 58%,rgba(255,255,255,.1) 58%)}
+#loading .load-card:nth-child(4n+2) > :first-child::after,
+#loading .ut-c:nth-child(4n+2) .mini-preview::after{content:'';position:absolute;right:18px;top:18px;width:48px;height:48px;border-radius:18px;background:rgba(248,250,252,.9);box-shadow:-58px 24px 0 rgba(255,255,255,.06)}
+#textfx .tx-card::after,
+#textfx .ut-c .mini-preview::after{content:'';position:absolute;right:18px;bottom:18px;width:74px;height:10px;border-radius:999px;background:linear-gradient(90deg,#c2a4ff,transparent);opacity:.65}
+#shadows .sh-card:nth-child(4n+1) .sh-box{box-shadow:0 18px 46px rgba(194,164,255,.22),inset 0 1px 0 rgba(255,255,255,.1)}
+#shadows .sh-card:nth-child(4n+2) .sh-box{box-shadow:14px 14px 0 rgba(194,164,255,.14),0 22px 38px rgba(0,0,0,.28)}
+#shadows .sh-card:nth-child(4n+3) .sh-box{box-shadow:inset 0 0 0 1px rgba(255,255,255,.12),inset 0 18px 36px rgba(194,164,255,.12)}
+#hover .hf-d::after,
+#hover .ut-c .mini-preview::after{content:'';position:absolute;left:18px;right:18px;bottom:18px;height:34px;border-radius:999px;background:linear-gradient(90deg,rgba(194,164,255,.55),rgba(255,255,255,.08));box-shadow:0 14px 32px rgba(0,0,0,.2)}
+#glass .ut-c .mini-preview::after{content:'';position:absolute;right:18px;top:18px;width:72px;height:72px;border-radius:24px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(14px)}
+#utils .ut-c .mini-preview::after{content:'';position:absolute;left:18px;right:18px;bottom:18px;height:36px;border-radius:14px;background:repeating-linear-gradient(90deg,rgba(194,164,255,.3) 0 22px,rgba(255,255,255,.07) 22px 44px)}
 .kit-source{display:inline-flex;align-items:center;width:max-content;padding:4px 8px;border-radius:999px;background:rgba(194,164,255,.08);border:1px solid rgba(194,164,255,.14);color:rgba(194,164,255,.72);font-size:8px;letter-spacing:.16em;text-transform:uppercase}
 .cp-i .kit-source{margin-bottom:2px}
 
@@ -614,12 +666,98 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 #sera-sections .ut-c{min-height:332px;display:flex;flex-direction:column}
 #sera-sections .cp-p{flex:1;min-height:214px;padding:26px 20px;background:linear-gradient(180deg,rgba(10,16,30,.72),rgba(12,13,22,.4));border-bottom:1px solid rgba(255,255,255,.04)}
 
+#dialogs-overlays .cp-c,
+#empty-states .cp-c{min-height:308px;display:flex;flex-direction:column}
+#dialogs-overlays .cp-p,
+#empty-states .cp-p{flex:1;min-height:190px;padding:24px 18px;background:linear-gradient(180deg,rgba(10,16,30,.78),rgba(12,13,22,.42));border-bottom:1px solid rgba(255,255,255,.05)}
+
+#tables-data .cp-c,
+#panels-settings .cp-c{min-height:326px;display:flex;flex-direction:column}
+#tables-data .cp-p,
+#panels-settings .cp-p{flex:1;min-height:208px;padding:22px 18px;background:linear-gradient(180deg,rgba(8,14,28,.82),rgba(10,14,24,.46));border-bottom:1px solid rgba(255,255,255,.05)}
+
+#navigation-patterns .cp-c,
+#cta-blocks .cp-c,
+#error-pages .cp-c,
+#footer-systems .cp-c,
+#pricing-sections .cp-c,
+#form-patterns .cp-c,
+#feature-sections .cp-c,
+#social-proof .cp-c{min-height:318px;display:flex;flex-direction:column}
+#navigation-patterns .cp-p,
+#cta-blocks .cp-p,
+#error-pages .cp-p,
+#footer-systems .cp-p,
+#pricing-sections .cp-p,
+#form-patterns .cp-p,
+#feature-sections .cp-p,
+#social-proof .cp-p{flex:1;min-height:198px;padding:22px 18px;background:linear-gradient(180deg,rgba(10,16,30,.78),rgba(12,13,22,.42));border-bottom:1px solid rgba(255,255,255,.05)}
+
+#hero-headlines .cp-c,
+#bento-systems .cp-c{min-height:340px;display:flex;flex-direction:column}
+#hero-headlines .cp-p,
+#bento-systems .cp-p{flex:1;min-height:220px;padding:24px 18px;background:linear-gradient(180deg,rgba(8,14,28,.82),rgba(10,14,24,.46));border-bottom:1px solid rgba(255,255,255,.05)}
+
+#nav-static-sticky .cp-c,
+#nav-dropdown-mega .cp-c,
+#nav-sidebar-search .cp-c,
+#nav-announcement-breadcrumb .cp-c,
+#cta-purchase-subscription .cp-c,
+#cta-download-template .cp-c,
+#cta-form-newsletter-popup .cp-c,
+#error-recovery-flows .cp-c,
+#footer-type-systems .cp-c,
+#footer-grid-cards .cp-c,
+#footer-style-modes .cp-c{min-height:318px;display:flex;flex-direction:column}
+#nav-static-sticky .cp-p,
+#nav-dropdown-mega .cp-p,
+#nav-sidebar-search .cp-p,
+#nav-announcement-breadcrumb .cp-p,
+#cta-purchase-subscription .cp-p,
+#cta-download-template .cp-p,
+#cta-form-newsletter-popup .cp-p,
+#error-recovery-flows .cp-p,
+#footer-type-systems .cp-p,
+#footer-grid-cards .cp-p,
+#footer-style-modes .cp-p{flex:1;min-height:198px;padding:22px 18px;background:linear-gradient(180deg,rgba(10,16,30,.78),rgba(12,13,22,.42));border-bottom:1px solid rgba(255,255,255,.05)}
+
+#h1-ai-saas .cp-c,
+#h1-commerce-creator .cp-c,
+#h1-editorial-portfolio .cp-c,
+#error-style-studies .cp-c,
+#error-industry-pages .cp-c,
+#bento-feature-landing .cp-c,
+#bento-dashboard-grids .cp-c,
+#bento-media-portfolio .cp-c{min-height:340px;display:flex;flex-direction:column}
+#h1-ai-saas .cp-p,
+#h1-commerce-creator .cp-p,
+#h1-editorial-portfolio .cp-p,
+#error-style-studies .cp-p,
+#error-industry-pages .cp-p,
+#bento-feature-landing .cp-p,
+#bento-dashboard-grids .cp-p,
+#bento-media-portfolio .cp-p{flex:1;min-height:220px;padding:24px 18px;background:linear-gradient(180deg,rgba(8,14,28,.82),rgba(10,14,24,.46));border-bottom:1px solid rgba(255,255,255,.05)}
+
+#cards3d .ut-c{min-height:320px}
+
 .pagination-controls{margin-top:30px;gap:14px}
 .pagination-status{min-width:176px}
 
+@media(max-width:1180px){
+.nav-r{gap:12px}
+.section-menu-panel{right:18px;width:min(860px,calc(100vw - 36px))}
+}
+
 @media(max-width:768px){
 section{padding:80px 18px 86px}
-.nav-r{display:none}
+.nav{padding:12px 14px}.nav.sc{padding:10px 14px}
+.nav-l{font-size:12px;letter-spacing:2.4px}
+.nav-r{display:flex}
+.section-menu-trigger{min-height:32px;padding:0 11px;font-size:9px;letter-spacing:.75px}
+.section-menu-panel{top:54px;left:12px;right:12px;width:auto;max-height:calc(100vh - 68px);padding:13px;border-radius:18px}
+.section-menu-grid{grid-template-columns:1fr;gap:9px}
+.section-menu-group{padding:10px}
+.section-menu-links a{min-height:29px;font-size:11px}
 .h-stats{gap:20px;flex-wrap:wrap;justify-content:center}
 .fn-r{grid-template-columns:1fr}
 .ss-c{width:260px}
@@ -664,6 +802,39 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 #sera-navigation .cp-p{min-height:148px;padding:22px 16px}
 #sera-cards .cp-p{min-height:176px;padding:22px 16px}
 #sera-sections .cp-p{min-height:194px;padding:22px 16px}
+#dialogs-overlays .cp-p,
+#empty-states .cp-p{min-height:176px;padding:22px 16px}
+#tables-data .cp-p,
+#panels-settings .cp-p{min-height:188px;padding:22px 16px}
+#navigation-patterns .cp-p,
+#cta-blocks .cp-p,
+#error-pages .cp-p,
+#footer-systems .cp-p,
+#pricing-sections .cp-p,
+#form-patterns .cp-p,
+#feature-sections .cp-p,
+#social-proof .cp-p{min-height:178px;padding:22px 16px}
+#hero-headlines .cp-p,
+#bento-systems .cp-p{min-height:190px;padding:22px 16px}
+#nav-static-sticky .cp-p,
+#nav-dropdown-mega .cp-p,
+#nav-sidebar-search .cp-p,
+#nav-announcement-breadcrumb .cp-p,
+#cta-purchase-subscription .cp-p,
+#cta-download-template .cp-p,
+#cta-form-newsletter-popup .cp-p,
+#error-recovery-flows .cp-p,
+#footer-type-systems .cp-p,
+#footer-grid-cards .cp-p,
+#footer-style-modes .cp-p{min-height:178px;padding:22px 16px}
+#h1-ai-saas .cp-p,
+#h1-commerce-creator .cp-p,
+#h1-editorial-portfolio .cp-p,
+#error-style-studies .cp-p,
+#error-industry-pages .cp-p,
+#bento-feature-landing .cp-p,
+#bento-dashboard-grids .cp-p,
+#bento-media-portfolio .cp-p{min-height:190px;padding:22px 16px}
 .inp-g,.sp-g,.tw-g,.cha-g,.cp-g,.gl-g,.tx-g,.ly-g{grid-template-columns:1fr}
 }
 </style>
@@ -1773,6 +1944,171 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 <div class="ly-c has-copy" data-snippet="btn" data-html='&lt;div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px"&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;div style="height:100px;border-radius:14px;background:rgba(255,255,255,.04)"&gt;&lt;/div&gt;&lt;/div&gt;'><h4>Dense Data Grid</h4><div class="ly-stage"><div class="ly-dense-grid"><span><i></i><i></i><i></i></span><span><i></i><i></i><i></i></span><span><i></i><i></i><i></i></span><span><i></i><i></i><i></i></span></div></div><button class="cpb">Copy</button></div>
 </div></div></section>
 
+<!-- PRODUCT UI: DIALOGS & OVERLAYS -->
+<div class="dv"></div>
+<section id="dialogs-overlays" class="s-v4"><div class="ctr"><div class="sl rv">19 - Dialogs & Overlays</div><div class="st rv d1">Dialogs & <span>Overlays</span></div><div class="sdesc rv d2">Modals, drawers, command layers and stacked alerts tuned for production product flows.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- PRODUCT UI: TABLES & DATA VIEWS -->
+<div class="dv"></div>
+<section id="tables-data" class="s-v4"><div class="ctr"><div class="sl rv">20 - Tables & Data Views</div><div class="st rv d1">Tables & <span>Data Views</span></div><div class="sdesc rv d2">Dense admin tables, KPI grids and list-detail compositions that still read cleanly at a glance.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- PRODUCT UI: EMPTY STATES & FEEDBACK -->
+<div class="dv"></div>
+<section id="empty-states" class="s-v4"><div class="ctr"><div class="sl rv">21 - Empty States & Feedback</div><div class="st rv d1">Empty States & <span>Feedback</span></div><div class="sdesc rv d2">Zero states, inline success and failure messaging, and onboarding prompts with stronger product presence.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- PRODUCT UI: PANELS & SETTINGS -->
+<div class="dv"></div>
+<section id="panels-settings" class="s-v4"><div class="ctr"><div class="sl rv">22 - Panels & Settings</div><div class="st rv d1">Panels & <span>Settings</span></div><div class="sdesc rv d2">Inspector rails, settings slabs and split-pane shells for account, security and workspace management.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: NAVIGATION PATTERNS -->
+<div class="dv"></div>
+<section id="navigation-patterns" class="s-v4"><div class="ctr"><div class="sl rv">23 - Navigation Patterns</div><div class="st rv d1">Navigation <span>Patterns</span></div><div class="sdesc rv d2">Native navigation systems inspired by current gallery taxonomies: sticky bars, mega menus, sidebars and search-first flows.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: HERO HEADLINES -->
+<div class="dv"></div>
+<section id="hero-headlines" class="s-v4"><div class="ctr"><div class="sl rv">24 - Hero Headlines</div><div class="st rv d1">Hero <span>Headlines</span></div><div class="sdesc rv d2">Headline systems for SaaS, editorial and launch pages, built as native HTML snippets instead of copied gallery assets.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: CTA BLOCKS -->
+<div class="dv"></div>
+<section id="cta-blocks" class="s-v4"><div class="ctr"><div class="sl rv">25 - CTA Blocks</div><div class="st rv d1">CTA <span>Blocks</span></div><div class="sdesc rv d2">Conversion blocks for pricing, downloads, newsletters and modal actions with readable preview stages.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: 404 & ERROR PAGES -->
+<div class="dv"></div>
+<section id="error-pages" class="s-v4"><div class="ctr"><div class="sl rv">26 - 404 & Error Pages</div><div class="st rv d1">404 & <span>Error Pages</span></div><div class="sdesc rv d2">Recovery states with clear hierarchy, fallback actions and enough personality to avoid dead-end product moments.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: FOOTER SYSTEMS -->
+<div class="dv"></div>
+<section id="footer-systems" class="s-v4"><div class="ctr"><div class="sl rv">27 - Footer Systems</div><div class="st rv d1">Footer <span>Systems</span></div><div class="sdesc rv d2">Typographic, sitemap, newsletter and app-footers built as reusable closing systems.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: BENTO SYSTEMS -->
+<div class="dv"></div>
+<section id="bento-systems" class="s-v4"><div class="ctr"><div class="sl rv">28 - Bento Systems</div><div class="st rv d1">Bento <span>Systems</span></div><div class="sdesc rv d2">Feature, dashboard, stats and media bento layouts generated as responsive native snippets.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: PRICING SECTIONS -->
+<div class="dv"></div>
+<section id="pricing-sections" class="s-v4"><div class="ctr"><div class="sl rv">29 - Pricing Sections</div><div class="st rv d1">Pricing <span>Sections</span></div><div class="sdesc rv d2">Plan cards, comparison bands and upgrade prompts generated as native pricing UI.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: FORM PATTERNS -->
+<div class="dv"></div>
+<section id="form-patterns" class="s-v4"><div class="ctr"><div class="sl rv">30 - Form Patterns</div><div class="st rv d1">Form <span>Patterns</span></div><div class="sdesc rv d2">Lead forms, onboarding forms, checkout forms and search inputs with strong preview anatomy.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: FEATURE SECTIONS -->
+<div class="dv"></div>
+<section id="feature-sections" class="s-v4"><div class="ctr"><div class="sl rv">31 - Feature Sections</div><div class="st rv d1">Feature <span>Sections</span></div><div class="sdesc rv d2">Feature rows, process strips and comparison sections built as reusable landing-page blocks.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- INSPIRED: SOCIAL PROOF -->
+<div class="dv"></div>
+<section id="social-proof" class="s-v4"><div class="ctr"><div class="sl rv">32 - Social Proof</div><div class="st rv d1">Social <span>Proof</span></div><div class="sdesc rv d2">Testimonials, logo clouds, review blocks and trust bands separated from generic CTA content.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: NAVBAR STATIC & STICKY -->
+<div class="dv"></div>
+<section id="nav-static-sticky" class="s-v4"><div class="ctr"><div class="sl rv">33 - Navbar Static & Sticky</div><div class="st rv d1">Static & <span>Sticky Nav</span></div><div class="sdesc rv d2">Fixed headers, compact product bars and sticky navigation treatments generated as native snippets.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: NAVBAR DROPDOWN & MEGA -->
+<div class="dv"></div>
+<section id="nav-dropdown-mega" class="s-v4"><div class="ctr"><div class="sl rv">34 - Navbar Dropdown & Mega</div><div class="st rv d1">Dropdown & <span>Mega Menus</span></div><div class="sdesc rv d2">Flyouts, grouped mega menus and nested navigation structures inspired by navigation taxonomies.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: NAVBAR SIDEBAR & SEARCH -->
+<div class="dv"></div>
+<section id="nav-sidebar-search" class="s-v4"><div class="ctr"><div class="sl rv">35 - Navbar Sidebar & Search</div><div class="st rv d1">Sidebar & <span>Search Nav</span></div><div class="sdesc rv d2">Vertical menus, command-forward headers and search-first navigation layouts for dense products.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: NAVBAR ANNOUNCEMENT & BREADCRUMB -->
+<div class="dv"></div>
+<section id="nav-announcement-breadcrumb" class="s-v4"><div class="ctr"><div class="sl rv">36 - Navbar Announcement & Breadcrumb</div><div class="st rv d1">Announcement & <span>Breadcrumbs</span></div><div class="sdesc rv d2">Announcement bars, secondary paths and progress navigation states for product and docs surfaces.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: H1 AI & SAAS -->
+<div class="dv"></div>
+<section id="h1-ai-saas" class="s-v4"><div class="ctr"><div class="sl rv">37 - H1 AI & SaaS</div><div class="st rv d1">AI & <span>SaaS Headlines</span></div><div class="sdesc rv d2">Original headline systems for AI tools, cloud platforms, analytics and B2B workflow products.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: H1 COMMERCE & CREATOR -->
+<div class="dv"></div>
+<section id="h1-commerce-creator" class="s-v4"><div class="ctr"><div class="sl rv">38 - H1 Commerce & Creator</div><div class="st rv d1">Commerce & <span>Creator Headlines</span></div><div class="sdesc rv d2">Original marketing headlines for commerce, creator tools, memberships and download-led products.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: H1 EDITORIAL & PORTFOLIO -->
+<div class="dv"></div>
+<section id="h1-editorial-portfolio" class="s-v4"><div class="ctr"><div class="sl rv">39 - H1 Editorial & Portfolio</div><div class="st rv d1">Editorial & <span>Portfolio Headlines</span></div><div class="sdesc rv d2">Large-type headline compositions for studios, editorial surfaces and personal portfolio pages.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: CTA PURCHASE & SUBSCRIPTION -->
+<div class="dv"></div>
+<section id="cta-purchase-subscription" class="s-v4"><div class="ctr"><div class="sl rv">40 - CTA Purchase & Subscription</div><div class="st rv d1">Purchase & <span>Subscription CTAs</span></div><div class="sdesc rv d2">Buy, upgrade, pricing and subscription prompts built as reusable conversion blocks.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: CTA DOWNLOAD & TEMPLATE -->
+<div class="dv"></div>
+<section id="cta-download-template" class="s-v4"><div class="ctr"><div class="sl rv">41 - CTA Download & Template</div><div class="st rv d1">Download & <span>Template CTAs</span></div><div class="sdesc rv d2">Download, starter kit, free resource and template CTAs with clear payload framing.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: CTA FORM, NEWSLETTER & POPUP -->
+<div class="dv"></div>
+<section id="cta-form-newsletter-popup" class="s-v4"><div class="ctr"><div class="sl rv">42 - CTA Form, Newsletter & Popup</div><div class="st rv d1">Forms, Newsletter & <span>Popups</span></div><div class="sdesc rv d2">Lead capture, newsletter, modal and navigation CTAs kept separate from generic button patterns.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: 404 STYLE STUDIES -->
+<div class="dv"></div>
+<section id="error-style-studies" class="s-v4"><div class="ctr"><div class="sl rv">43 - 404 Style Studies</div><div class="st rv d1">404 <span>Style Studies</span></div><div class="sdesc rv d2">Minimal, bold, typographic, playful and visual error-page styles built as original native blocks.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: 404 RECOVERY FLOWS -->
+<div class="dv"></div>
+<section id="error-recovery-flows" class="s-v4"><div class="ctr"><div class="sl rv">44 - 404 Recovery Flows</div><div class="st rv d1">Error <span>Recovery Flows</span></div><div class="sdesc rv d2">Search, support, retry, route-switch and permission recovery states for real product failures.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: 404 INDUSTRY PAGES -->
+<div class="dv"></div>
+<section id="error-industry-pages" class="s-v4"><div class="ctr"><div class="sl rv">45 - 404 Industry Pages</div><div class="st rv d1">Industry <span>Error Pages</span></div><div class="sdesc rv d2">Original 404 systems tailored for SaaS, commerce, media, finance, nonprofit and portfolio contexts.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: FOOTER TYPE SYSTEMS -->
+<div class="dv"></div>
+<section id="footer-type-systems" class="s-v4"><div class="ctr"><div class="sl rv">46 - Footer Type Systems</div><div class="st rv d1">Footer <span>Type Systems</span></div><div class="sdesc rv d2">Large type, small type, typographic and bold footers generated as reusable closing systems.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: FOOTER GRID & CARDS -->
+<div class="dv"></div>
+<section id="footer-grid-cards" class="s-v4"><div class="ctr"><div class="sl rv">47 - Footer Grid & Cards</div><div class="st rv d1">Grid & <span>Card Footers</span></div><div class="sdesc rv d2">Sitemaps, newsletter panels, product cards and app-footers with structured link architecture.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: FOOTER STYLE MODES -->
+<div class="dv"></div>
+<section id="footer-style-modes" class="s-v4"><div class="ctr"><div class="sl rv">48 - Footer Style Modes</div><div class="st rv d1">Footer <span>Style Modes</span></div><div class="sdesc rv d2">Bright, dark, flat, animated and illustrative footer treatments generated without external assets.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: BENTO FEATURE LANDING -->
+<div class="dv"></div>
+<section id="bento-feature-landing" class="s-v4"><div class="ctr"><div class="sl rv">49 - Bento Feature Landing</div><div class="st rv d1">Feature <span>Landing Bentos</span></div><div class="sdesc rv d2">Landing-page bento grids for feature storytelling, product proof and modular value props.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: BENTO DASHBOARD GRIDS -->
+<div class="dv"></div>
+<section id="bento-dashboard-grids" class="s-v4"><div class="ctr"><div class="sl rv">50 - Bento Dashboard Grids</div><div class="st rv d1">Dashboard <span>Bento Grids</span></div><div class="sdesc rv d2">Dashboard, metrics, automation and operations bento layouts with reusable native surfaces.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
+<!-- SOURCE DEEP: BENTO MEDIA & PORTFOLIO -->
+<div class="dv"></div>
+<section id="bento-media-portfolio" class="s-v4"><div class="ctr"><div class="sl rv">51 - Bento Media & Portfolio</div><div class="st rv d1">Media & <span>Portfolio Bentos</span></div><div class="sdesc rv d2">Portfolio, creator, media and case-study bento compositions with mobile-safe geometry.</div>
+<div class="cp-g sg rv d2 paginated"></div></div></section>
+
 <!-- 16 DESIGN TOKENS -->
 <div class="dv"></div>
 <section id="tokens"><div class="ctr"><div class="sl rv">20 - Design Tokens</div><div class="st rv d1">Token <span>System</span></div>
@@ -1906,7 +2242,7 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 
 <!-- MUI -->
 <div class="dv"></div>
-<section class="s-v4"><div class="ctr"><div class="sl rv">26 - Material UI</div><div class="st rv d1">Google <span>Material</span></div><div class="sdesc rv d2">Material Design patterns like ripple buttons and floating labels.</div>
+<section id="material-ui" class="s-v4"><div class="ctr"><div class="sl rv">26 - Material UI</div><div class="st rv d1">Google <span>Material</span></div><div class="sdesc rv d2">Material Design patterns like ripple buttons and floating labels.</div>
 <div class="mui-g sg rv d3 paginated">
 
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#fff;border-radius:4px;box-shadow:0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);overflow:hidden;color:#000;max-width:345px"&gt;&lt;div style="width:100%;height:140px;background:linear-gradient(135deg,#81c784,#4fc3f7);display:flex;align-items:flex-end;justify-content:flex-start;padding:16px;box-sizing:border-box;color:#fff;font-family:Roboto,sans-serif;font-size:13px;letter-spacing:0.08em;text-transform:uppercase"&gt;Featured&lt;/div&gt;&lt;div style="padding:16px"&gt;&lt;h2 style="margin:0 0 8px;font-size:24px;font-family:Roboto,sans-serif"&gt;Lizard&lt;/h2&gt;&lt;p style="margin:0;font-size:14px;color:rgba(0,0,0,0.6);font-family:Roboto,sans-serif"&gt;Lizards are a widespread group of squamate reptiles, with over 6,000 species.&lt;/p&gt;&lt;/div&gt;&lt;div style="padding:8px;display:flex"&gt;&lt;button style="background:transparent;border:none;color:#1976d2;text-transform:uppercase;font-weight:500;padding:8px;cursor:pointer;font-family:Roboto,sans-serif"&gt;Share&lt;/button&gt;&lt;button style="background:transparent;border:none;color:#1976d2;text-transform:uppercase;font-weight:500;padding:8px;cursor:pointer;font-family:Roboto,sans-serif"&gt;Learn More&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;'><div style="background:#fff;border-radius:4px;box-shadow:0px 2px 1px -1px rgba(0,0,0,0.2),0px 1px 1px 0px rgba(0,0,0,0.14),0px 1px 3px 0px rgba(0,0,0,0.12);overflow:hidden;color:#000;max-width:100%;font-family:sans-serif"><div style="height:60px;background:#ddd"></div><div style="padding:10px"><h2 style="margin:0 0 4px;font-size:14px">Card Title</h2><p style="margin:0;font-size:10px;color:#666">Secondary text goes here.</p></div></div><p style="font-size:10px;margin-top:10px;color:#888;text-align:center">MUI Card</p><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -1983,7 +2319,7 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 
 <!-- CHAKRA UI -->
 <div class="dv"></div>
-<section class="s-v4"><div class="ctr"><div class="sl rv">27 - Chakra UI</div><div class="st rv d1">Accessible <span>Components</span></div>
+<section id="chakra-ui" class="s-v4"><div class="ctr"><div class="sl rv">27 - Chakra UI</div><div class="st rv d1">Accessible <span>Components</span></div>
 <div class="cha-g sg rv d2 paginated">
 
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#EBF8FF;color:#2B6CB0;padding:12px 16px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:16px"&gt;&lt;span style="margin-right:12px;font-size:20px"&gt;i&lt;/span&gt;Chakra UI Alert Component&lt;/div&gt;'><div style="background:#EBF8FF;color:#2B6CB0;padding:10px;border-radius:6px;display:flex;align-items:center;font-family:system-ui;font-size:12px"><span style="margin-right:8px">i</span>Chakra Info Alert</div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -2060,7 +2396,7 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 
 <!-- TAILWIND UI -->
 <div class="dv"></div>
-<section class="s-v4"><div class="ctr"><div class="sl rv">28 - Tailwind UI</div><div class="st rv d1">Utility <span>Patterns</span></div>
+<section id="tailwind-ui" class="s-v4"><div class="ctr"><div class="sl rv">28 - Tailwind UI</div><div class="st rv d1">Utility <span>Patterns</span></div>
 <div class="tw-g sg rv d2 paginated">
 
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="background:#fff;padding:32px;border-radius:16px;box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);max-width:320px;font-family:system-ui"&gt;&lt;h3 style="font-size:18px;font-weight:600;color:#111827;margin:0 0 16px"&gt;Hobby&lt;/h3&gt;&lt;div style="font-size:48px;font-weight:800;color:#111827;margin-bottom:24px"&gt;$15&lt;span style="font-size:16px;font-weight:500;color:#6b7280"&gt;/mo&lt;/span&gt;&lt;/div&gt;&lt;button style="width:100%;padding:12px;background:#4f46e5;color:#fff;border:none;border-radius:8px;font-weight:600;cursor:pointer"&gt;Buy plan&lt;/button&gt;&lt;ul style="margin:24px 0 0;padding:0;list-style:none;color:#4b5563;font-size:14px;line-height:2"&gt;&lt;li&gt;OK 5 products&lt;/li&gt;&lt;li&gt;OK Up to 1,000 subscribers&lt;/li&gt;&lt;li&gt;OK Basic analytics&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;'><div style="background:#fff;padding:20px;border-radius:12px;font-family:system-ui"><h3 style="font-size:14px;font-weight:600;color:#111827;margin:0 0 8px">Pricing Card</h3><div style="font-size:24px;font-weight:800;color:#111827;margin-bottom:12px">$15<span style="font-size:12px;font-weight:500;color:#6b7280">/mo</span></div><button style="width:100%;padding:8px;background:#4f46e5;color:#fff;border:none;border-radius:6px;font-size:12px;font-weight:600">Buy plan</button></div><button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button></div>
@@ -2134,7 +2470,7 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 
 <!-- 3D HOVER CARDS -->
 <div class="dv"></div>
-<section class="s-v4"><div class="ctr"><div class="sl rv">29 - 3D Hover Cards</div><div class="st rv d1">Interactive <span>Cards</span></div>
+<section id="cards3d" class="s-v4"><div class="ctr"><div class="sl rv">29 - 3D Hover Cards</div><div class="st rv d1">Interactive <span>Cards</span></div>
 <div class="tw-g sg rv d2 paginated">
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="perspective:1000px;width:100%;height:250px"&gt;&lt;div style="width:100%;height:100%;position:relative;transition:transform .6s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d" onmouseover="this.style.transform=&quot;rotateY(18deg) rotateX(10deg)&quot;" onmouseout="this.style.transform=&quot;rotateY(0) rotateX(0)&quot;"&gt;&lt;div style="position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,#1a1a2e,#16213e);box-shadow:0 20px 40px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1)"&gt;&lt;/div&gt;&lt;div style="position:absolute;inset:0;padding:28px;transform:translateZ(60px);display:flex;flex-direction:column;justify-content:flex-end"&gt;&lt;h3 style="margin:0;color:#fff;font-size:24px"&gt;Hover Me&lt;/h3&gt;&lt;p style="margin:10px 0 0;color:rgba(255,255,255,.65);font-size:14px"&gt;Depth transition for featured content.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'><div class="card-3d-wrap"><div class="card-3d"><div class="card-3d-bg" style="background:linear-gradient(135deg,#1a1a2e,#16213e)"></div><div class="card-3d-content"><h3 style="font-size:24px;color:white;margin:0;font-family:system-ui">Hover Me</h3><p style="color:rgba(255,255,255,0.6);margin-top:10px;font-size:14px">Depth transition for featured content.</p></div></div></div><button class="cpb">Copy</button></div>
 <div class="ut-c has-copy" data-snippet="btn" data-html='&lt;div style="perspective:1000px;width:100%;height:250px"&gt;&lt;div style="width:100%;height:100%;position:relative;transition:transform .6s cubic-bezier(.2,.8,.2,1);transform-style:preserve-3d" onmouseover="this.style.transform=&quot;rotateY(18deg) rotateX(10deg)&quot;" onmouseout="this.style.transform=&quot;rotateY(0) rotateX(0)&quot;"&gt;&lt;div style="position:absolute;inset:0;border-radius:20px;background:linear-gradient(135deg,#16161f,#2d1f36);box-shadow:0 20px 40px rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.1)"&gt;&lt;/div&gt;&lt;div style="position:absolute;inset:0;padding:28px;transform:translateZ(60px);display:flex;flex-direction:column;justify-content:flex-end"&gt;&lt;h3 style="margin:0;color:#fff;font-size:24px"&gt;Studio Card&lt;/h3&gt;&lt;p style="margin:10px 0 0;color:rgba(255,255,255,.65);font-size:14px"&gt;Soft-lit panel with editorial feel.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;'><div class="card-3d-wrap"><div class="card-3d"><div class="card-3d-bg" style="background:linear-gradient(135deg,#16161f,#2d1f36)"></div><div class="card-3d-content"><h3 style="font-size:24px;color:white;margin:0;font-family:system-ui">Studio Card</h3><p style="color:rgba(255,255,255,0.6);margin-top:10px;font-size:14px">Soft-lit panel with editorial feel.</p></div></div></div><button class="cpb">Copy</button></div>
@@ -2180,7 +2516,7 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
   <span class="sound-dot" aria-hidden="true"></span>
   <span class="sound-label">Sound off</span>
 </button>
-<script src="assets/app.js" defer></script>
+<script src="assets/app.js?v=deep-catalog-production-20260429b" defer></script>
 </body>
 </html>
 
