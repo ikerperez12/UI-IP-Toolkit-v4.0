@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url>
+    <loc>https://ui-ip-toolkit.vercel.app/</loc>
+    <image:image>
+      <image:loc>https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-hero.png</image:loc>
+      <image:title>UI IP Toolkit hero preview</image:title>
+      <image:caption>Dark visual catalog of copy-ready frontend assets for web developers.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-social.png</image:loc>
+      <image:title>UI IP Toolkit social preview</image:title>
+      <image:caption>Social preview card for UI IP Toolkit, a static frontend asset library.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-bento.png</image:loc>
+      <image:title>UI IP Toolkit bento overview</image:title>
+      <image:caption>Bento overview of frontend sections including buttons, gradients, loaders, CTAs, footers and UI patterns.</image:caption>
+    </image:image>
+    <image:image>
+      <image:loc>https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-demo.gif</image:loc>
+      <image:title>UI IP Toolkit animated demo</image:title>
+      <image:caption>Animated walkthrough of the visual frontend asset catalog and copy-ready UI snippets.</image:caption>
+    </image:image>
+  </url>
+</urlset>
