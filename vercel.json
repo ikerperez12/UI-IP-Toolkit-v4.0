@@ -14,7 +14,7 @@
         },
         {
           "key": "Permissions-Policy",
-          "value": "accelerometer=(), ambient-light-sensor=(), autoplay=(), battery=(), camera=(), display-capture=(), document-domain=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), hid=(), microphone=(), midi=(), payment=(), usb=(), xr-spatial-tracking=()"
+          "value": "accelerometer=(), autoplay=(), camera=(), display-capture=(), encrypted-media=(), fullscreen=(self), geolocation=(), gyroscope=(), hid=(), microphone=(), midi=(), payment=(), usb=(), xr-spatial-tracking=()"
         },
         {
           "key": "X-Content-Type-Options",
