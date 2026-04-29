@@ -184,6 +184,11 @@ async function playBackgroundAudio() {
   if (!audio) return false;
 
   try {
+    if (!audio.dataset.loaded) {
+      audio.src = audio.dataset.src;
+      audio.load();
+      audio.dataset.loaded = "true";
+    }
     audio.muted = false;
     await audio.play();
     setBackgroundAudioState("playing");
@@ -397,66 +402,35 @@ function getTargetRowCount(grid) {
 function measureColumns(grid, items) {
   const minWidth = getGridMinWidth(grid);
   const gap = getGridGap(grid);
-  const gridWidth = Math.max(grid.clientWidth, grid.getBoundingClientRect().width);
+  const gridWidth = Math.max(grid.clientWidth, grid.parentElement?.clientWidth || 0, 0);
 
   if (gridWidth > 0) {
     return Math.max(1, Math.min(items.length, Math.floor((gridWidth + gap) / (minWidth + gap))));
   }
 
-  return Math.max(1, Math.min(items.length, getGridColumnCount(grid) || getWrappedColumnCount(items)));
+  return Math.max(1, Math.min(items.length, getGridColumnCount(grid) || 1));
 }
 
 function measureGridProfile(instance) {
   const { grid, items } = instance;
   const tier = getViewportTier();
-  const width = Math.round(Math.max(grid.clientWidth, grid.getBoundingClientRect().width));
+  const width = Math.round(Math.max(grid.clientWidth, grid.parentElement?.clientWidth || 0, 0));
   const signature = `${tier}:${width}`;
 
   if (instance.measurementSignature === signature && instance.cardProfile) {
     return instance.cardProfile;
   }
 
-  const snapshot = items.map((item) => ({
-    hidden: item.hidden,
-    hasHiddenClass: item.classList.contains("hidden"),
-    opacity: item.style.opacity,
-    transform: item.style.transform,
-  }));
-
-  applyGridStability(grid, items, 0);
-
-  items.forEach((item) => {
-    item.hidden = false;
-    item.classList.remove("hidden");
-    item.style.opacity = "1";
-    item.style.transform = "";
-  });
-
   const columns = measureColumns(grid, items);
   const rows = getTargetRowCount(grid);
   const gap = getGridGap(grid);
-  const maxCardHeight = items.reduce((maxHeight, item) => {
-    return Math.max(maxHeight, Math.ceil(item.getBoundingClientRect().height));
-  }, 0);
-
-  snapshot.forEach((state, index) => {
-    const item = items[index];
-    item.hidden = state.hidden;
-    item.classList.toggle("hidden", state.hasHiddenClass);
-    item.style.opacity = state.opacity;
-    item.style.transform = state.transform;
-  });
-
-  const reserveHeight = maxCardHeight
-    ? maxCardHeight * rows + gap * Math.max(rows - 1, 0)
-    : 0;
+  const reserveHeight = Number(getResponsiveConfigValue(getSectionConfig(grid).reserveHeight, tier) || 0);
 
   instance.measurementSignature = signature;
   instance.cardProfile = {
     columns,
     rows,
     gap,
-    maxCardHeight,
     reserveHeight,
   };
 
@@ -550,7 +524,7 @@ function encodeAttribute(value) {
 }
 
 function copyButtonMarkup() {
-  return `<button class="cpb"><svg><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>`;
+  return `<button class="cpb" type="button" aria-label="Copy snippet"><svg aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>`;
 }
 
 function createCardSource(item) {
@@ -782,7 +756,7 @@ function createComponentCard(item) {
       <div class="${previewClass}">${item.preview}</div>
       <div class="cp-i">
         ${createCardSource(item)}
-        <h4>${item.title}</h4>
+        <h3>${item.title}</h3>
         <p>${item.description}</p>
       </div>
       ${copyButtonMarkup()}
@@ -800,13 +774,42 @@ function addComponentCards(selector, items, defaults = {}) {
   grid.dataset.minPageSize = grid.dataset.minPageSize || "8";
 }
 
+function repairDemoAccessibility() {
+  document.querySelectorAll(".cpb").forEach((button) => {
+    button.type = "button";
+    if (!button.getAttribute("aria-label")) {
+      button.setAttribute("aria-label", "Copy snippet");
+    }
+    button.querySelectorAll("svg").forEach((icon) => icon.setAttribute("aria-hidden", "true"));
+  });
+
+  document.querySelectorAll("input:not([aria-label]):not([aria-labelledby])").forEach((input, index) => {
+    const cardTitle =
+      input.closest(".has-copy")?.querySelector(".ut-n, .cp-i h3, .cp-i h4, h3, h4")?.textContent?.trim() ||
+      input.getAttribute("placeholder")?.trim() ||
+      input.getAttribute("type") ||
+      `field ${index + 1}`;
+
+    input.setAttribute("aria-label", `${cardTitle} demo input`);
+  });
+
+  document.querySelectorAll(".has-copy h4, .ly-c h4, .hf-i h4, .gl-p h4, .cha-t-content h4, .ck-body h4").forEach((heading) => {
+    const replacement = document.createElement("h3");
+    Array.from(heading.attributes).forEach((attribute) => {
+      replacement.setAttribute(attribute.name, attribute.value);
+    });
+    replacement.innerHTML = heading.innerHTML;
+    heading.replaceWith(replacement);
+  });
+}
+
 function removeCardsByTitle(selector, matcher) {
   const grid = document.querySelector(selector);
   if (!grid) return;
 
   Array.from(grid.children).forEach((card) => {
     const title =
-      card.querySelector(".ut-n, .ln, .tx-label, .sn, .hf-i h4, .cp-i h4, h4, .gl-p h4, .gl-p, .an, .gl, .cn")?.textContent?.trim() || "";
+      card.querySelector(".ut-n, .ln, .tx-label, .sn, .hf-i h3, .hf-i h4, .cp-i h3, .cp-i h4, h3, h4, .gl-p h3, .gl-p h4, .gl-p, .an, .gl, .cn")?.textContent?.trim() || "";
 
     if (title && matcher(title)) {
       card.remove();
@@ -2589,16 +2592,7 @@ function initPagination() {
     }
   });
 
-  if ("ResizeObserver" in window) {
-    catalogPaginationState.resizeObserver?.disconnect();
-    const observer = new ResizeObserver(() => scheduleRefresh());
-    catalogPaginationState.resizeObserver = observer;
-    instances.forEach((instance) => observer.observe(instance.grid));
-  }
-
-  if (document.fonts?.ready) {
-    document.fonts.ready.then(scheduleRefresh).catch(() => {});
-  }
+  catalogPaginationState.resizeObserver?.disconnect();
 }
 
 function initBackgroundAudio() {
@@ -2608,8 +2602,9 @@ function initBackgroundAudio() {
   const { audio, toggle } = backgroundAudioState;
   if (!audio || !toggle) return;
 
-  audio.autoplay = true;
+  audio.autoplay = false;
   audio.loop = true;
+  audio.preload = "none";
   audio.muted = false;
   audio.volume = 0.32;
   setBackgroundAudioState("paused");
@@ -2628,9 +2623,6 @@ function initBackgroundAudio() {
     audio.pause();
     setBackgroundAudioState("paused");
   });
-
-  attachBackgroundAudioUnlock();
-  scheduleBackgroundAudioAutoplay();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -2653,6 +2645,7 @@ document.addEventListener("DOMContentLoaded", () => {
   addSourceDeepCatalog();
   stabilizeCatalogComposition();
   syncCatalogFooter();
+  repairDemoAccessibility();
   configureCatalogPagination();
   initPagination();
   initBackgroundAudio();
