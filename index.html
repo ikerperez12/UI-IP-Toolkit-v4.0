@@ -912,7 +912,10 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 .inp-g,.sp-g,.tw-g,.cha-g,.cp-g,.gl-g,.tx-g,.ly-g{grid-template-columns:1fr}
 }
 </style>
-<script defer src="https://cdn.vercel-insights.com/v1/script.js"></script>
+<script type="module">
+import { inject } from './assets/analytics.mjs';
+inject({ mode: 'auto' });
+</script>
 </head>
 <body>
 <div class="prg" id="prg"></div>
