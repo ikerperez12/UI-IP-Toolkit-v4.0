@@ -27,8 +27,15 @@ const checks = [
   ["native dialog snippets are generated", app.includes("<dialog open") && app.includes("aria-labelledby")],
   ["data table snippets use real tables", app.includes("<table") && app.includes('scope="col"') && app.includes('scope="row"')],
   ["loader snippets expose status semantics", app.includes('role", "status"') || app.includes('role="status"')],
+  ["snippets are normalized before copy", app.includes("normalizeSnippetMarkup") && app.includes('data-normalized="true"')],
+  ["radio groups are wrapped with fieldset and legend", app.includes("ensureRadioGroupSemantics") && app.includes("document.createElement(\"fieldset\")") && app.includes("document.createElement(\"legend\")")],
+  ["switch snippets remain keyboard-operable", app.includes("createAccessibleSwitchMarkup") && app.includes('role="switch"')],
+  ["progress snippets expose progressbar semantics", app.includes("ensureProgressSemantics") && app.includes('role", "progressbar"')],
+  ["search and load-more snippets expose controlled regions", app.includes("ensureSearchRelationships") && app.includes("ensureLoadMoreRelationships") && app.includes("aria-controls")],
+  ["no-JS fallback is present", html.includes("<noscript>") && html.includes("UI IP Toolkit is usable without JavaScript")],
+  ["analytics is loaded from external deferred code", !/<script type="module">\s*import \{ inject \}/.test(html) && app.includes("initVercelObservability")],
   ["section menu remains generated from catalogSections", app.includes("buildSectionMenu(activeSections)")],
-  ["Vercel CSP includes current analytics inline hash", JSON.stringify(vercel).includes("sha256-BhLXPuzSikTDWScACguH8zzJwO1j+dlwuGtzM7M/u7g=")],
+  ["Vercel CSP avoids inline script hashes", JSON.stringify(vercel).includes("script-src 'self'") && !JSON.stringify(vercel).includes("sha256-")],
 ];
 
 const failures = checks.filter(([, passed]) => !passed);

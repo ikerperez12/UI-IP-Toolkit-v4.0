@@ -13,6 +13,8 @@ UI IP Toolkit is a static visual prototyping vault, not a production UI framewor
 
 Core rule: semantic HTML first, ARIA only where native HTML does not expose the needed relationship, and custom JavaScript only when the native platform cannot handle the interaction.
 
+The implementation rule is accessibility by default. New catalog cards and generated snippets are normalized at creation time so they ship with names, relationships and semantic states already present. Legacy cards are upgraded in small frame-budgeted batches, and copy actions normalize the snippet again before writing to the clipboard. This avoids a whack-a-mole model where individual defects are patched after the fact.
+
 ## Refactor Applied
 
 The current accessibility pass addresses the community feedback directly:
@@ -28,6 +30,9 @@ The current accessibility pass addresses the community feedback directly:
 - Tables: generated data snippets use real `<table>`, `caption`, `thead`, `tbody`, `th`, `td`, `scope="col"` and `scope="row"`.
 - Copy feedback: copy actions update a screen-reader-only live region.
 - Navigation: the 64-section catalog is exposed through a compact, keyboard-friendly dropdown menu.
+- Snippet generation: new copyable cards are normalized before they enter the DOM, including labels, fieldsets, switch semantics, status/progress semantics, table captions and controlled search regions.
+- No-JS baseline: a `<noscript>` fallback exposes the repository, sitemap and primary catalog routes for users and crawlers when JavaScript is unavailable.
+- Observability: Vercel Analytics and Speed Insights are loaded from external deferred code in production only, avoiding inline CSP hashes and keeping the local development console clean.
 
 ## Definition Of Done
 
@@ -38,6 +43,9 @@ A copied pattern or site change is not considered complete until it satisfies th
    - Controls have a programmatic name.
    - Sections have an accessible label.
    - Tables use table semantics when presenting data.
+   - Radio-like option sets use `fieldset` and `legend`.
+   - Switches are keyboard focusable and expose `role="switch"` plus `aria-checked`.
+   - Rendered preview cards do not create extra page-level landmarks.
 
 2. Keyboard
    - Interactive controls are reachable with Tab.
@@ -54,11 +62,15 @@ A copied pattern or site change is not considered complete until it satisfies th
 4. Motion And Feedback
    - Reduced motion is respected.
    - Loading, success and error states have live-region semantics when needed.
+   - Skeletons and loaders use `role="status"` when they communicate state.
+   - Determinate progress uses `role="progressbar"` with value metadata.
    - Decorative icons and animations are hidden from assistive tech.
 
 5. Testing
    - `npm run check` passes.
    - `npm run test:a11y` passes for the rendered catalog.
+   - No-JS fallback test passes.
+   - Generated snippets are normalized before copy.
    - Browser QA has no console errors.
    - Desktop and mobile have no horizontal overflow.
    - Manual keyboard review covers menu, copy buttons, form demos and audio control.

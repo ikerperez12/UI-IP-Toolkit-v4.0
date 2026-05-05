@@ -22,6 +22,7 @@ test("home passes automated accessibility scan for serious issues", async ({ pag
 
 test("rendered catalog keeps accessible structure", async ({ page }) => {
   await page.goto("/");
+  await page.waitForFunction(() => document.querySelectorAll(".has-copy[data-normalized='true']").length > 700);
 
   const metrics = await page.evaluate(() => {
     const controls = [...document.querySelectorAll("input, select, textarea")];
@@ -45,6 +46,12 @@ test("rendered catalog keeps accessible structure", async ({ page }) => {
       horizontalOverflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
       tableSnippets: [...document.querySelectorAll('[data-kind="table"]')].filter((card) => card.dataset.html?.includes("<table")).length,
       dialogSnippets: [...document.querySelectorAll('[data-kind="modal"]')].filter((card) => card.dataset.html?.includes("<dialog")).length,
+      normalizedSnippets: document.querySelectorAll(".has-copy[data-normalized='true']").length,
+      switchSnippets: [...document.querySelectorAll(".has-copy[data-html]")].filter((card) => card.dataset.html?.includes('role="switch"')).length,
+      radioFieldsets: [...document.querySelectorAll(".has-copy[data-html]")].filter((card) => card.dataset.html?.includes("<fieldset") && card.dataset.html?.includes("<legend")).length,
+      progressbarSnippets: [...document.querySelectorAll(".has-copy[data-html]")].filter((card) => card.dataset.html?.includes('role="progressbar"')).length,
+      searchControls: [...document.querySelectorAll(".has-copy[data-html]")].filter((card) => card.dataset.html?.includes('aria-controls') && card.dataset.html?.includes('role="search"')).length,
+      cardLandmarks: document.querySelectorAll(".has-copy :is(header, footer, main, nav, aside, section, article)").length,
       sectionMenuLinks: document.querySelectorAll(".section-menu-links a").length,
     };
   });
@@ -57,5 +64,26 @@ test("rendered catalog keeps accessible structure", async ({ page }) => {
   expect(metrics.horizontalOverflow).toBe(0);
   expect(metrics.tableSnippets).toBeGreaterThan(0);
   expect(metrics.dialogSnippets).toBeGreaterThan(0);
+  expect(metrics.normalizedSnippets).toBeGreaterThan(700);
+  expect(metrics.switchSnippets).toBeGreaterThan(0);
+  expect(metrics.radioFieldsets).toBeGreaterThan(0);
+  expect(metrics.progressbarSnippets).toBeGreaterThan(0);
+  expect(metrics.searchControls).toBeGreaterThan(0);
+  expect(metrics.cardLandmarks).toBe(0);
   expect(metrics.sectionMenuLinks).toBe(64);
+});
+
+test("catalog remains useful without JavaScript", async ({ browser }) => {
+  const context = await browser.newContext({ javaScriptEnabled: false });
+  const page = await context.newPage();
+  await page.goto("/");
+
+  await expect(page.getByRole("heading", { name: "UI IP Toolkit is usable without JavaScript" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Open the GitHub repository" })).toHaveAttribute(
+    "href",
+    "https://github.com/ikerperez12/UI-IP-Toolkit-v4.0",
+  );
+  await expect(page.getByRole("link", { name: "Open the XML sitemap" })).toHaveAttribute("href", "/sitemap.xml");
+
+  await context.close();
 });

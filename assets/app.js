@@ -639,6 +639,10 @@ function createSnippetId(title, kind, suffix = "") {
   return [slugifyId(title), slugifyId(kind || "pattern"), suffix].filter(Boolean).join("-");
 }
 
+function sanitizePreviewMarkup(markup) {
+  return String(markup || "").replace(/<(\/?)(main|header|footer|nav|aside|section|article)(\s|>)/gi, "<$1div$3");
+}
+
 function hasProgrammaticLabel(control) {
   if (control.getAttribute("aria-label") || control.getAttribute("aria-labelledby")) return true;
   if (control.id && document.querySelector(`label[for="${CSS.escape(control.id)}"]`)) return true;
@@ -675,15 +679,145 @@ function labelFormControls(root, context = {}) {
   });
 }
 
-function normalizeSnippetForCopy(code, card) {
+function createAccessibleSwitchMarkup(title) {
+  const id = createSnippetId(title, "switch");
+  return `<button type="button" id="${id}" role="switch" aria-checked="true" aria-label="${encodeAttribute(title)}" style="display:inline-flex;align-items:center;justify-content:flex-end;width:72px;min-height:44px;padding:4px;border:0;border-radius:999px;background:#e0e5ec;box-shadow:6px 6px 12px rgba(163,177,198,.55),-6px -6px 12px #fff;cursor:pointer">
+  <span aria-hidden="true" style="width:28px;height:28px;border-radius:50%;background:#c2a4ff"></span>
+</button>`;
+}
+
+function visuallyHideInteractiveControl(control) {
+  const style = control.getAttribute("style") || "";
+  if (!/display\s*:\s*none/i.test(style)) return;
+
+  control.setAttribute(
+    "style",
+    `${style.replace(/display\s*:\s*none;?/gi, "")};position:absolute;opacity:0;width:1px;height:1px;margin:0;overflow:hidden;clip-path:inset(50%);white-space:nowrap`,
+  );
+}
+
+function ensureRadioGroupSemantics(root, title) {
+  const radios = Array.from(root.querySelectorAll('input[type="radio"]')).filter((input) => !input.closest("fieldset"));
+  if (!radios.length) return;
+
+  const form = radios[0].closest("form");
+  const owner = form || root;
+  if (owner.querySelector("fieldset")) return;
+
+  const fieldset = document.createElement("fieldset");
+  fieldset.style.border = "0";
+  fieldset.style.margin = "0";
+  fieldset.style.padding = "0";
+
+  const legend = document.createElement("legend");
+  legend.textContent = title;
+  legend.style.fontWeight = "700";
+  legend.style.marginBottom = "0.5rem";
+  fieldset.appendChild(legend);
+
+  if (form) {
+    while (form.firstChild) fieldset.appendChild(form.firstChild);
+    form.appendChild(fieldset);
+  } else {
+    while (root.firstChild) fieldset.appendChild(root.firstChild);
+    root.appendChild(fieldset);
+  }
+}
+
+function ensureSearchRelationships(root, title) {
+  root.querySelectorAll("form").forEach((form) => {
+    const searchInput = form.querySelector('input[type="search"], input[name*="search" i], input[name*="query" i]');
+    if (!searchInput) return;
+
+    const resultsId = createSnippetId(title, "results");
+    form.setAttribute("role", "search");
+    form.setAttribute("aria-controls", resultsId);
+    searchInput.setAttribute("aria-controls", resultsId);
+
+    if (root.querySelector(`#${CSS.escape(resultsId)}`)) return;
+
+    const results = document.createElement("div");
+    results.id = resultsId;
+    results.setAttribute("aria-live", "polite");
+    results.setAttribute("style", "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)");
+    results.textContent = "Search results update here.";
+    root.appendChild(results);
+  });
+}
+
+function ensureLoadMoreRelationships(root, title) {
+  root.querySelectorAll("button, a").forEach((control) => {
+    if (!/load more|show more|more results/i.test(control.textContent || "")) return;
+
+    const targetId = createSnippetId(title, "loaded-items");
+    control.setAttribute("aria-controls", targetId);
+    control.setAttribute("aria-expanded", "false");
+
+    if (root.querySelector(`#${CSS.escape(targetId)}`)) return;
+
+    const target = document.createElement("div");
+    target.id = targetId;
+    target.setAttribute("aria-live", "polite");
+    target.setAttribute("style", "position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)");
+    target.textContent = "Additional items load here.";
+    root.appendChild(target);
+  });
+}
+
+function ensureProgressSemantics(root, title) {
+  if (!/\b(progress|upload|meter|ring|rail|bar|nodes|step)\b/i.test(title)) return;
+  if (root.querySelector('[role="progressbar"]')) return;
+
+  const wrapper = document.createElement("div");
+  wrapper.setAttribute("role", "progressbar");
+  wrapper.setAttribute("aria-label", `${title} progress`);
+  wrapper.setAttribute("aria-valuemin", "0");
+  wrapper.setAttribute("aria-valuemax", "100");
+  wrapper.setAttribute("aria-valuenow", "64");
+  wrapper.style.display = "inline-grid";
+  wrapper.style.placeItems = "center";
+
+  while (root.firstChild) wrapper.appendChild(root.firstChild);
+  root.appendChild(wrapper);
+}
+
+function ensureTableSemantics(root, title) {
+  root.querySelectorAll("table").forEach((table) => {
+    if (!table.querySelector("caption")) {
+      const caption = document.createElement("caption");
+      caption.textContent = `${title} data table`;
+      caption.style.textAlign = "left";
+      table.prepend(caption);
+    }
+
+    table.querySelectorAll("thead th").forEach((header) => {
+      if (!header.getAttribute("scope")) header.setAttribute("scope", "col");
+    });
+
+    table.querySelectorAll("tbody tr").forEach((row) => {
+      const header = row.querySelector("th");
+      if (header && !header.getAttribute("scope")) header.setAttribute("scope", "row");
+    });
+  });
+}
+
+function normalizeSnippetMarkup(code, context = {}) {
   const source = String(code || "").trim();
   if (!source || !source.startsWith("<")) return code;
 
   const template = document.createElement("template");
   template.innerHTML = source;
-  const title = card?.dataset.title || card?.querySelector(".ut-n, .ln, .cn, .cp-i h3, h3")?.textContent?.trim() || "Toolkit pattern";
+  const title = context.title || "Toolkit pattern";
+
+  if (/\b(toggle|switch)\b/i.test(title) && !template.content.querySelector("button, input, [role='switch']")) {
+    return createAccessibleSwitchMarkup(title);
+  }
 
   labelFormControls(template.content, { title });
+  ensureRadioGroupSemantics(template.content, title);
+  ensureSearchRelationships(template.content, title);
+  ensureLoadMoreRelationships(template.content, title);
+  ensureTableSemantics(template.content, title);
 
   template.content.querySelectorAll("svg").forEach((svg) => {
     if (!svg.getAttribute("role") && !svg.getAttribute("aria-label")) {
@@ -696,6 +830,17 @@ function normalizeSnippetForCopy(code, card) {
     if (!text) button.setAttribute("aria-label", `${title} action`);
   });
 
+  template.content.querySelectorAll("input, select, textarea").forEach(visuallyHideInteractiveControl);
+
+  template.content.querySelectorAll("[role='switch']").forEach((node) => {
+    if (!/^(BUTTON|INPUT)$/i.test(node.tagName) && !node.getAttribute("tabindex")) {
+      node.setAttribute("tabindex", "0");
+    }
+    if (!node.getAttribute("aria-checked")) {
+      node.setAttribute("aria-checked", "false");
+    }
+  });
+
   template.content.querySelectorAll("[class*='spinner'], [class*='loader'], [class*='skeleton']").forEach((node) => {
     if (!node.getAttribute("role")) {
       node.setAttribute("role", "status");
@@ -704,7 +849,7 @@ function normalizeSnippetForCopy(code, card) {
     }
   });
 
-  if (card?.closest("#loading") && !template.content.querySelector("[role='status'], [aria-live]")) {
+  if (/\b(load|loading|loader|spinner|skeleton|thinking|typing)\b/i.test(title) && !template.content.querySelector("[role='status'], [aria-live]")) {
     const wrapper = document.createElement("div");
     wrapper.setAttribute("role", "status");
     wrapper.setAttribute("aria-live", "polite");
@@ -717,7 +862,18 @@ function normalizeSnippetForCopy(code, card) {
     template.content.appendChild(wrapper);
   }
 
+  ensureProgressSemantics(template.content, title);
+
   return template.innerHTML.trim();
+}
+
+function normalizeSnippetForCopy(code, card) {
+  const title =
+    card?.dataset.title ||
+    card?.querySelector(".ut-n, .ln, .cn, .cp-i h3, h3")?.textContent?.trim() ||
+    "Toolkit pattern";
+
+  return normalizeSnippetMarkup(code, { title, kind: card?.dataset.kind });
 }
 
 function getCopyStatusRegion() {
@@ -903,7 +1059,7 @@ function buildSectionMenu(activeSections) {
 
 function githubRepoLinkMarkup() {
   return `
-    <a class="repo-link" href="https://github.com/ikerperez12/UI-IP-Toolkit-v4.0" target="_blank" rel="noopener noreferrer" aria-label="Open UI IP Toolkit repository on GitHub">
+    <a class="repo-link" href="https://github.com/ikerperez12/UI-IP-Toolkit-v4.0" target="_blank" rel="noopener noreferrer">
       <svg viewBox="0 0 24 24" aria-hidden="true">
         <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2.02c-3.2.7-3.88-1.37-3.88-1.37-.52-1.34-1.28-1.7-1.28-1.7-1.05-.72.08-.71.08-.71 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.23-1.28-5.23-5.68 0-1.25.45-2.28 1.18-3.08-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.16 1.18A10.9 10.9 0 0 1 12 6.14c.98 0 1.96.13 2.88.39 2.19-1.49 3.15-1.18 3.15-1.18.63 1.58.24 2.75.12 3.04.74.8 1.18 1.83 1.18 3.08 0 4.41-2.69 5.38-5.25 5.67.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z"/>
       </svg>
@@ -946,10 +1102,12 @@ function syncCatalogFooter() {
 function createToolkitCard(item, className = "ut-c") {
   const previewClass = ["mini-preview", item.previewMode || "", item.previewClass || ""].filter(Boolean).join(" ");
   const cardMeta = buildCardMetaAttributes(item);
+  const html = normalizeSnippetMarkup(item.html, { title: item.title, kind: item.kind });
+  const preview = sanitizePreviewMarkup(item.preview);
 
   return `
-    <div class="${className} has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}" ${cardMeta}>
-      <div class="${previewClass}">${item.preview}</div>
+    <div class="${className} has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(html)}" data-normalized="true" ${cardMeta}>
+      <div class="${previewClass}">${preview}</div>
       <div class="kit-copy-meta">
         ${createCardSource(item)}
         <div class="ut-n">${item.title}</div>
@@ -973,10 +1131,12 @@ function addToolkitCards(selector, items, className = "ut-c", defaults = {}) {
 function createComponentCard(item) {
   const previewClass = ["cp-p", item.previewMode || "", item.previewClass || ""].filter(Boolean).join(" ");
   const cardMeta = buildCardMetaAttributes(item);
+  const html = normalizeSnippetMarkup(item.html, { title: item.title, kind: item.kind });
+  const preview = sanitizePreviewMarkup(item.preview);
 
   return `
-    <div class="cp-c has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(item.html)}" ${cardMeta}>
-      <div class="${previewClass}">${item.preview}</div>
+    <div class="cp-c has-copy page-item" data-snippet="btn" data-html="${encodeAttribute(html)}" data-normalized="true" ${cardMeta}>
+      <div class="${previewClass}">${preview}</div>
       <div class="cp-i">
         ${createCardSource(item)}
         <h3>${item.title}</h3>
@@ -1060,6 +1220,24 @@ function repairCardSemantics() {
   });
 }
 
+function repairRenderedCardLandmarks() {
+  document.querySelectorAll(".has-copy :is(header, footer, main, nav, aside, section, article)").forEach((node) => {
+    replaceElementTag(node, "div");
+  });
+}
+
+function scheduleSnippetNormalization() {
+  const cards = Array.from(document.querySelectorAll(".has-copy[data-html]:not([data-normalized='true'])"));
+  runInFrameBatches(
+    cards,
+    (card) => {
+      card.dataset.html = normalizeSnippetForCopy(card.dataset.html, card);
+      card.dataset.normalized = "true";
+    },
+    5,
+  );
+}
+
 function repairPreviewSemantics() {
   document.querySelectorAll(".mini-preview svg, .cp-p svg, .hf-d svg, .gl-bg svg").forEach((svg) => {
     if (!svg.getAttribute("role") && !svg.getAttribute("aria-label")) {
@@ -1091,6 +1269,13 @@ function repairPreviewSemantics() {
 
 function repairDemoAccessibility() {
   repairSectionSemantics();
+
+  document.querySelectorAll(".dv").forEach((divider) => {
+    divider.setAttribute("aria-hidden", "true");
+  });
+
+  scheduleSnippetNormalization();
+  repairRenderedCardLandmarks();
 
   document.querySelectorAll(".cpb").forEach((button) => {
     button.type = "button";
@@ -1333,7 +1518,7 @@ function enhanceCatalog() {
     { title: "Card Checkout", description: "Compact payment form with grouped card metadata.", previewMode: "stack", preview: `<div style="height:34px;border-radius:10px;background:#111827;border:1px solid rgba(255,255,255,.12)"></div><div class="kit-row"><div style="height:28px;flex:1;border-radius:8px;background:#111827"></div><div style="height:28px;width:62px;border-radius:8px;background:#111827"></div></div>`, html: `<form style="display:grid;gap:10px;padding:16px;border-radius:18px;background:#0b0b10;color:#fff"><input placeholder="Card number" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#111827;color:#fff"><div style="display:grid;grid-template-columns:1fr 88px;gap:10px"><input placeholder="MM / YY" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#111827;color:#fff"><input placeholder="CVC" style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#111827;color:#fff"></div></form>` },
     { title: "Invite Row", description: "Team invite input with role selector and action.", preview: `<div style="display:flex;gap:8px;width:100%"><div style="flex:1;height:38px;border-radius:999px;background:#111827;border:1px solid rgba(255,255,255,.08)"></div><button style="border:0;border-radius:999px;background:#c2a4ff;color:#060507;padding:0 14px;font-weight:800">Invite</button></div>`, html: `<div style="display:flex;gap:8px"><input placeholder="teammate@company.com" style="flex:1;padding:12px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.1);background:#111827;color:#fff"><select style="border-radius:999px;background:#111827;color:#fff;border:1px solid rgba(255,255,255,.1)"><option>Editor</option><option>Viewer</option></select><button style="border:0;border-radius:999px;background:#c2a4ff;color:#060507;padding:0 16px;font-weight:800">Invite</button></div>` },
     { title: "Search Filter Bar", description: "Dense filter surface for dashboards and tables.", preview: `<div style="display:grid;grid-template-columns:1fr 70px;gap:8px;width:100%"><div style="height:36px;border-radius:10px;background:#111827"></div><div style="height:36px;border-radius:10px;background:rgba(194,164,255,.18)"></div></div>`, html: `<div style="display:grid;grid-template-columns:1fr auto;gap:8px"><input placeholder="Filter deployments..." style="padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:#111827;color:#fff"><button style="padding:0 16px;border-radius:10px;border:1px solid rgba(194,164,255,.2);background:rgba(194,164,255,.12);color:#c2a4ff">Filters</button></div>` },
-    { title: "Segmented Control", description: "Three-state switch for billing or views.", preview: `<div style="display:flex;padding:4px;border-radius:999px;background:#101018;border:1px solid rgba(255,255,255,.08)"><span style="padding:7px 12px;border-radius:999px;background:#fff;color:#000">Day</span><span style="padding:7px 12px">Week</span><span style="padding:7px 12px">Month</span></div>`, html: `<div role="tablist" style="display:inline-flex;padding:4px;border-radius:999px;background:#101018;border:1px solid rgba(255,255,255,.08);color:#fff"><button style="padding:8px 14px;border:0;border-radius:999px;background:#fff;color:#000">Day</button><button style="padding:8px 14px;border:0;background:transparent;color:#aaa">Week</button><button style="padding:8px 14px;border:0;background:transparent;color:#aaa">Month</button></div>` },
+    { title: "Segmented Control", description: "Three-option radio group for billing or views.", preview: `<fieldset style="display:inline-flex;gap:4px;margin:0;padding:4px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:#101018;color:#fff"><legend style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Billing period</legend><label style="padding:7px 12px;border-radius:999px;background:#fff;color:#000"><input type="radio" name="period-preview" checked style="position:absolute;opacity:0"> Day</label><label style="padding:7px 12px"><input type="radio" name="period-preview" style="position:absolute;opacity:0"> Week</label><label style="padding:7px 12px"><input type="radio" name="period-preview" style="position:absolute;opacity:0"> Month</label></fieldset>`, html: `<fieldset style="display:inline-flex;gap:4px;margin:0;padding:4px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:#101018;color:#fff"><legend style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Billing period</legend><label style="padding:8px 14px;border-radius:999px;background:#fff;color:#000"><input type="radio" name="billing-period" value="day" checked style="position:absolute;opacity:0">Day</label><label style="padding:8px 14px;border-radius:999px;color:#e5e7eb"><input type="radio" name="billing-period" value="week" style="position:absolute;opacity:0">Week</label><label style="padding:8px 14px;border-radius:999px;color:#e5e7eb"><input type="radio" name="billing-period" value="month" style="position:absolute;opacity:0">Month</label></fieldset>` },
     { title: "Inline Validation", description: "Input with status copy and success accent.", previewMode: "stack", preview: `<div style="height:38px;border-radius:10px;border:1px solid rgba(74,222,128,.45);background:rgba(74,222,128,.08)"></div><span style="font-size:11px;color:#4ade80">Available username</span>`, html: `<label style="display:grid;gap:6px;color:#fff">Username<input value="ui-toolkit" style="padding:12px;border-radius:10px;border:1px solid rgba(74,222,128,.45);background:rgba(74,222,128,.08);color:#fff"><span style="font-size:12px;color:#4ade80">Available username</span></label>` },
   ]);
 
@@ -1385,7 +1570,7 @@ function addMarketplaceDepth() {
     { title: "Inset Panel", description: "Soft dashboard surface with pressed interior depth.", preview: `<div style="width:100%;height:70px;border-radius:18px;background:#e0e5ec;box-shadow:inset 8px 8px 16px rgba(163,177,198,.55),inset -8px -8px 16px rgba(255,255,255,.75)"></div>`, html: `<div style="padding:24px;border-radius:22px;background:#e0e5ec;box-shadow:inset 8px 8px 16px rgba(163,177,198,.55),inset -8px -8px 16px rgba(255,255,255,.75);color:#3f4654">Inset panel</div>` },
     { title: "Raised Avatar", description: "Tactile user avatar for profile rows.", preview: `<div style="width:64px;height:64px;border-radius:50%;background:#e0e5ec;box-shadow:8px 8px 16px rgba(163,177,198,.6),-8px -8px 16px #fff;display:grid;place-items:center;color:#444;font-weight:900">UI</div>`, html: `<div style="width:64px;height:64px;border-radius:50%;background:#e0e5ec;box-shadow:8px 8px 16px rgba(163,177,198,.6),-8px -8px 16px #fff;display:grid;place-items:center;color:#444;font-weight:900">UI</div>` },
     { title: "Soft Slider", description: "Neumorphic range control visual.", preview: `<div style="width:100%;height:16px;border-radius:999px;background:#e0e5ec;box-shadow:inset 5px 5px 10px rgba(163,177,198,.55),inset -5px -5px 10px #fff"><div style="width:58%;height:100%;border-radius:999px;background:#c2a4ff"></div></div>`, html: `<div style="height:16px;border-radius:999px;background:#e0e5ec;box-shadow:inset 5px 5px 10px rgba(163,177,198,.55),inset -5px -5px 10px #fff"><div style="width:58%;height:100%;border-radius:999px;background:#c2a4ff"></div></div>` },
-    { title: "Soft Toggle", description: "Raised toggle switch for settings UI.", preview: `<div style="width:72px;height:36px;border-radius:999px;background:#e0e5ec;box-shadow:6px 6px 12px rgba(163,177,198,.55),-6px -6px 12px #fff;padding:4px"><div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:#c2a4ff"></div></div>`, html: `<div style="width:72px;height:36px;border-radius:999px;background:#e0e5ec;box-shadow:6px 6px 12px rgba(163,177,198,.55),-6px -6px 12px #fff;padding:4px"><div style="margin-left:auto;width:28px;height:28px;border-radius:50%;background:#c2a4ff"></div></div>` },
+    { title: "Soft Toggle", description: "Keyboard-operable switch for settings UI.", preview: `<button type="button" role="switch" aria-checked="true" aria-label="Enable soft mode" style="display:inline-flex;align-items:center;justify-content:flex-end;width:72px;min-height:44px;border:0;border-radius:999px;background:#e0e5ec;box-shadow:6px 6px 12px rgba(163,177,198,.55),-6px -6px 12px #fff;padding:4px"><span aria-hidden="true" style="width:28px;height:28px;border-radius:50%;background:#c2a4ff"></span></button>`, html: `<button type="button" role="switch" aria-checked="true" aria-label="Enable soft mode" style="display:inline-flex;align-items:center;justify-content:flex-end;width:72px;min-height:44px;border:0;border-radius:999px;background:#e0e5ec;box-shadow:6px 6px 12px rgba(163,177,198,.55),-6px -6px 12px #fff;padding:4px;cursor:pointer"><span aria-hidden="true" style="width:28px;height:28px;border-radius:50%;background:#c2a4ff"></span></button>` },
   ]);
 
   addToolkitCards("#borders .abd-g", [
@@ -3090,6 +3275,60 @@ function initBackgroundAudio() {
   });
 }
 
+function scheduleIdleTask(task) {
+  if ("requestIdleCallback" in window) {
+    window.requestIdleCallback(task, { timeout: 2500 });
+    return;
+  }
+
+  window.setTimeout(task, 1200);
+}
+
+function initVercelAnalytics() {
+  const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
+  if (isLocal) return;
+
+  let hasRequestedAnalytics = false;
+  const loadAnalytics = () => {
+    if (hasRequestedAnalytics) return;
+    hasRequestedAnalytics = true;
+    import("./analytics.mjs")
+      .then(({ inject }) => inject({ mode: "auto" }))
+      .catch(() => {});
+  };
+
+  scheduleIdleTask(loadAnalytics);
+  ["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
+    window.addEventListener(eventName, loadAnalytics, { once: true, passive: true });
+  });
+}
+
+async function initVercelSpeedInsights() {
+  const isLocal = ["localhost", "127.0.0.1"].includes(location.hostname);
+  if (isLocal || document.querySelector("script[data-sdkn='@vercel/speed-insights/static']")) return;
+
+  const src = "/_vercel/speed-insights/script.js";
+  try {
+    const response = await fetch(src, { method: "HEAD", cache: "no-store" });
+    if (!response.ok) return;
+  } catch {
+    return;
+  }
+
+  const script = document.createElement("script");
+  script.src = src;
+  script.defer = true;
+  script.dataset.sdkn = "@vercel/speed-insights/static";
+  script.dataset.sdkv = "2.0.0";
+  script.dataset.route = "/";
+  document.head.appendChild(script);
+}
+
+function initVercelObservability() {
+  initVercelAnalytics();
+  scheduleIdleTask(initVercelSpeedInsights);
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   initCursor();
   initCopyButtons();
@@ -3115,4 +3354,5 @@ document.addEventListener("DOMContentLoaded", () => {
   configureCatalogPagination();
   initPagination();
   initBackgroundAudio();
+  initVercelObservability();
 });
