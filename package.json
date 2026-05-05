@@ -12,7 +12,11 @@
     "url": "https://github.com/ikerperez12/UI-IP-Toolkit-v4.0/issues"
   },
   "scripts": {
-    "start": "npx http-server . -p 3333"
+    "start": "npx http-server . -p 3333",
+    "check": "npm run check:js && npm run check:vercel && npm run check:a11y-smoke",
+    "check:js": "node --check assets/app.js",
+    "check:vercel": "node -e \"JSON.parse(require('fs').readFileSync('vercel.json','utf8')); console.log('vercel.json ok')\"",
+    "check:a11y-smoke": "node scripts/accessibility-smoke.mjs"
   },
   "keywords": [
     "ui-kit",

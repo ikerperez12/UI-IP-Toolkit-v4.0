@@ -5,6 +5,8 @@
   |
   <a href="#quick-start"><strong>Run Locally</strong></a>
   |
+  <a href="#accessibility-and-quality"><strong>Accessibility</strong></a>
+  |
   <a href="#architecture"><strong>Architecture</strong></a>
 </p>
 
@@ -33,6 +35,7 @@ UI IP Toolkit is a public-facing static catalog of copy-ready frontend assets: g
 - Expanded visual systems across color tokens, curated gradients, keyframe patterns, typography, buttons, loading states, text effects, shadows, hover effects, glass UI, and interactive utilities.
 - Local asset strategy only: background audio, fonts, scripts, and documentation media are served from the repository with no third-party runtime dependencies.
 - Copy-first workflow: each card keeps a direct snippet payload so the catalog remains useful as a working toolkit, not just a gallery.
+- Accessibility pass for public use: landmarks, skip link, visible focus, stronger contrast, form labeling, semantic table/dialog snippets, loader live regions, and reduced-motion support.
 - Public-safe static deployment posture with Vercel headers, CSP, restrictive policies, and no backend surface.
 - README and preview assets generated from the real deployed experience to keep the repository presentation aligned with the product.
 
@@ -74,6 +77,25 @@ npm start
 Open `http://127.0.0.1:3333/`.
 
 This project is fully static, so there is no backend boot sequence, no environment secret requirement, and no build-time service dependency for local preview.
+
+## Accessibility And Quality
+
+UI IP Toolkit is a visual prototyping vault, not a production UI framework. Because the project publishes copyable snippets, the catalog now carries an explicit accessibility baseline:
+
+- `header`, named `nav`, `main`, `footer`, and skip-link landmarks.
+- Runtime repair for demo labels, section headings, card headings, decorative icons and live copy feedback.
+- Native `<dialog>` snippets for modal patterns and real `<table>` snippets for data views.
+- `role="status"` and polite live regions for copied loader snippets.
+- Focus-visible styling that avoids border-width layout shifts.
+- Reduced-motion and coarse-pointer rules for decorative motion/cursor effects.
+
+More detail is documented in [docs/accessibility-governance.md](docs/accessibility-governance.md). A copy-ready response to community feedback is available in [docs/community-response-accessibility.md](docs/community-response-accessibility.md).
+
+Run static checks:
+
+```bash
+npm run check
+```
 
 ## Production Notes
 
