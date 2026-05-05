@@ -23,6 +23,7 @@ const checks = [
   ["form controls are repaired with labels", app.includes("labelFormControls") && app.includes("hasProgrammaticLabel")],
   ["runtime promotes section headings", app.includes("repairSectionSemantics") && app.includes('replaceElementTag(titleNode, "h2")')],
   ["runtime removes h4 card headings", app.includes("querySelectorAll(\".has-copy h4")],
+  ["scrollable code samples are keyboard reachable", app.includes('querySelectorAll(".has-copy code")') && app.includes("scrollable code sample")],
   ["native dialog snippets are generated", app.includes("<dialog open") && app.includes("aria-labelledby")],
   ["data table snippets use real tables", app.includes("<table") && app.includes('scope="col"') && app.includes('scope="row"')],
   ["loader snippets expose status semantics", app.includes('role", "status"') || app.includes('role="status"')],

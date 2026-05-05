@@ -969,6 +969,14 @@ function repairPreviewSemantics() {
     }
   });
 
+  document.querySelectorAll(".has-copy code").forEach((code, index) => {
+    code.tabIndex = 0;
+    if (!code.getAttribute("aria-label")) {
+      const title = code.closest(".has-copy")?.querySelector("h3, .ut-n, .ln")?.textContent?.trim() || `code sample ${index + 1}`;
+      code.setAttribute("aria-label", `${title} scrollable code sample`);
+    }
+  });
+
   document.querySelectorAll(".pagination-status").forEach((status) => {
     status.setAttribute("aria-live", "polite");
     status.setAttribute("aria-atomic", "true");
