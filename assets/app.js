@@ -137,6 +137,8 @@ async function copySnippet(btn) {
     code = card.innerHTML;
   }
 
+  code = normalizeSnippetForCopy(code, card);
+
   try {
     await navigator.clipboard.writeText(code);
   } catch {
@@ -154,6 +156,7 @@ async function copySnippet(btn) {
   const original = btn.innerHTML;
   btn.innerHTML = "Copied";
   btn.classList.add("ok");
+  getCopyStatusRegion().textContent = `${card.dataset.title || "Snippet"} copied to clipboard.`;
   window.setTimeout(() => {
     btn.innerHTML = original;
     btn.classList.remove("ok");
@@ -523,6 +526,115 @@ function encodeAttribute(value) {
     .replaceAll(">", "&gt;");
 }
 
+function slugifyId(value, fallback = "ui-pattern") {
+  const normalized = String(value || fallback)
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return normalized || fallback;
+}
+
+function createSnippetId(title, kind, suffix = "") {
+  return [slugifyId(title), slugifyId(kind || "pattern"), suffix].filter(Boolean).join("-");
+}
+
+function hasProgrammaticLabel(control) {
+  if (control.getAttribute("aria-label") || control.getAttribute("aria-labelledby")) return true;
+  if (control.id && document.querySelector(`label[for="${CSS.escape(control.id)}"]`)) return true;
+  return Boolean(control.closest("label"));
+}
+
+function labelFormControls(root, context = {}) {
+  const scope = root && typeof root.querySelectorAll === "function" ? root : document;
+  const baseTitle = context.title || "Toolkit";
+
+  scope.querySelectorAll("input, select, textarea").forEach((control, index) => {
+    if (!control.id) {
+      control.id = createSnippetId(baseTitle, control.getAttribute("type") || control.tagName.toLowerCase(), String(index + 1));
+    }
+
+    if (!control.name) {
+      control.name = control.id;
+    }
+
+    if (!hasProgrammaticLabel(control)) {
+      const visibleLabel =
+        control.closest("label")?.textContent?.trim() ||
+        control.getAttribute("placeholder")?.trim() ||
+        control.getAttribute("name")?.replace(/[-_]+/g, " ") ||
+        control.getAttribute("type") ||
+        control.tagName.toLowerCase();
+
+      control.setAttribute("aria-label", `${baseTitle} ${visibleLabel}`.replace(/\s+/g, " ").trim());
+    }
+  });
+
+  scope.querySelectorAll("button:not([type])").forEach((button) => {
+    button.type = "button";
+  });
+}
+
+function normalizeSnippetForCopy(code, card) {
+  const source = String(code || "").trim();
+  if (!source || !source.startsWith("<")) return code;
+
+  const template = document.createElement("template");
+  template.innerHTML = source;
+  const title = card?.dataset.title || card?.querySelector(".ut-n, .ln, .cn, .cp-i h3, h3")?.textContent?.trim() || "Toolkit pattern";
+
+  labelFormControls(template.content, { title });
+
+  template.content.querySelectorAll("svg").forEach((svg) => {
+    if (!svg.getAttribute("role") && !svg.getAttribute("aria-label")) {
+      svg.setAttribute("aria-hidden", "true");
+    }
+  });
+
+  template.content.querySelectorAll("button:not([aria-label])").forEach((button) => {
+    const text = button.textContent.trim();
+    if (!text) button.setAttribute("aria-label", `${title} action`);
+  });
+
+  template.content.querySelectorAll("[class*='spinner'], [class*='loader'], [class*='skeleton']").forEach((node) => {
+    if (!node.getAttribute("role")) {
+      node.setAttribute("role", "status");
+      node.setAttribute("aria-live", "polite");
+      node.setAttribute("aria-label", `${title} loading state`);
+    }
+  });
+
+  if (card?.closest("#loading") && !template.content.querySelector("[role='status'], [aria-live]")) {
+    const wrapper = document.createElement("div");
+    wrapper.setAttribute("role", "status");
+    wrapper.setAttribute("aria-live", "polite");
+    wrapper.setAttribute("aria-label", `${title} loading state`);
+    wrapper.style.display = "inline-grid";
+    wrapper.style.placeItems = "center";
+    while (template.content.firstChild) {
+      wrapper.appendChild(template.content.firstChild);
+    }
+    template.content.appendChild(wrapper);
+  }
+
+  return template.innerHTML.trim();
+}
+
+function getCopyStatusRegion() {
+  let region = document.getElementById("copy-status");
+  if (region) return region;
+
+  region = document.createElement("div");
+  region.id = "copy-status";
+  region.className = "sr-only";
+  region.setAttribute("role", "status");
+  region.setAttribute("aria-live", "polite");
+  document.body.appendChild(region);
+  return region;
+}
+
 function copyButtonMarkup() {
   return `<button class="cpb" type="button" aria-label="Copy snippet"><svg aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>`;
 }
@@ -556,6 +668,7 @@ function buildCardMetaAttributes(item) {
   return [
     ["data-title", item.title],
     ["data-family", item.family],
+    ["data-kind", item.kind],
     ["data-catalog-source", item.catalogSource],
     ["data-source-pillar", item.sourcePillar],
     ["data-preview-mode", item.previewMode || "default"],
@@ -786,7 +899,93 @@ function addComponentCards(selector, items, defaults = {}) {
   grid.dataset.minPageSize = grid.dataset.minPageSize || "8";
 }
 
+function replaceElementTag(node, tagName) {
+  if (!node || node.tagName.toLowerCase() === tagName) return node;
+
+  const replacement = document.createElement(tagName);
+  Array.from(node.attributes).forEach((attribute) => {
+    replacement.setAttribute(attribute.name, attribute.value);
+  });
+  replacement.innerHTML = node.innerHTML;
+  node.replaceWith(replacement);
+  return replacement;
+}
+
+function repairSectionSemantics() {
+  document.querySelectorAll("section").forEach((section) => {
+    if (section.classList.contains("hero")) return;
+
+    const sectionId = section.id || `section-${Math.random().toString(36).slice(2)}`;
+    if (!section.id) section.id = sectionId;
+
+    const titleNode = section.querySelector(".st");
+    const heading = replaceElementTag(titleNode, "h2");
+    if (heading) {
+      heading.id = heading.id || `${sectionId}-title`;
+      section.setAttribute("aria-labelledby", heading.id);
+    }
+
+    const kicker = section.querySelector(".sl");
+    replaceElementTag(kicker, "p");
+
+    const description = section.querySelector(".sdesc");
+    replaceElementTag(description, "p");
+  });
+}
+
+function repairCardSemantics() {
+  document.querySelectorAll(".has-copy").forEach((card, index) => {
+    card.setAttribute("role", "article");
+
+    const titleCandidate = card.querySelector(".ut-n, .ln, .cn, .sn, .an, .gl, .tx-label");
+    const promotedTitle = titleCandidate && !/^H[1-6]$/.test(titleCandidate.tagName) ? replaceElementTag(titleCandidate, "h3") : titleCandidate;
+    const title =
+      promotedTitle ||
+      card.querySelector(".cp-i h3, .hf-i h3, h3") ||
+      card.querySelector(".kit-source");
+
+    if (title) {
+      title.id = title.id || `copy-card-${index + 1}-title`;
+      card.setAttribute("aria-labelledby", title.id);
+    } else if (!card.getAttribute("aria-label")) {
+      card.setAttribute("aria-label", `Copyable UI pattern ${index + 1}`);
+    }
+  });
+
+  document.querySelectorAll("#loading .has-copy").forEach((card) => {
+    const title = card.querySelector(".ln, .ut-n, h3")?.textContent?.trim() || "Loading pattern";
+    card.dataset.kind = card.dataset.kind || "loading";
+    card.setAttribute("aria-label", `${title} loading pattern card`);
+    card.querySelectorAll(".spinner, .dots, .skeleton, .mini-preview, [style*='animation']").forEach((visual) => {
+      visual.setAttribute("aria-hidden", "true");
+    });
+  });
+}
+
+function repairPreviewSemantics() {
+  document.querySelectorAll(".mini-preview svg, .cp-p svg, .hf-d svg, .gl-bg svg").forEach((svg) => {
+    if (!svg.getAttribute("role") && !svg.getAttribute("aria-label")) {
+      svg.setAttribute("aria-hidden", "true");
+    }
+  });
+
+  document.querySelectorAll(".pagination-status").forEach((status) => {
+    status.setAttribute("aria-live", "polite");
+    status.setAttribute("aria-atomic", "true");
+  });
+
+  document.querySelectorAll(".pagination-controls button").forEach((button) => {
+    button.type = "button";
+  });
+
+  document.querySelectorAll(".section-menu summary").forEach((summary) => {
+    summary.setAttribute("aria-label", "Open section catalog menu");
+  });
+}
+
 function repairDemoAccessibility() {
+  repairSectionSemantics();
+
   document.querySelectorAll(".cpb").forEach((button) => {
     button.type = "button";
     if (!button.getAttribute("aria-label")) {
@@ -795,9 +994,12 @@ function repairDemoAccessibility() {
     button.querySelectorAll("svg").forEach((icon) => icon.setAttribute("aria-hidden", "true"));
   });
 
-  document.querySelectorAll("input:not([aria-label]):not([aria-labelledby])").forEach((input, index) => {
+  document.querySelectorAll("input, select, textarea").forEach((input, index) => {
+    if (hasProgrammaticLabel(input)) return;
+
     const cardTitle =
       input.closest(".has-copy")?.querySelector(".ut-n, .cp-i h3, .cp-i h4, h3, h4")?.textContent?.trim() ||
+      input.closest("section")?.querySelector("h2, .st")?.textContent?.trim() ||
       input.getAttribute("placeholder")?.trim() ||
       input.getAttribute("type") ||
       `field ${index + 1}`;
@@ -813,6 +1015,10 @@ function repairDemoAccessibility() {
     replacement.innerHTML = heading.innerHTML;
     heading.replaceWith(replacement);
   });
+
+  repairCardSemantics();
+  repairPreviewSemantics();
+  getCopyStatusRegion();
 }
 
 function removeCardsByTitle(selector, matcher) {
@@ -1325,7 +1531,8 @@ function renderProductPreview(kind, title, labels = [], accent = "#c2a4ff") {
   if (deepPreview) return deepPreview;
 
   if (kind === "modal") {
-    return nativeStage(`<div style="height:26px;border-radius:12px;background:rgba(255,255,255,.08)"></div><div style="margin:auto;width:82%;padding:16px;border-radius:18px;background:#f8fafc;color:#020617;box-shadow:0 18px 42px rgba(0,0,0,.36)"><strong style="display:block;font-size:15px">${title}</strong><span style="display:block;margin-top:8px;color:#64748b;font-size:11px">Confirm the next step before continuing.</span><div style="display:flex;gap:8px;margin-top:14px"><span style="height:26px;flex:1;border-radius:999px;background:#e2e8f0"></span><span style="height:26px;flex:1;border-radius:999px;background:${accent}"></span></div></div>`, { accent });
+    const previewId = createSnippetId(title, "preview-dialog");
+    return nativeStage(`<div style="height:26px;border-radius:12px;background:rgba(255,255,255,.08)" aria-hidden="true"></div><dialog open aria-labelledby="${previewId}-title" style="position:relative;inset:auto;margin:auto;width:82%;padding:16px;border:0;border-radius:18px;background:#f8fafc;color:#020617;box-shadow:0 18px 42px rgba(0,0,0,.36)"><h3 id="${previewId}-title" style="margin:0;font-size:15px">${title}</h3><p style="margin:8px 0 0;color:#475569;font-size:11px">Confirm the next step before continuing.</p><form method="dialog" style="display:flex;gap:8px;margin-top:14px"><button type="button" style="min-height:28px;flex:1;border:0;border-radius:999px;background:#e2e8f0;color:#334155;font-size:10px">Cancel</button><button type="submit" style="min-height:28px;flex:1;border:0;border-radius:999px;background:${accent};color:#020617;font-size:10px;font-weight:800">Confirm</button></form></dialog>`, { accent });
   }
   if (kind === "drawer") {
     return nativeStage(`<div style="display:grid;grid-template-columns:1fr 86px;gap:10px;min-height:138px"><div style="border-radius:16px;background:rgba(255,255,255,.05);padding:12px">${rows}</div><aside style="border-radius:16px;background:#f8fafc;color:#020617;padding:12px;display:grid;gap:8px"><strong style="font-size:12px">${title}</strong>${uiLines(["88%", "62%"], "#cbd5e1")}<span style="height:26px;border-radius:999px;background:${accent}"></span></aside></div>`, { accent });
@@ -1334,7 +1541,8 @@ function renderProductPreview(kind, title, labels = [], accent = "#c2a4ff") {
     return nativeStage(`<div style="padding:13px;border-radius:18px;background:#f8fafc;color:#020617;box-shadow:0 18px 40px rgba(0,0,0,.3)"><div style="display:flex;align-items:center;justify-content:space-between;gap:10px"><strong style="font-size:13px">Search actions</strong><span style="padding:4px 7px;border-radius:8px;background:#e2e8f0;color:#334155;font-size:10px">Ctrl K</span></div><div style="display:grid;gap:7px;margin-top:12px"><span style="height:28px;border-radius:10px;background:#e2e8f0"></span><span style="height:28px;border-radius:10px;background:${accent}33"></span><span style="height:28px;border-radius:10px;background:#e2e8f0"></span></div></div>`, { accent });
   }
   if (kind === "table") {
-    return nativeStage(`<div style="display:flex;justify-content:space-between;align-items:center"><strong style="font-size:14px">${title}</strong><span style="width:62px;height:24px;border-radius:999px;background:${accent}"></span></div><div style="display:grid;gap:8px">${row()}${row()}${row("#fff", "#fff", "#4ade80")}</div>`, { accent });
+    const tableId = createSnippetId(title, "preview-table");
+    return nativeStage(`<div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0;font-size:14px" id="${tableId}-title">${title}</h3><span style="width:62px;height:24px;border-radius:999px;background:${accent}" aria-hidden="true"></span></div><table aria-labelledby="${tableId}-title" style="width:100%;border-collapse:separate;border-spacing:0 8px;font-size:10px"><caption style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Preview data for ${title}</caption><thead><tr><th scope="col" style="text-align:left;color:#cbd5e1;font-weight:800">Item</th><th scope="col" style="text-align:left;color:#cbd5e1;font-weight:800">State</th><th scope="col" style="text-align:right;color:#cbd5e1;font-weight:800">Score</th></tr></thead><tbody>${["Alpha", "Beta", "Live"].map((name, index) => `<tr><th scope="row" style="padding:8px 10px;border-radius:10px 0 0 10px;background:rgba(255,255,255,.065);text-align:left">${name}</th><td style="padding:8px 10px;background:rgba(255,255,255,.065)">${labels[index] || "Ready"}</td><td style="padding:8px 10px;border-radius:0 10px 10px 0;background:rgba(255,255,255,.065);text-align:right;color:${index === 2 ? "#4ade80" : accent}">${index === 2 ? "99%" : "82%"}</td></tr>`).join("")}</tbody></table>`, { accent });
   }
   if (kind === "kpi") {
     return nativeStage(`<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:9px">${["$71.8k", "12.4%", "982"].map((metric, index) => `<div style="padding:12px;border-radius:16px;background:rgba(255,255,255,.07)"><span style="display:block;font-size:10px;color:#94a3b8">${labels[index] || "Metric"}</span><strong style="display:block;margin-top:6px;font-size:18px">${metric}</strong></div>`).join("")}</div><div style="height:42px;border-radius:16px;background:linear-gradient(90deg,${accent}55,rgba(255,255,255,.06))"></div>`, { accent });
@@ -1484,13 +1692,151 @@ function renderProductPreview(kind, title, labels = [], accent = "#c2a4ff") {
   return nativeStage(`<strong style="font-size:18px">${title}</strong><div style="display:grid;gap:8px">${rows}</div><div style="display:flex;gap:8px">${chips}</div>`, { accent });
 }
 
+function accessiblePatternSnippet(kind, title, labels = [], accent = "#c2a4ff") {
+  const id = createSnippetId(title, kind || "pattern");
+  const heading = encodeAttribute(title);
+  const primary = encodeAttribute(labels[0] || "Overview");
+  const secondary = encodeAttribute(labels[1] || "Docs");
+  const tertiary = encodeAttribute(labels[2] || "Status");
+  const safeAccent = encodeAttribute(accent);
+
+  if (kind === "modal") {
+    return `<dialog open aria-labelledby="${id}-title" aria-describedby="${id}-desc" style="max-width:420px;border:0;border-radius:20px;padding:0;background:#fff;color:#111827;box-shadow:0 24px 80px rgba(15,23,42,.28)">
+  <form method="dialog" style="padding:24px;display:grid;gap:16px">
+    <div>
+      <h2 id="${id}-title" style="margin:0;font-size:1.25rem;line-height:1.2">${heading}</h2>
+      <p id="${id}-desc" style="margin:.5rem 0 0;color:#475569">Review this action before continuing.</p>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button type="button" value="cancel" style="min-height:44px;padding:0 16px;border-radius:999px;border:1px solid #cbd5e1;background:#fff;color:#0f172a">Cancel</button>
+      <button type="submit" value="confirm" style="min-height:44px;padding:0 16px;border:0;border-radius:999px;background:${safeAccent};color:#020617;font-weight:700">Confirm</button>
+    </div>
+  </form>
+</dialog>`;
+  }
+
+  if (kind === "table") {
+    return `<section aria-labelledby="${id}-title" style="border:1px solid #e2e8f0;border-radius:18px;padding:18px;background:#fff;color:#0f172a">
+  <h2 id="${id}-title" style="margin:0 0 12px;font-size:1.15rem">${heading}</h2>
+  <table style="width:100%;border-collapse:collapse">
+    <caption style="text-align:left;color:#475569;margin-bottom:10px">Operational data view with sortable-friendly columns.</caption>
+    <thead>
+      <tr>
+        <th scope="col" style="text-align:left;border-bottom:1px solid #e2e8f0;padding:10px">Name</th>
+        <th scope="col" style="text-align:left;border-bottom:1px solid #e2e8f0;padding:10px">Status</th>
+        <th scope="col" style="text-align:right;border-bottom:1px solid #e2e8f0;padding:10px">Value</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><th scope="row" style="text-align:left;padding:10px">Alpha</th><td style="padding:10px">${primary}</td><td style="padding:10px;text-align:right">82%</td></tr>
+      <tr><th scope="row" style="text-align:left;padding:10px">Beta</th><td style="padding:10px">${secondary}</td><td style="padding:10px;text-align:right">94%</td></tr>
+      <tr><th scope="row" style="text-align:left;padding:10px">Gamma</th><td style="padding:10px">${tertiary}</td><td style="padding:10px;text-align:right">99%</td></tr>
+    </tbody>
+  </table>
+</section>`;
+  }
+
+  if (["newsletterForm", "command", "searchNav"].includes(kind)) {
+    return `<form role="search" aria-labelledby="${id}-title" style="display:grid;gap:14px;max-width:520px;padding:20px;border-radius:20px;background:#0f172a;color:#fff">
+  <h2 id="${id}-title" style="margin:0;font-size:1.25rem">${heading}</h2>
+  <label for="${id}-query" style="font-weight:700">${kind === "newsletterForm" ? "Email address" : "Search"}</label>
+  <div style="display:flex;gap:10px;flex-wrap:wrap">
+    <input id="${id}-query" name="${kind === "newsletterForm" ? "email" : "query"}" type="${kind === "newsletterForm" ? "email" : "search"}" placeholder="${kind === "newsletterForm" ? "you@example.com" : "Search assets"}" style="min-height:44px;flex:1;min-width:220px;border:1px solid #475569;border-radius:999px;background:#111827;color:#fff;padding:0 14px">
+    <button type="submit" style="min-height:44px;border:0;border-radius:999px;background:${safeAccent};color:#020617;font-weight:800;padding:0 18px">${kind === "newsletterForm" ? "Subscribe" : "Search"}</button>
+  </div>
+</form>`;
+  }
+
+  if (["nav", "mega", "announcement"].includes(kind)) {
+    return `<nav aria-label="${heading}" style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 18px;border-radius:999px;background:#0f172a;color:#fff">
+  <a href="#top" style="color:inherit;text-decoration:none;font-weight:800">${heading}</a>
+  <ul style="display:flex;gap:14px;margin:0;padding:0;list-style:none">
+    <li><a href="#overview" style="color:inherit;text-decoration:none">${primary}</a></li>
+    <li><a href="#features" style="color:inherit;text-decoration:none">${secondary}</a></li>
+    <li><a href="#status" style="color:inherit;text-decoration:none">${tertiary}</a></li>
+  </ul>
+  <a href="#contact" style="min-height:40px;display:inline-flex;align-items:center;border-radius:999px;background:${safeAccent};color:#020617;padding:0 14px;text-decoration:none;font-weight:800">Start</a>
+</nav>`;
+  }
+
+  if (["cta", "buyCta", "downloadCta"].includes(kind)) {
+    return `<section aria-labelledby="${id}-title" style="display:grid;gap:16px;padding:28px;border-radius:24px;background:#0f172a;color:#fff">
+  <p style="margin:0;color:${safeAccent};font-weight:800;text-transform:uppercase;letter-spacing:.08em">${primary}</p>
+  <h2 id="${id}-title" style="margin:0;font-size:clamp(1.8rem,4vw,3rem);line-height:1">${heading}</h2>
+  <p style="margin:0;color:#cbd5e1;max-width:56ch">A copy-ready conversion section with a clear primary action and a secondary path.</p>
+  <div style="display:flex;gap:12px;flex-wrap:wrap">
+    <a href="#primary" style="min-height:44px;display:inline-flex;align-items:center;border-radius:999px;background:${safeAccent};color:#020617;padding:0 18px;text-decoration:none;font-weight:800">Get started</a>
+    <a href="#details" style="min-height:44px;display:inline-flex;align-items:center;border-radius:999px;border:1px solid #475569;color:#fff;padding:0 18px;text-decoration:none">View details</a>
+  </div>
+</section>`;
+  }
+
+  if (["error", "creative404", "industryError"].includes(kind)) {
+    return `<main aria-labelledby="${id}-title" style="display:grid;place-items:center;min-height:360px;padding:32px;border-radius:28px;background:#0f172a;color:#fff;text-align:center">
+  <section style="display:grid;gap:14px;max-width:520px">
+    <p style="margin:0;color:${safeAccent};font-size:4rem;line-height:1;font-weight:900">404</p>
+    <h1 id="${id}-title" style="margin:0;font-size:clamp(2rem,6vw,4rem);line-height:1">${heading}</h1>
+    <p style="margin:0;color:#cbd5e1">The page is unavailable, but the recovery actions stay visible and keyboard friendly.</p>
+    <form role="search" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+      <label for="${id}-search" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)">Search site</label>
+      <input id="${id}-search" name="query" type="search" placeholder="Search the site" style="min-height:44px;border:1px solid #475569;border-radius:999px;background:#111827;color:#fff;padding:0 14px">
+      <button type="submit" style="min-height:44px;border:0;border-radius:999px;background:${safeAccent};color:#020617;font-weight:800;padding:0 18px">Search</button>
+    </form>
+  </section>
+</main>`;
+  }
+
+  if (["footer", "typeFooter", "cardFooter"].includes(kind)) {
+    return `<footer aria-labelledby="${id}-title" style="display:grid;gap:24px;padding:28px;border-radius:24px;background:#0f172a;color:#fff">
+  <div style="display:grid;grid-template-columns:minmax(180px,1.4fr) repeat(3,minmax(120px,1fr));gap:24px">
+    <section>
+      <h2 id="${id}-title" style="margin:0;font-size:1.8rem;line-height:1">${heading}</h2>
+      <p style="color:#cbd5e1">Reusable footer system with clear link groups.</p>
+    </section>
+    ${[primary, secondary, tertiary].map((label) => `<section aria-labelledby="${id}-${slugifyId(label)}"><h3 id="${id}-${slugifyId(label)}" style="margin:0 0 10px;font-size:1rem">${label}</h3><ul style="display:grid;gap:8px;margin:0;padding:0;list-style:none"><li><a href="#overview" style="color:#cbd5e1">Overview</a></li><li><a href="#docs" style="color:#cbd5e1">Docs</a></li><li><a href="#support" style="color:#cbd5e1">Support</a></li></ul></section>`).join("")}
+  </div>
+  <small style="color:#94a3b8">2026 Toolkit. All rights reserved.</small>
+</footer>`;
+  }
+
+  if (["bento", "dashboardBento", "mediaBento"].includes(kind)) {
+    return `<section aria-labelledby="${id}-title" style="display:grid;gap:14px;padding:20px;border-radius:24px;background:#0f172a;color:#fff">
+  <h2 id="${id}-title" style="margin:0;font-size:1.4rem">${heading}</h2>
+  <ul style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px;margin:0;padding:0;list-style:none">
+    ${[primary, secondary, tertiary, "Signal"].map((label, index) => `<li style="min-height:${index === 0 ? "140px" : "96px"};border-radius:18px;background:${index === 0 ? safeAccent : "rgba(255,255,255,.08)"};color:${index === 0 ? "#020617" : "#fff"};padding:16px"><strong>${label}</strong><p style="margin:.5rem 0 0">Structured bento panel with semantic list markup.</p></li>`).join("")}
+  </ul>
+</section>`;
+  }
+
+  if (kind === "empty") {
+    return `<section aria-labelledby="${id}-title" style="display:grid;justify-items:center;gap:12px;padding:28px;border:1px dashed #94a3b8;border-radius:24px;text-align:center;color:#0f172a;background:#fff">
+  <h2 id="${id}-title" style="margin:0">${heading}</h2>
+  <p style="margin:0;color:#475569">No results yet. Adjust filters or start from a template.</p>
+  <button type="button" style="min-height:44px;border:0;border-radius:999px;background:${safeAccent};color:#020617;font-weight:800;padding:0 18px">Create first item</button>
+</section>`;
+  }
+
+  if (kind === "loading" || /load/i.test(title)) {
+    return `<div role="status" aria-live="polite" aria-label="${heading}" style="display:grid;gap:10px;padding:18px;border-radius:18px;background:#0f172a;color:#fff">
+  <span style="width:44px;height:44px;border-radius:50%;border:4px solid #475569;border-top-color:${safeAccent};display:inline-block"></span>
+  <span>Loading ${heading}</span>
+</div>`;
+  }
+
+  return `<section aria-labelledby="${id}-title" style="display:grid;gap:12px;padding:20px;border-radius:20px;background:#0f172a;color:#fff">
+  <h2 id="${id}-title" style="margin:0;font-size:1.3rem">${heading}</h2>
+  <p style="margin:0;color:#cbd5e1">${primary} pattern ready to adapt.</p>
+</section>`;
+}
+
 function nativeCard(config, defaults = {}) {
   const resolved = { accent: "#c2a4ff", labels: [], source: "Native", previewMode: "stack", ...defaults, ...config };
   const preview = resolved.preview || renderProductPreview(resolved.kind, resolved.previewTitle || resolved.title, resolved.labels, resolved.accent);
+  const html = resolved.html || accessiblePatternSnippet(resolved.kind, resolved.title, resolved.labels, resolved.accent);
   return {
     ...resolved,
     preview,
-    html: resolved.html || preview,
+    html,
   };
 }
 
