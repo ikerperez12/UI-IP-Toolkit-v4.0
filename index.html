@@ -81,20 +81,6 @@
 }
 </script>
 <style>
-@font-face{font-family:'Space Grotesk';src:url('assets/fonts/SpaceGrotesk-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Sora';src:url('assets/fonts/Sora-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Manrope';src:url('assets/fonts/Manrope-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Outfit';src:url('assets/fonts/Outfit-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Plus Jakarta Sans';src:url('assets/fonts/PlusJakartaSans-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'DM Sans';src:url('assets/fonts/DMSans-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Syne';src:url('assets/fonts/Syne-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Fraunces';src:url('assets/fonts/Fraunces-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'IBM Plex Sans';src:url('assets/fonts/IBMPlexSans-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Archivo';src:url('assets/fonts/Archivo-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Urbanist';src:url('assets/fonts/Urbanist-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Instrument Serif';src:url('assets/fonts/InstrumentSerif-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Onest';src:url('assets/fonts/Onest-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'Rajdhani';src:url('assets/fonts/Rajdhani-400.ttf') format('truetype');font-weight:400;font-style:normal;font-display:swap}
 body{font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,Cantarell,'Open Sans','Helvetica Neue',sans-serif;background:#060507;color:#eae5ec;overflow-x:hidden;cursor:auto;-webkit-font-smoothing:antialiased}
 a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .sr-only{position:absolute!important;width:1px!important;height:1px!important;padding:0!important;margin:-1px!important;overflow:hidden!important;clip:rect(0,0,0,0)!important;white-space:nowrap!important;border:0!important}
@@ -147,7 +133,7 @@ a{color:inherit;text-decoration:none}img{max-width:100%;display:block}
 .section-menu-links a::after{content:attr(data-number);flex:0 0 auto;color:rgba(234,229,236,.68);font-size:9px;font-weight:800;letter-spacing:.08em}
 .section-menu-links a:hover{background:rgba(194,164,255,.1);color:#fff}
 .section-menu-note{position:relative;margin-top:12px;color:rgba(234,229,236,.38);font-size:10px;line-height:1.55}
-.prg{position:fixed;top:0;left:0;height:2px;z-index:141;background:linear-gradient(90deg,#c2a4ff,#fb8dff,#f96);width:0;will-change:width}
+.prg{position:fixed;top:0;left:0;height:2px;z-index:141;background:linear-gradient(90deg,#c2a4ff,#fb8dff,#f96);width:100%;transform:scaleX(0);transform-origin:left center;will-change:transform}
 
 /* layout */
 section{position:relative;z-index:2;padding:120px 60px 90px;scroll-margin-top:84px}.ctr{max-width:1400px;margin:0 auto}
@@ -599,6 +585,7 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 /* === CATALOG REWORK === */
 .catalog-grid{position:relative;align-items:stretch;align-content:start;grid-auto-rows:auto}
 .catalog-grid > *{align-self:stretch;min-width:0}
+.catalog-grid > .has-copy{contain:layout paint style}
 .catalog-grid .cpb{top:10px;right:10px}
 .catalog-grid .mini-preview{min-height:112px;padding:16px;border-radius:14px;background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.055);display:flex;align-items:center;justify-content:center;gap:10px;overflow:hidden;box-sizing:border-box;min-width:0}
 .catalog-grid .mini-preview>*{max-width:100%;box-sizing:border-box;flex-shrink:1;min-width:0}
@@ -640,6 +627,18 @@ footer.final-cta p::before{content:'';display:block;width:120px;height:2px;margi
 #hover .ut-c .mini-preview::after{content:'';position:absolute;left:18px;right:18px;bottom:18px;height:34px;border-radius:999px;background:linear-gradient(90deg,rgba(194,164,255,.55),rgba(255,255,255,.08));box-shadow:0 14px 32px rgba(0,0,0,.2)}
 #glass .ut-c .mini-preview::after{content:'';position:absolute;right:18px;top:18px;width:72px;height:72px;border-radius:24px;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(14px)}
 #utils .ut-c .mini-preview::after{content:'';position:absolute;left:18px;right:18px;bottom:18px;height:36px;border-radius:14px;background:repeating-linear-gradient(90deg,rgba(194,164,255,.3) 0 22px,rgba(255,255,255,.07) 22px 44px)}
+section[data-source-pillar] .cp-p{position:relative;overflow:hidden;isolation:isolate}
+section[data-source-pillar] .cp-p>*{position:relative;z-index:1}
+section[data-source-pillar] .cp-p::before{content:'';position:absolute;inset:12px;border:1px solid rgba(255,255,255,.07);border-radius:22px;pointer-events:none;z-index:0}
+section[data-source-pillar] .cp-c:nth-child(3n+1) .cp-p::after{content:'';position:absolute;right:-18px;top:20px;width:116px;height:116px;border-radius:34px;background:linear-gradient(135deg,rgba(255,255,255,.14),rgba(255,255,255,.015));transform:rotate(12deg);pointer-events:none;z-index:0}
+section[data-source-pillar] .cp-c:nth-child(3n+2) .cp-p::after{content:'';position:absolute;left:18px;right:18px;bottom:18px;height:16px;border-radius:999px;background:linear-gradient(90deg,rgba(255,255,255,.2),rgba(255,255,255,.04));pointer-events:none;z-index:0}
+section[data-source-pillar] .cp-c:nth-child(3n) .cp-p::after{content:'';position:absolute;left:20px;bottom:18px;width:74px;height:74px;border-radius:50%;border:15px solid rgba(255,255,255,.08);pointer-events:none;z-index:0}
+section[data-source-pillar="navbar"] .cp-p{background:radial-gradient(circle at 15% 18%,rgba(56,189,248,.2),transparent 34%),linear-gradient(180deg,rgba(7,16,30,.9),rgba(7,9,18,.55))}
+section[data-source-pillar="h1"] .cp-p{background:radial-gradient(circle at 80% 14%,rgba(251,141,255,.18),transparent 32%),linear-gradient(160deg,rgba(12,10,18,.92),rgba(8,13,24,.56))}
+section[data-source-pillar="cta"] .cp-p{background:radial-gradient(circle at 72% 82%,rgba(250,204,21,.16),transparent 32%),linear-gradient(180deg,rgba(16,12,8,.9),rgba(12,13,22,.5))}
+section[data-source-pillar="404"] .cp-p{background:radial-gradient(circle at 20% 20%,rgba(248,113,113,.2),transparent 34%),linear-gradient(145deg,rgba(18,8,13,.9),rgba(10,12,24,.55))}
+section[data-source-pillar="footer"] .cp-p{background:linear-gradient(180deg,rgba(8,15,28,.92),rgba(8,8,12,.5)),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 42px)}
+section[data-source-pillar="bento"] .cp-p{background:radial-gradient(circle at 78% 20%,rgba(74,222,128,.16),transparent 30%),linear-gradient(145deg,rgba(8,18,16,.88),rgba(8,10,18,.54))}
 .kit-source{display:inline-flex;align-items:center;width:max-content;padding:4px 8px;border-radius:999px;background:rgba(194,164,255,.12);border:1px solid rgba(194,164,255,.24);color:rgba(222,205,255,.9);font-size:8px;letter-spacing:.16em;text-transform:uppercase}
 .cp-i .kit-source{margin-bottom:2px}
 
@@ -2613,7 +2612,7 @@ if (!["localhost", "127.0.0.1"].includes(location.hostname)) {
   <span class="sound-dot" aria-hidden="true"></span>
   <span class="sound-label">Sound off</span>
 </button>
-<script src="assets/app.js?v=accessibility-audit-20260505c" defer></script>
+<script src="assets/app.js?v=performance-audit-20260505c" defer></script>
 </body>
 </html>
 

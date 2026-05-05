@@ -11,6 +11,23 @@ const catalogPaginationState = {
   resizeObserver: null,
 };
 
+const catalogFonts = [
+  ["Space Grotesk", "SpaceGrotesk-400.ttf"],
+  ["Sora", "Sora-400.ttf"],
+  ["Manrope", "Manrope-400.ttf"],
+  ["Outfit", "Outfit-400.ttf"],
+  ["Plus Jakarta Sans", "PlusJakartaSans-400.ttf"],
+  ["DM Sans", "DMSans-400.ttf"],
+  ["Syne", "Syne-400.ttf"],
+  ["Fraunces", "Fraunces-400.ttf"],
+  ["IBM Plex Sans", "IBMPlexSans-400.ttf"],
+  ["Archivo", "Archivo-400.ttf"],
+  ["Urbanist", "Urbanist-400.ttf"],
+  ["Instrument Serif", "InstrumentSerif-400.ttf"],
+  ["Onest", "Onest-400.ttf"],
+  ["Rajdhani", "Rajdhani-400.ttf"],
+];
+
 const GRID_ROWS = {
   dense: { wide: 3, desktop: 3, tablet: 3, mobile: 4 },
   standard: { wide: 2, desktop: 2, tablet: 2, mobile: 3 },
@@ -242,31 +259,115 @@ function scheduleBackgroundAudioAutoplay() {
 function initCursor() {
   const cur = document.getElementById("cur");
   const trl = document.getElementById("trl");
-  if (!cur || !trl) return;
+  if (!cur || !trl || !window.matchMedia("(pointer: fine)").matches) return;
 
-  window.addEventListener("mousemove", (event) => {
-    cur.style.transform = `translate3d(${event.clientX - 8}px, ${event.clientY - 8}px, 0)`;
-    window.setTimeout(() => {
-      trl.style.transform = `translate3d(${event.clientX - 2}px, ${event.clientY - 2}px, 0)`;
-    }, 50);
-  });
+  let pointerX = 0;
+  let pointerY = 0;
+  let cursorFrame = 0;
+
+  const updatePointer = () => {
+    cursorFrame = 0;
+    cur.style.transform = `translate3d(${pointerX - 8}px, ${pointerY - 8}px, 0)`;
+    trl.style.transform = `translate3d(${pointerX - 2}px, ${pointerY - 2}px, 0)`;
+  };
+
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      pointerX = event.clientX;
+      pointerY = event.clientY;
+
+      if (!cursorFrame) {
+        cursorFrame = window.requestAnimationFrame(updatePointer);
+      }
+    },
+    { passive: true },
+  );
 
   document.addEventListener("mousedown", () => cur.classList.add("ck"));
   document.addEventListener("mouseup", () => cur.classList.remove("ck"));
 
-  const attachHovers = () => {
-    document.querySelectorAll("a, button, .has-copy, .cpb").forEach((element) => {
-      if (element.dataset.hoverAttached) return;
+  const getHoverTarget = (target) => target?.closest?.("a, button, .has-copy, .cpb");
+  document.addEventListener(
+    "pointerover",
+    (event) => {
+      if (getHoverTarget(event.target)) {
+        cur.classList.add("h");
+      }
+    },
+    { passive: true },
+  );
+  document.addEventListener(
+    "pointerout",
+    (event) => {
+      const current = getHoverTarget(event.target);
+      const next = getHoverTarget(event.relatedTarget);
+      if (current && current !== next) {
+        cur.classList.remove("h");
+      }
+    },
+    { passive: true },
+  );
+}
 
-      element.addEventListener("mouseenter", () => cur.classList.add("h"));
-      element.addEventListener("mouseleave", () => cur.classList.remove("h"));
-      element.dataset.hoverAttached = "true";
-    });
+function estimateGridWidth() {
+  const viewportWidth = Math.max(document.documentElement.clientWidth || window.innerWidth || 0, 320);
+  const horizontalPadding = viewportWidth <= 768 ? 36 : 120;
+  return Math.min(1400, Math.max(0, viewportWidth - horizontalPadding));
+}
+
+function runInFrameBatches(items, task, batchBudget = 8) {
+  if (!items.length) return;
+
+  let index = 0;
+
+  const run = () => {
+    const stopAt = performance.now() + batchBudget;
+
+    do {
+      task(items[index], index);
+      index += 1;
+    } while (index < items.length && performance.now() < stopAt);
+
+    if (index < items.length) {
+      window.requestAnimationFrame(run);
+    }
   };
 
-  attachHovers();
-  const observer = new MutationObserver(attachHovers);
-  observer.observe(document.body, { childList: true, subtree: true });
+  window.requestAnimationFrame(run);
+}
+
+function injectCatalogFonts() {
+  if (document.getElementById("catalog-font-faces")) return;
+
+  const style = document.createElement("style");
+  style.id = "catalog-font-faces";
+  style.textContent = catalogFonts
+    .map(
+      ([family, file]) =>
+        `@font-face{font-family:'${family}';src:url('assets/fonts/${file}') format('truetype');font-weight:400;font-style:normal;font-display:optional}`,
+    )
+    .join("");
+  document.head.appendChild(style);
+}
+
+function initCatalogFontLoading() {
+  const typographySection = document.getElementById("typography");
+  if (!typographySection || !("IntersectionObserver" in window)) {
+    injectCatalogFonts();
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      injectCatalogFonts();
+      observer.disconnect();
+    },
+    { rootMargin: "900px 0px" },
+  );
+
+  observer.observe(typographySection);
 }
 
 function initCopyButtons() {
@@ -294,54 +395,55 @@ function initScrollEffects() {
 
   revealItems.forEach((element) => observer.observe(element));
 
-  window.addEventListener("scroll", () => {
-    const progress = document.getElementById("prg");
+  const revealAnchorSection = () => {
+    if (!location.hash) return;
+
+    const section = document.querySelector(location.hash);
+    if (!section) return;
+
+    section.querySelectorAll(".rv, .sg > *").forEach((element) => {
+      element.classList.add("v");
+      observer.unobserve(element);
+    });
+  };
+
+  window.addEventListener("hashchange", revealAnchorSection);
+  window.requestAnimationFrame(revealAnchorSection);
+
+  const progress = document.getElementById("prg");
+  const nav = document.getElementById("nav");
+  let scrollFrame = 0;
+
+  const updateScrollState = () => {
+    scrollFrame = 0;
     if (progress) {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-      progress.style.width = `${(winScroll / height) * 100}%`;
+      const progressScale = height > 0 ? Math.min(1, Math.max(0, winScroll / height)) : 0;
+      progress.style.transform = `scaleX(${progressScale})`;
     }
 
-    const nav = document.getElementById("nav");
     if (nav) {
       nav.classList.toggle("sc", window.scrollY > 50);
     }
-  });
+  };
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (!scrollFrame) {
+        scrollFrame = window.requestAnimationFrame(updateScrollState);
+      }
+    },
+    { passive: true },
+  );
+  updateScrollState();
 }
 
 function getPaginationItems(grid) {
   return Array.from(grid.children).filter(
     (child) => child.nodeType === 1 && !child.classList.contains("pagination-controls"),
   );
-}
-
-function getGridColumnCount(grid) {
-  const template = window.getComputedStyle(grid).gridTemplateColumns;
-  if (!template || template === "none") return 0;
-  return template.split(" ").filter(Boolean).length;
-}
-
-function getWrappedColumnCount(items) {
-  if (!items.length) return 1;
-
-  items.forEach((item) => {
-    item.hidden = false;
-  });
-
-  const firstTop = Math.round(items[0].getBoundingClientRect().top);
-  let columns = 0;
-
-  for (const item of items) {
-    const top = Math.round(item.getBoundingClientRect().top);
-    if (Math.abs(top - firstTop) <= 4) {
-      columns += 1;
-      continue;
-    }
-
-    break;
-  }
-
-  return Math.max(columns, 1);
 }
 
 function getViewportTier() {
@@ -405,19 +507,15 @@ function getTargetRowCount(grid) {
 function measureColumns(grid, items) {
   const minWidth = getGridMinWidth(grid);
   const gap = getGridGap(grid);
-  const gridWidth = Math.max(grid.clientWidth, grid.parentElement?.clientWidth || 0, 0);
+  const gridWidth = estimateGridWidth();
 
-  if (gridWidth > 0) {
-    return Math.max(1, Math.min(items.length, Math.floor((gridWidth + gap) / (minWidth + gap))));
-  }
-
-  return Math.max(1, Math.min(items.length, getGridColumnCount(grid) || 1));
+  return Math.max(1, Math.min(items.length, Math.floor((gridWidth + gap) / (minWidth + gap))));
 }
 
 function measureGridProfile(instance) {
   const { grid, items } = instance;
   const tier = getViewportTier();
-  const width = Math.round(Math.max(grid.clientWidth, grid.parentElement?.clientWidth || 0, 0));
+  const width = Math.round(estimateGridWidth());
   const signature = `${tier}:${width}`;
 
   if (instance.measurementSignature === signature && instance.cardProfile) {
@@ -2932,14 +3030,15 @@ function initPagination() {
       grid.closest("section")?.scrollIntoView({ behavior: "smooth", block: "start" });
     });
 
-    updatePaginationInstance(instance);
     instances.push(instance);
   });
+
+  runInFrameBatches(instances, updatePaginationInstance);
 
   const scheduleRefresh = () => {
     window.cancelAnimationFrame(catalogPaginationState.frame);
     catalogPaginationState.frame = window.requestAnimationFrame(() => {
-      instances.forEach((instance) => {
+      runInFrameBatches(instances, (instance) => {
         instance.measurementSignature = "";
         updatePaginationInstance(instance);
       });
@@ -2995,6 +3094,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initCursor();
   initCopyButtons();
   initScrollEffects();
+  initCatalogFontLoading();
   syncCatalogStructure();
   initSectionMenu();
   enhanceCatalog();

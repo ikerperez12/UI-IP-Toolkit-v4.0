@@ -28,7 +28,7 @@ const checks = [
   ["data table snippets use real tables", app.includes("<table") && app.includes('scope="col"') && app.includes('scope="row"')],
   ["loader snippets expose status semantics", app.includes('role", "status"') || app.includes('role="status"')],
   ["section menu remains generated from catalogSections", app.includes("buildSectionMenu(activeSections)")],
-  ["Vercel CSP includes current analytics inline hash", JSON.stringify(vercel).includes("sha256-MrV/4Ie8zRP3W95qMV7gJxPK0GAcD3h4rLC54NbJPDQ=")],
+  ["Vercel CSP includes current analytics inline hash", JSON.stringify(vercel).includes("sha256-BhLXPuzSikTDWScACguH8zzJwO1j+dlwuGtzM7M/u7g=")],
 ];
 
 const failures = checks.filter(([, passed]) => !passed);

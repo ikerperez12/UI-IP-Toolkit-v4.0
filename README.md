@@ -90,7 +90,7 @@ UI IP Toolkit is a visual prototyping vault, not a production UI framework. Beca
 - Reduced-motion and coarse-pointer rules for decorative motion/cursor effects.
 - CI coverage through Playwright + axe-core for serious/critical rendered accessibility regressions.
 
-More detail is documented in [docs/accessibility-governance.md](docs/accessibility-governance.md). A copy-ready response to community feedback is available in [docs/community-response-accessibility.md](docs/community-response-accessibility.md).
+More detail is documented in [docs/accessibility-governance.md](docs/accessibility-governance.md).
 
 Run static checks:
 
