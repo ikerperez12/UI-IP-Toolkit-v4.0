@@ -14,9 +14,11 @@
   "scripts": {
     "start": "npx http-server . -p 3333",
     "check": "npm run check:js && npm run check:vercel && npm run check:a11y-smoke",
+    "check:ci": "npm run check && npm run test:a11y",
     "check:js": "node --check assets/app.js",
     "check:vercel": "node -e \"JSON.parse(require('fs').readFileSync('vercel.json','utf8')); console.log('vercel.json ok')\"",
-    "check:a11y-smoke": "node scripts/accessibility-smoke.mjs"
+    "check:a11y-smoke": "node scripts/accessibility-smoke.mjs",
+    "test:a11y": "playwright test tests/accessibility.spec.mjs --project=chromium"
   },
   "keywords": [
     "ui-kit",
@@ -28,5 +30,9 @@
   "license": "MIT",
   "dependencies": {
     "@vercel/analytics": "^2.0.1"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
+    "@playwright/test": "^1.59.1"
   }
 }

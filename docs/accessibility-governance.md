@@ -58,10 +58,11 @@ A copied pattern or site change is not considered complete until it satisfies th
 
 5. Testing
    - `npm run check` passes.
+   - `npm run test:a11y` passes for the rendered catalog.
    - Browser QA has no console errors.
    - Desktop and mobile have no horizontal overflow.
    - Manual keyboard review covers menu, copy buttons, form demos and audio control.
-   - Future E2E work should add Playwright + axe-core for full rendered scans.
+   - Playwright + axe-core remains active in CI for serious/critical regressions.
 
 ## Current Check Commands
 
@@ -75,7 +76,13 @@ This runs:
 - `vercel.json` parsing
 - `scripts/accessibility-smoke.mjs`
 
-The smoke check is intentionally dependency-free so it does not increase runtime payload or deployment risk. It verifies that the accessibility-critical architecture remains present.
+Run rendered accessibility checks:
+
+```bash
+npm run test:a11y
+```
+
+The smoke check is intentionally dependency-free so it does not increase runtime payload or deployment risk. The Playwright + axe-core test suite runs as development tooling only; it does not ship to the public page.
 
 ## Known Scope
 

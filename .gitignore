@@ -40,6 +40,8 @@ Desktop.ini
 
 # Temporary build/extracted files
 extracted/
+test-results/
+playwright-report/
 *.js.tmp
 test_script.js
 inspect_dom.js

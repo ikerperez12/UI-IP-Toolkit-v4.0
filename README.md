@@ -88,6 +88,7 @@ UI IP Toolkit is a visual prototyping vault, not a production UI framework. Beca
 - `role="status"` and polite live regions for copied loader snippets.
 - Focus-visible styling that avoids border-width layout shifts.
 - Reduced-motion and coarse-pointer rules for decorative motion/cursor effects.
+- CI coverage through Playwright + axe-core for serious/critical rendered accessibility regressions.
 
 More detail is documented in [docs/accessibility-governance.md](docs/accessibility-governance.md). A copy-ready response to community feedback is available in [docs/community-response-accessibility.md](docs/community-response-accessibility.md).
 
@@ -95,6 +96,7 @@ Run static checks:
 
 ```bash
 npm run check
+npm run test:a11y
 ```
 
 ## Production Notes
