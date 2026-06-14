@@ -1,6 +1,6 @@
 # UI IP Toolkit
 
-UI IP Toolkit is a static, zero-runtime-dependency frontend asset catalog for web developers. It provides quick visual access to copy-ready UI assets, including buttons, gradients, loaders, CTAs, footers, bento grids, product UI patterns, layout fragments, local fonts, animation recipes and reusable CSS utilities.
+UI IP Toolkit is a static frontend asset catalog for web developers. It provides visual access to copy-ready UI snippets, CSS utilities, buttons, gradients, loaders, CTAs, footers, bento grids, navigation patterns, forms, accessibility-oriented snippets and product UI blocks.
 
 Official site: https://ui-ip-toolkit.vercel.app/
 Repository: https://github.com/ikerperez12/UI-IP-Toolkit-v4.0
@@ -11,6 +11,38 @@ Sitemap: https://ui-ip-toolkit.vercel.app/sitemap.xml
 Image sitemap: https://ui-ip-toolkit.vercel.app/sitemap-images.xml
 Search vocabulary: https://ui-ip-toolkit.vercel.app/search-keywords.txt
 
+Primary catalog routes:
+- Frontend asset library for fast visual reuse: https://ui-ip-toolkit.vercel.app/catalog/frontend-asset-library.html
+- Copy-ready UI snippets for practical frontend work: https://ui-ip-toolkit.vercel.app/catalog/copy-ready-ui-snippets.html
+- CSS button examples with copy-ready interaction states: https://ui-ip-toolkit.vercel.app/catalog/css-button-examples.html
+- CSS gradient library for product interfaces: https://ui-ip-toolkit.vercel.app/catalog/gradient-library.html
+- Loading state examples for product interfaces: https://ui-ip-toolkit.vercel.app/catalog/loading-state-examples.html
+- CTA block examples for conversion-focused frontend sections: https://ui-ip-toolkit.vercel.app/catalog/cta-block-examples.html
+- Footer design systems for product websites: https://ui-ip-toolkit.vercel.app/catalog/footer-design-system.html
+- Bento grid layouts for frontend storytelling: https://ui-ip-toolkit.vercel.app/catalog/bento-grid-layouts.html
+- Navigation patterns for product websites and web apps: https://ui-ip-toolkit.vercel.app/catalog/navigation-patterns.html
+- Form pattern examples with accessible structure: https://ui-ip-toolkit.vercel.app/catalog/form-patterns.html
+- Accessible UI snippets for safer frontend prototypes: https://ui-ip-toolkit.vercel.app/catalog/accessible-ui-snippets.html
+- Data table patterns for dashboards and admin UI: https://ui-ip-toolkit.vercel.app/catalog/data-table-patterns.html
+- Dialog and overlay patterns for product flows: https://ui-ip-toolkit.vercel.app/catalog/dialog-overlay-patterns.html
+- Empty state examples and product feedback patterns: https://ui-ip-toolkit.vercel.app/catalog/empty-state-examples.html
+- Pricing section examples for SaaS and subscription pages: https://ui-ip-toolkit.vercel.app/catalog/pricing-section-examples.html
+- Hero headline examples for clear first screens: https://ui-ip-toolkit.vercel.app/catalog/hero-headline-examples.html
+- 404 error page design with useful recovery paths: https://ui-ip-toolkit.vercel.app/catalog/error-page-design.html
+- Glassmorphism UI components with usable contrast: https://ui-ip-toolkit.vercel.app/catalog/glassmorphism-components.html
+- Typography and font examples for product UI: https://ui-ip-toolkit.vercel.app/catalog/typography-and-fonts.html
+- Hover effect snippets for interactive frontend details: https://ui-ip-toolkit.vercel.app/catalog/hover-effects.html
+- Biblioteca visual de assets frontend para desarrolladores web: https://ui-ip-toolkit.vercel.app/catalog/es-biblioteca-assets-frontend.html
+- Snippets UI listos para copiar y adaptar: https://ui-ip-toolkit.vercel.app/catalog/es-snippets-ui-listos-para-copiar.html
+- Botones CSS listos para copiar: https://ui-ip-toolkit.vercel.app/catalog/es-botones-css.html
+- Gradientes CSS para interfaces web: https://ui-ip-toolkit.vercel.app/catalog/es-gradientes-css.html
+- Loaders y skeletons para interfaces frontend: https://ui-ip-toolkit.vercel.app/catalog/es-loaders-skeletons.html
+- CTAs para landing pages y productos SaaS: https://ui-ip-toolkit.vercel.app/catalog/es-ctas-landing-pages.html
+- Footers web reutilizables y sistemas de cierre: https://ui-ip-toolkit.vercel.app/catalog/es-footers-web.html
+- Bento grids para contar productos visualmente: https://ui-ip-toolkit.vercel.app/catalog/es-bento-grids.html
+- Patrones de navegacion web claros y reutilizables: https://ui-ip-toolkit.vercel.app/catalog/es-patrones-navegacion.html
+- Componentes accesibles y snippets semanticos: https://ui-ip-toolkit.vercel.app/catalog/es-componentes-accesibles.html
+
 Important public assets:
 - Hero image: https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-hero.png
 - Social card: https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-social.png
@@ -18,4 +50,4 @@ Important public assets:
 - Demo GIF: https://ui-ip-toolkit.vercel.app/.github/assets/ui-ip-toolkit-demo.gif
 
 Suggested summary:
-UI IP Toolkit is a visual library for developers who want fast, comfortable access to reusable frontend assets. It is built as a public static catalog with copy-ready snippets and no backend or runtime framework dependency.
+UI IP Toolkit is a visual library for developers who want fast, comfortable access to reusable frontend assets. It is built as a public static catalog with copy-ready snippets, topic-specific catalog routes and no backend or runtime framework dependency.

@@ -13,6 +13,7 @@
   },
   "scripts": {
     "start": "npx http-server . -p 3333",
+    "generate:seo": "node scripts/generate-seo-pages.mjs",
     "check": "npm run check:js && npm run check:vercel && npm run check:a11y-smoke",
     "check:ci": "npm run check && npm run test:a11y",
     "check:js": "node --check assets/app.js",

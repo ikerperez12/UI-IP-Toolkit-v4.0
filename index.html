@@ -12,7 +12,7 @@
 <meta name="google-site-verification" content="nTlHP2ssyKHDqGmSb3mtVSWgGAhWPh6YkL-0degcIQQ">
 <!-- Bing Webmaster Tools: import the verified Google Search Console property, or replace this comment with <meta name="msvalidate.01" content="YOUR_BING_TOKEN"> if verifying manually. -->
 <link rel="canonical" href="https://ui-ip-toolkit.vercel.app/">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' x2='1' y1='0' y2='1'%3E%3Cstop stop-color='%23c2a4ff'/%3E%3Cstop offset='1' stop-color='%23fb8dff'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='18' fill='%23060507'/%3E%3Cpath d='M18 19h10v26H18zm18 0h10v26H36z' fill='url(%23g)'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <meta name="theme-color" content="#060507">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="UI IP Toolkit">
@@ -931,6 +931,12 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 .noscript-fallback ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:20px 0 0;padding:0;list-style:none}
 .noscript-fallback a{display:flex;align-items:center;min-height:44px;border-radius:14px;padding:0 14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);color:#fff;text-decoration:none;font-weight:700}
 .noscript-fallback .noscript-note{margin-top:18px;color:var(--ui-soft);font-size:.95rem}
+.seo-directory{position:relative;z-index:2;width:min(1180px,calc(100% - 48px));margin:80px auto 18px;padding:28px;border-radius:28px;background:linear-gradient(180deg,rgba(16,16,24,.86),rgba(10,10,16,.72));border:1px solid rgba(255,255,255,.1);box-shadow:0 24px 90px rgba(0,0,0,.34)}
+.seo-directory h2{margin:0;font-family:'ClashDisplay',sans-serif;font-size:clamp(1.6rem,3.8vw,3.1rem);line-height:1;letter-spacing:-.035em;color:#fff}
+.seo-directory p{max-width:780px;margin:12px 0 0;color:rgba(234,229,236,.82);font-size:1rem;line-height:1.65}
+.seo-directory-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px;margin-top:22px}
+.seo-directory-grid a{display:flex;align-items:center;min-height:46px;padding:0 14px;border-radius:14px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.11);color:#fff;text-decoration:none;font-size:.9rem;font-weight:800}
+.seo-directory-grid a:hover{border-color:rgba(215,196,255,.34);background:rgba(215,196,255,.11)}
 .has-copy :is(.kit-meta,.ld,.inp-note,.cp-i p,.hf-i p,.gl-p p,.ck-body p,.catalog-source-note){color:rgba(234,229,236,.78)}
 .has-copy :is(.ut-n,.ln,.cn,.cp-i h3,.cp-i h4){color:#fff}
 .has-copy :is(.kit-source,.kit-pill){font-size:max(10px,.68rem)}
@@ -940,6 +946,8 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 .kit-source{font-size:10px;letter-spacing:.08em;padding:3px 7px}
 .pagination-status{font-size:12px}
 .noscript-fallback{margin:70px 18px 20px;padding:22px}
+.seo-directory{width:auto;margin:58px 18px 14px;padding:22px;border-radius:22px}
+.seo-directory-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -2635,8 +2643,28 @@ footer.final-cta p{font-size:.78rem;line-height:1.7}
 
 
 <div class="dv"></div>
+<nav class="seo-directory" aria-labelledby="seo-directory-title">
+  <h2 id="seo-directory-title">Frontend asset catalog routes</h2>
+  <p>Topic-specific landing pages give search engines and readers clearer entry points into the UI IP Toolkit catalog. Open the full interactive catalog above, or jump directly to focused routes for buttons, CSS snippets, loaders, CTAs, footers, bento grids, navigation, forms and accessible UI examples.</p>
+  <div class="seo-directory-grid" aria-label="SEO catalog routes">
+    <a href="/catalog/">All catalog routes</a>
+    <a href="/catalog/frontend-asset-library.html">Frontend asset library</a>
+    <a href="/catalog/copy-ready-ui-snippets.html">Copy-ready UI snippets</a>
+    <a href="/catalog/css-button-examples.html">CSS button examples</a>
+    <a href="/catalog/loading-state-examples.html">Loading state examples</a>
+    <a href="/catalog/cta-block-examples.html">CTA block examples</a>
+    <a href="/catalog/footer-design-system.html">Footer design systems</a>
+    <a href="/catalog/bento-grid-layouts.html">Bento grid layouts</a>
+    <a href="/catalog/navigation-patterns.html">Navigation patterns</a>
+    <a href="/catalog/form-patterns.html">Form patterns</a>
+    <a href="/catalog/accessible-ui-snippets.html">Accessible UI snippets</a>
+    <a href="/catalog/es-biblioteca-assets-frontend.html" lang="es">Biblioteca assets frontend</a>
+    <a href="/catalog/es-snippets-ui-listos-para-copiar.html" lang="es">Snippets UI listos para copiar</a>
+    <a href="/catalog/es-componentes-accesibles.html" lang="es">Componentes accesibles</a>
+  </div>
+</nav>
 </main>
-<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 32 sections - 330+ copyable elements - Background soundtrack - Zero dependencies</p></footer>
+<footer class="final-cta"><div class="ft rv">Ready<br>to Build</div><p class="rv d1">UI IP Toolkit v4 - 64 sections - 785 copyable elements - Background soundtrack on demand - Zero runtime framework</p></footer>
 <audio id="background-audio" preload="none" playsinline loop data-src="assets/audio/the-high-ridge.mp3"></audio>
 <button id="background-audio-toggle" class="bg-audio-toggle" type="button" data-state="paused" aria-pressed="false" aria-label="Turn background music on" title="Sound off">
   <span class="sound-dot" aria-hidden="true"></span>
