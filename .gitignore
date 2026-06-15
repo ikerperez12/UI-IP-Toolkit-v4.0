@@ -37,6 +37,8 @@ Desktop.ini
 .env.test.local
 .env.production.local
 .vercel/
+.agents/
+skills-lock.json
 
 # Temporary build/extracted files
 extracted/

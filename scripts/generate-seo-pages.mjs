@@ -624,6 +624,19 @@ const spanishPages = [
 
 const catalogPages = [...pages, ...spanishPages];
 const landingRoutes = catalogPages.map((page) => `/catalog/${page.slug}.html`);
+const spanishToEnglish = new Map([
+  ["es-biblioteca-assets-frontend", "frontend-asset-library"],
+  ["es-snippets-ui-listos-para-copiar", "copy-ready-ui-snippets"],
+  ["es-botones-css", "css-button-examples"],
+  ["es-gradientes-css", "gradient-library"],
+  ["es-loaders-skeletons", "loading-state-examples"],
+  ["es-ctas-landing-pages", "cta-block-examples"],
+  ["es-footers-web", "footer-design-system"],
+  ["es-bento-grids", "bento-grid-layouts"],
+  ["es-patrones-navegacion", "navigation-patterns"],
+  ["es-componentes-accesibles", "accessible-ui-snippets"],
+]);
+const englishToSpanish = new Map([...spanishToEnglish.entries()].map(([es, en]) => [en, es]));
 
 function escapeHtml(value) {
   return String(value)
@@ -641,10 +654,67 @@ function routeUrl(path) {
   return `${siteUrl}${path}`;
 }
 
+function catalogUrl(slug) {
+  return routeUrl(`/catalog/${slug}.html`);
+}
+
+function localeAlternates(page) {
+  const englishSlug = page.lang === "es" ? spanishToEnglish.get(page.slug) : page.slug;
+  const spanishSlug = page.lang === "es" ? page.slug : englishToSpanish.get(page.slug);
+  if (!englishSlug || !spanishSlug) return [];
+  return [
+    { lang: "en", href: catalogUrl(englishSlug) },
+    { lang: "es", href: catalogUrl(spanishSlug) },
+    { lang: "x-default", href: catalogUrl(englishSlug) },
+  ];
+}
+
+function alternateHeadLinks(page) {
+  return localeAlternates(page)
+    .map((item) => `<link rel="alternate" hreflang="${item.lang}" href="${item.href}">`)
+    .join("\n");
+}
+
+function faqItems(page) {
+  const isSpanish = page.lang === "es";
+  const sectionNames = page.sections.map(([name]) => name).join(", ");
+  if (isSpanish) {
+    return [
+      {
+        question: `Que es ${page.h1}?`,
+        answer: `${page.description} Esta ruta resume el tema con enlaces directos a previews y secciones reales del catalogo UI IP Toolkit.`,
+      },
+      {
+        question: "Como debo usar estos snippets?",
+        answer: "Usalos como punto de partida visual: revisa la preview, copia el snippet y adapta semantica, responsive, contraste y estados al contexto real de tu proyecto.",
+      },
+      {
+        question: "Que secciones relacionadas puedo abrir?",
+        answer: `Las secciones relacionadas de esta ruta incluyen ${sectionNames}. Todas apuntan al catalogo interactivo principal.`,
+      },
+    ];
+  }
+  return [
+    {
+      question: `What is ${page.h1}?`,
+      answer: `${page.description} This route gives searchers and developers a focused entry point into real UI IP Toolkit catalog sections.`,
+    },
+    {
+      question: "How should developers use these snippets?",
+      answer: "Use them as visual starting points: inspect the preview, copy the snippet, then adapt semantics, responsive behavior, contrast and states to the production context.",
+    },
+    {
+      question: "Which related sections can I open?",
+      answer: `Related sections for this route include ${sectionNames}. Each link points back into the full interactive catalog.`,
+    },
+  ];
+}
+
 function pageHtml(page) {
   const isSpanish = page.lang === "es";
   const url = routeUrl(`/catalog/${page.slug}.html`);
   const relatedPages = catalogPages.filter((item) => item.slug !== page.slug && item.lang === page.lang).slice(0, 6);
+  const faqs = faqItems(page);
   const structuredData = {
     "@context": "https://schema.org",
     "@graph": [
@@ -677,6 +747,18 @@ function pageHtml(page) {
           url: new URL(href, url).href,
         })),
       },
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        mainEntity: faqs.map((item) => ({
+          "@type": "Question",
+          name: item.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: item.answer,
+          },
+        })),
+      },
     ],
   };
 
@@ -689,6 +771,7 @@ function pageHtml(page) {
 <meta name="description" content="${escapeHtml(page.description)}">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="${url}">
+${alternateHeadLinks(page)}
 <link rel="icon" href="../favicon.svg">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="UI IP Toolkit">
@@ -703,7 +786,7 @@ function pageHtml(page) {
 <script type="application/ld+json">${json(structuredData)}</script>
 <style>
 :root{color-scheme:dark;--bg:#060507;--panel:#101018;--text:#f8f4ff;--muted:#d7cede;--soft:#bfb4c9;--line:rgba(255,255,255,.12);--accent:#d7c4ff;--hot:#fb8dff}
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 18% 0,rgba(194,164,255,.16),transparent 34%),var(--bg);color:var(--text);line-height:1.65}a{color:inherit}a:focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:8px}.wrap{width:min(1120px,calc(100% - 32px));margin:0 auto}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}.brand{font-weight:900;letter-spacing:.02em}.nav{display:flex;gap:14px;flex-wrap:wrap}.nav a,.pill{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--muted);background:rgba(255,255,255,.04)}.hero{padding:72px 0 42px}.eyebrow{color:var(--accent);font-weight:800;text-transform:uppercase;font-size:.82rem;letter-spacing:.14em}.hero h1{max-width:820px;margin:.5rem 0 1rem;font-size:clamp(2.3rem,6vw,5rem);line-height:.95;letter-spacing:0}.hero p{max-width:780px;color:var(--muted);font-size:1.12rem}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;margin:34px 0}.card{border:1px solid var(--line);background:rgba(16,16,24,.82);border-radius:22px;padding:24px;box-shadow:0 24px 80px rgba(0,0,0,.28)}h2{font-size:1.35rem;margin:0 0 14px}.list{display:grid;gap:12px;margin:0;padding:0;list-style:none}.list a{display:flex;justify-content:space-between;gap:12px;text-decoration:none;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}.list a span{color:var(--soft)}.keywords{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.copy{color:var(--muted)}.footer{border-top:1px solid var(--line);margin-top:48px;padding:28px 0 44px;color:var(--soft);font-size:.95rem}.routes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.routes a{text-decoration:none;color:var(--muted);padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04)}@media(max-width:760px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.hero{padding-top:42px}}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:radial-gradient(circle at 18% 0,rgba(194,164,255,.16),transparent 34%),var(--bg);color:var(--text);line-height:1.65}a{color:inherit}a:focus-visible{outline:3px solid #fff;outline-offset:4px;border-radius:8px}.wrap{width:min(1120px,calc(100% - 32px));margin:0 auto}.top{display:flex;justify-content:space-between;gap:18px;align-items:center;padding:22px 0;border-bottom:1px solid var(--line)}.brand{font-weight:900;letter-spacing:.02em}.nav{display:flex;gap:14px;flex-wrap:wrap}.nav a,.pill{display:inline-flex;align-items:center;min-height:36px;padding:0 12px;border:1px solid var(--line);border-radius:999px;text-decoration:none;color:var(--muted);background:rgba(255,255,255,.04)}.breadcrumb{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:28px 0 -24px;color:var(--soft);font-size:.92rem}.breadcrumb a{text-decoration:none;color:var(--muted)}.breadcrumb span[aria-current="page"]{color:var(--text)}.hero{padding:72px 0 42px}.eyebrow{color:var(--accent);font-weight:800;text-transform:uppercase;font-size:.82rem;letter-spacing:.14em}.hero h1{max-width:820px;margin:.5rem 0 1rem;font-size:clamp(2.3rem,6vw,5rem);line-height:.95;letter-spacing:0}.hero p{max-width:780px;color:var(--muted);font-size:1.12rem}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:24px;margin:34px 0}.card{border:1px solid var(--line);background:rgba(16,16,24,.82);border-radius:22px;padding:24px;box-shadow:0 24px 80px rgba(0,0,0,.28)}h2{font-size:1.35rem;margin:0 0 14px}.list{display:grid;gap:12px;margin:0;padding:0;list-style:none}.list a{display:flex;justify-content:space-between;gap:12px;text-decoration:none;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08)}.list a span{color:var(--soft)}.keywords{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}.copy{color:var(--muted)}.faq{display:grid;gap:18px;margin:0}.faq dt{font-weight:850;color:#fff}.faq dd{margin:6px 0 0;color:var(--muted)}.footer{border-top:1px solid var(--line);margin-top:48px;padding:28px 0 44px;color:var(--soft);font-size:.95rem}.routes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px}.routes a{text-decoration:none;color:var(--muted);padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.04)}@media(max-width:760px){.grid{grid-template-columns:1fr}.top{align-items:flex-start;flex-direction:column}.hero{padding-top:42px}.breadcrumb{margin-top:22px}}
 </style>
 </head>
 <body>
@@ -716,6 +799,13 @@ function pageHtml(page) {
   </nav>
 </header>
 <main class="wrap">
+  <nav class="breadcrumb" aria-label="${isSpanish ? "Migas de pan" : "Breadcrumb"}">
+    <a href="../">${isSpanish ? "Inicio" : "Home"}</a>
+    <span aria-hidden="true">/</span>
+    <a href="./">${isSpanish ? "Catalogo" : "Catalog"}</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">${escapeHtml(page.h1)}</span>
+  </nav>
   <section class="hero">
     <div class="eyebrow">${isSpanish ? "Ruta del catalogo UI IP Toolkit" : "UI IP Toolkit catalog route"}</div>
     <h1>${escapeHtml(page.h1)}</h1>
@@ -745,6 +835,12 @@ function pageHtml(page) {
   <section class="card" style="margin-top:24px">
     <h2>${isSpanish ? "Sobre UI IP Toolkit" : "About UI IP Toolkit"}</h2>
     <p class="copy">${isSpanish ? "UI IP Toolkit es un catalogo estatico de assets frontend para desarrolladores que quieren acceso visual rapido a patrones UI reutilizables. El catalogo interactivo completo contiene 64 secciones y 785 elementos copiables, mientras estas rutas dan a buscadores y lectores entradas tematicas mas claras." : "UI IP Toolkit is a static frontend asset catalog for developers who want quick visual access to reusable UI patterns. The full interactive catalog contains 64 sections and 785 copyable elements, while these catalog routes give search engines and readers clearer topic-specific entry points."}</p>
+  </section>
+  <section class="card" style="margin-top:24px">
+    <h2>${isSpanish ? "Preguntas frecuentes" : "Frequently asked questions"}</h2>
+    <dl class="faq">
+      ${faqs.map((item) => `<div><dt>${escapeHtml(item.question)}</dt><dd>${escapeHtml(item.answer)}</dd></div>`).join("\n      ")}
+    </dl>
   </section>
 </main>
 <footer class="wrap footer">
@@ -814,14 +910,16 @@ function sitemapXml() {
   const urls = [
     { loc: `${siteUrl}/`, priority: "1.0" },
     { loc: `${siteUrl}/catalog/`, priority: "0.9" },
-    ...catalogPages.map((page) => ({ loc: routeUrl(`/catalog/${page.slug}.html`), priority: page.lang === "es" ? "0.7" : "0.8" })),
+    ...catalogPages.map((page) => ({ loc: catalogUrl(page.slug), priority: page.lang === "es" ? "0.7" : "0.8", page })),
   ];
   return `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
 ${urls
   .map(
     (url) => `  <url>
     <loc>${url.loc}</loc>
+${url.page ? localeAlternates(url.page).map((item) => `    <xhtml:link rel="alternate" hreflang="${item.lang}" href="${item.href}"/>`).join("\n") : ""}
     <lastmod>${lastmod}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>${url.priority}</priority>

@@ -1,193 +1,266 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/frontend-asset-library.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/frontend-asset-library.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-biblioteca-assets-frontend.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/frontend-asset-library.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/copy-ready-ui-snippets.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/copy-ready-ui-snippets.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-snippets-ui-listos-para-copiar.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/copy-ready-ui-snippets.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/css-button-examples.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/css-button-examples.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-botones-css.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/css-button-examples.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/gradient-library.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/gradient-library.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-gradientes-css.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/gradient-library.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/loading-state-examples.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/loading-state-examples.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-loaders-skeletons.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/loading-state-examples.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/cta-block-examples.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/cta-block-examples.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-ctas-landing-pages.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/cta-block-examples.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/footer-design-system.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/footer-design-system.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-footers-web.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/footer-design-system.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/bento-grid-layouts.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/bento-grid-layouts.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-bento-grids.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/bento-grid-layouts.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/navigation-patterns.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/navigation-patterns.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-patrones-navegacion.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/navigation-patterns.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/form-patterns.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/accessible-ui-snippets.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/accessible-ui-snippets.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-componentes-accesibles.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/accessible-ui-snippets.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/data-table-patterns.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/dialog-overlay-patterns.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/empty-state-examples.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/pricing-section-examples.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/hero-headline-examples.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/error-page-design.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/glassmorphism-components.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/typography-and-fonts.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/hover-effects.html</loc>
+
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-biblioteca-assets-frontend.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/frontend-asset-library.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-biblioteca-assets-frontend.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/frontend-asset-library.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-snippets-ui-listos-para-copiar.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/copy-ready-ui-snippets.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-snippets-ui-listos-para-copiar.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/copy-ready-ui-snippets.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-botones-css.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/css-button-examples.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-botones-css.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/css-button-examples.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-gradientes-css.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/gradient-library.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-gradientes-css.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/gradient-library.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-loaders-skeletons.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/loading-state-examples.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-loaders-skeletons.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/loading-state-examples.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-ctas-landing-pages.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/cta-block-examples.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-ctas-landing-pages.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/cta-block-examples.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-footers-web.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/footer-design-system.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-footers-web.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/footer-design-system.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-bento-grids.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/bento-grid-layouts.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-bento-grids.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/bento-grid-layouts.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-patrones-navegacion.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/navigation-patterns.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-patrones-navegacion.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/navigation-patterns.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://ui-ip-toolkit.vercel.app/catalog/es-componentes-accesibles.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://ui-ip-toolkit.vercel.app/catalog/accessible-ui-snippets.html"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://ui-ip-toolkit.vercel.app/catalog/es-componentes-accesibles.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://ui-ip-toolkit.vercel.app/catalog/accessible-ui-snippets.html"/>
     <lastmod>2026-06-14</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
